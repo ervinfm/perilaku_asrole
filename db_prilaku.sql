@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Okt 2021 pada 11.14
+-- Waktu pembuatan: 06 Nov 2021 pada 14.11
 -- Versi server: 10.4.16-MariaDB
 -- Versi PHP: 7.4.12
 
@@ -45,31 +45,27 @@ CREATE TABLE `tbl_dataset` (
 --
 
 INSERT INTO `tbl_dataset` (`id_dataset`, `itemset_dataset`, `datetime_dataset`, `subyek_dataset`, `params1_dataset`, `params2_dataset`, `params3_dataset`, `params4_dataset`, `author_dataset`, `created_dataset`) VALUES
-(186, '1', '2021-10-26', 'C', '5,5,1,4,4,2,2,2,5', '5,4,3,1,1,4,4', '3,2,3,3', '1,1,1,3,1', '99473177322717184', '2021-10-26 12:58:17'),
-(187, '1', '2021-10-26', 'N', '5,5,1,5,5,2,4,3,3', '5,5,5,2,1,5,5', '3,4,4,4', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(188, '1', '2021-10-26', 'SARITA SEPTIA ALDITA PUTRI', '5,5,1,5,5,2,5,5,5', '5,1,2,2,1,2,2', '2,2,3,2', '1,1,1,2,1', '99473177322717184', '2021-10-26 12:58:17'),
-(189, '1', '2021-10-26', 'Liv', '5,5,1,3,2,4,5,3,3', '4,2,3,3,3,4,4', '2,3,2,3', '1,1,1,2,1', '99473177322717184', '2021-10-26 12:58:17'),
-(190, '1', '2021-10-26', 'Ur', '5,5,1,5,5,4,5,5,4', '1,1,1,2,3,3,5', '5,3,3,4', '1,3,1,4,1', '99473177322717184', '2021-10-26 12:58:17'),
-(191, '1', '2021-10-26', 'DHNF', '5,5,1,3,2,4,5,3,5', '5,5,5,5,5,5,5', '4,1,5,2', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(192, '1', '2021-10-26', 'LUTFIA INDAH PALUPI', '5,5,1,4,4,3,4,3,5', '2,2,3,2,4,2,3', '4,4,4,3', '1,1,5,1,4', '99473177322717184', '2021-10-26 12:58:17'),
-(193, '1', '2021-10-26', 'Zuni', '5,5,1,5,3,3,5,4,5', '5,5,3,3,3,3,4', '3,3,4,3', '1,1,2,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(194, '1', '2021-10-26', 'Widya', '5,5,1,5,5,5,5,5,5', '5,5,5,2,1,3,5', '1,5,5,5', '5,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(195, '1', '2021-10-26', 'AFA', '5,5,2,5,5,3,3,3,5', '5,5,3,5,5,3,3', '4,4,4,4', '1,2,1,5,1', '99473177322717184', '2021-10-26 12:58:17'),
-(196, '1', '2021-10-26', 'Nahnuriyah ', '5,5,1,5,1,3,5,3,5', '5,4,5,2,5,4,4', '5,2,2,5', '1,1,1,5,1', '99473177322717184', '2021-10-26 12:58:17'),
-(197, '1', '2021-10-26', 'Rafiq', '5,5,1,5,5,3,5,5,5', '4,3,3,3,4,4,5', '3,2,3,3', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(198, '1', '2021-10-26', 'Herti Herliani', '5,5,1,4,5,3,5,5,5', '5,5,4,3,3,3,4', '1,4,5,1', '1,1,1,5,1', '99473177322717184', '2021-10-26 12:58:17'),
-(199, '1', '2021-10-26', 'GG', '5,5,1,5,4,2,5,5,5', '5,5,5,5,5,5,5', '3,4,5,1', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(200, '1', '2021-10-26', 'Yet', '5,5,1,5,5,5,5,5,5', '5,5,5,5,1,5,5', '1,1,5,1', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(201, '1', '2021-10-26', 'Bl H', '5,5,1,4,4,5,5,5,5', '5,5,5,5,5,5,5', '3,2,2,1', '4,1,1,1,1', '99473177322717184', '2021-10-26 12:58:17'),
-(202, '1', '2021-10-26', 'Fairuz Fatchiyyah Darajah', '5,5,1,4,4,5,5,4,5', '5,4,5,4,4,5,4', '1,4,4,4', '2,1,1,2,2', '99473177322717184', '2021-10-26 12:58:17'),
-(203, '1', '2021-10-26', 'Anita', '5,5,1,5,3,5,5,5,5', '4,4,3,3,2,4,3', '1,1,3,3', '1,1,1,3,1', '99473177322717184', '2021-10-26 12:58:17'),
-(233, '1', '2021-10-26', 'IA', '5,5,1,4,5,5,5,5,5', '4,4,2,1,1,2,2', '1,2,3,2', '3,3,1,3,3', '99473177322717184', '2021-10-26 12:58:17'),
-(243, '1', '2021-10-26', 'RAL', '5,5,1,5,5,4,5,5,5', '5,4,2,5,4,1,3', '3,3,3,2', '1,1,3,5,1', '99473177322717184', '2021-10-26 12:58:18'),
-(253, '1', '2021-10-26', 'AM', '5,5,1,4,5,5,5,5,5', '4,4,4,3,5,3,5', '5,5,2,2', '2,2,1,2,5', '99473177322717184', '2021-10-26 12:58:18'),
-(257, '1', '2021-10-26', 'Zuhra NF', '5,5,1,3,5,3,5,2,5', '5,4,4,2,2,4,5', '1,2,4,1', '5,1,1,2,2', '99473177322717184', '2021-10-26 12:58:18'),
-(273, '1', '2021-10-26', 'Ade', '5,5,5,5,5,5,5,5,5', '5,5,5,5,5,5,5', '2,2,2,3', '1,1,1,1,1', '99473177322717184', '2021-10-26 12:58:18'),
-(278, '1', '2021-10-26', 'Fina Delvia Nuroniyah ', '5,5,1,5,4,4,4,4,5', '5,4,5,3,5,4,3', '1,1,3,1', '1,1,4,3,1', '99473177322717184', '2021-10-26 12:58:18'),
-(282, '1', '2021-10-26', 'Aulia Jannah', '5,3,1,5,5,2,3,3,3', '2,2,1,2,5,5,3', '1,1,5,1', '4,3,5,4,1', '99473177322717184', '2021-10-26 12:58:18');
+(384, '1', '2021-11-06', 'N', ',P1,P2,P3,P4,P5,P7', ',P1,P2,P3,P5,P6,P7', ',P2,P3,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(385, '1', '2021-11-06', 'Ur', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P7', ',P1,P4', ',P1,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(386, '1', '2021-11-06', 'DHNF', ',P1,P2,P3,P6,P7,P9', ',P1,P2,P3,P4,P5,P6,P7', ',P1,P2,P3', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(387, '1', '2021-11-06', 'LUTFIA INDAH PALUPI', ',P1,P2,P3,P4,P5,P7,P9', ',P5', ',P1,P2,P3', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(388, '1', '2021-11-06', 'Zuni', ',P1,P2,P3,P4,P7,P8,P9', ',P1,P2,P7', ',P3', ',P1,P2,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(389, '1', '2021-11-06', 'Widya', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P5,P7', ',P1,P2,P3,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(390, '1', '2021-11-06', 'AFA', ',P1,P2,P4,P5,P9', ',P1,P2,P4,P5', ',P1,P2,P3,P4', ',P1,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(391, '1', '2021-11-06', 'Nahnuriyah ', ',P1,P2,P3,P4,P5,P7,P9', ',P1,P2,P3,P5,P6,P7', ',P1,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(392, '1', '2021-11-06', 'Herti Herliani', ',P1,P2,P3,P4,P5,P7,P8,P9', ',P1,P2,P3,P7', ',P1,P2,P3,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(393, '1', '2021-11-06', 'GG', ',P1,P2,P3,P4,P5,P7,P8,P9', ',P1,P2,P3,P4,P5,P6,P7', ',P2,P3,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(394, '1', '2021-11-06', 'Yet', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P4,P5,P6,P7', ',P1,P2,P3,P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(395, '1', '2021-11-06', 'Bl H', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P4,P5,P6,P7', ',P4', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(396, '1', '2021-11-06', 'Fairuz Fatchiyyah Darajah', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P4,P5,P6,P7', ',P1,P2,P3,P4', ',P2,P3', '99473177322717184', '2021-11-06 13:09:11'),
+(397, '1', '2021-11-06', 'Anita', ',P1,P2,P3,P4,P6,P7,P8,P9', ',P1,P2,P6', ',P1,P2', ',P1,P2,P3,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(398, '1', '2021-11-06', 'Azzakiy ', ',P1,P2,P3,P5,P6,P7,P8,P9', ',P1,P3,P4', ',P1,P2,P3', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(399, '1', '2021-11-06', 'Moh Amirrulloh', ',P1,P7', ',P1,P2,P4,P6', ',P1,P2,P3,P4', ',P1,P2,P3,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(400, '1', '2021-11-06', 'S', ',P1,P2,P3,P6,P7,P8,P9', ',P6,P7', ',P1,P2,P3,P4', ',P1,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(401, '1', '2021-11-06', 'Sakila', ',P1,P2,P3,P4,P5,P6,P7,P9', ',P1,P2,P3,P5,P6,P7', ',P1,P2,P4', ',P1,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(402, '1', '2021-11-06', 'Risqi', ',P1,P2,P3,P4,P6,P7,P8', ',P1,P2,P3', ',P1,P2,P3', ',P1,P2,P3,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(403, '1', '2021-11-06', 'Muhammad iqbal Zulfikar', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3,P4,P6', ',P1,P2,P3', ',P1,P2,P3,P4,P5', '99473177322717184', '2021-11-06 13:09:11'),
+(404, '1', '2021-11-06', 'Ghiee', ',P1,P2,P3,P4,P5,P6,P7,P8,P9', ',P1,P2,P3', ',P1,P2,P4', ',P1,P3,P5', '99473177322717184', '2021-11-06 13:09:11');
 
 -- --------------------------------------------------------
 
@@ -92,33 +88,89 @@ CREATE TABLE `tbl_dataset_transit` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `tbl_itemset1`
+--
+
+CREATE TABLE `tbl_itemset1` (
+  `id_proses` int(11) NOT NULL,
+  `atribut` varchar(200) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `support` double DEFAULT NULL,
+  `lolos` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_itemset2`
+--
+
+CREATE TABLE `tbl_itemset2` (
+  `id_proses` int(11) NOT NULL,
+  `atribut1` varchar(200) DEFAULT NULL,
+  `atribut2` varchar(200) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `support` double DEFAULT NULL,
+  `lolos` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_itemset3`
+--
+
+CREATE TABLE `tbl_itemset3` (
+  `id_proses` int(11) NOT NULL,
+  `atribut1` varchar(200) DEFAULT NULL,
+  `atribut2` varchar(200) DEFAULT NULL,
+  `atribut3` varchar(200) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `support` double DEFAULT NULL,
+  `lolos` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `tbl_konsultasi`
 --
 
 CREATE TABLE `tbl_konsultasi` (
   `id_konsultasi` varchar(255) NOT NULL,
   `subyek_konsultasi` varchar(255) NOT NULL,
-  `params1_konsultasi` text NOT NULL,
-  `params2_konsultasi` text NOT NULL,
-  `params3_konsultasi` text NOT NULL,
-  `params4_konsultasi` text NOT NULL,
+  `params1_konsultasi` text NOT NULL DEFAULT '3',
+  `params2_konsultasi` text NOT NULL DEFAULT '3',
+  `params3_konsultasi` text NOT NULL DEFAULT '3',
+  `params4_konsultasi` text NOT NULL DEFAULT '3',
   `author_konsultasi` varchar(255) NOT NULL,
+  `status_konsultasi` int(1) NOT NULL,
   `created_konsultasi` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tbl_konsultasi`
+--
+
+INSERT INTO `tbl_konsultasi` (`id_konsultasi`, `subyek_konsultasi`, `params1_konsultasi`, `params2_konsultasi`, `params3_konsultasi`, `params4_konsultasi`, `author_konsultasi`, `status_konsultasi`, `created_konsultasi`) VALUES
+('54700334681569212879', 'Tiara Anggraini Gaib', '1,1,1,1,1,1,1,1,1', '2,2,2,2,2,2,2', '3,4,4,3', '4,4,4,4,4', '850319kcGUjp6TSso54amC3dbqnXYV', 1, '2021-10-28 08:56:06'),
+('69246143310897552780', 'Tiara Anggraini Gaib', '1,2,3,4,5,4,3,2,1', '1,2,3,4,5,4,3', '2,1,2,3', '4,5,4,3,2', '850319kcGUjp6TSso54amC3dbqnXYV', 0, '2021-10-28 08:53:12');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_proses`
+-- Struktur dari tabel `tbl_proses_log`
 --
 
-CREATE TABLE `tbl_proses` (
+CREATE TABLE `tbl_proses_log` (
   `id_proses` int(11) NOT NULL,
   `date_first` date NOT NULL,
   `date_last` date NOT NULL,
-  `min_support` varchar(10) NOT NULL,
-  `min_confident` varchar(10) NOT NULL,
-  `status_proses` int(1) NOT NULL DEFAULT 0,
+  `min_support` varchar(255) NOT NULL,
+  `min_confident` varchar(255) NOT NULL,
+  `kriteria_proses` int(1) NOT NULL,
+  `status_proses` int(1) NOT NULL,
+  `author_proses` varchar(255) NOT NULL,
   `created_proses` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -173,9 +225,9 @@ ALTER TABLE `tbl_konsultasi`
   ADD PRIMARY KEY (`id_konsultasi`);
 
 --
--- Indeks untuk tabel `tbl_proses`
+-- Indeks untuk tabel `tbl_proses_log`
 --
-ALTER TABLE `tbl_proses`
+ALTER TABLE `tbl_proses_log`
   ADD PRIMARY KEY (`id_proses`);
 
 --
@@ -194,19 +246,19 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `tbl_dataset`
 --
 ALTER TABLE `tbl_dataset`
-  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
+  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=405;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_dataset_transit`
 --
 ALTER TABLE `tbl_dataset_transit`
-  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3583;
+  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3878;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_proses`
+-- AUTO_INCREMENT untuk tabel `tbl_proses_log`
 --
-ALTER TABLE `tbl_proses`
-  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tbl_proses_log`
+  MODIFY `id_proses` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

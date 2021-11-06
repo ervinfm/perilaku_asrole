@@ -1,6 +1,15 @@
 <?php
 
 // Preprocessing Dataset
+function get_itemset()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->order_by('itemset_dataset', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
 function get_last_itemset()
 {
     $ci = &get_instance();
@@ -14,26 +23,6 @@ function get_last_itemset()
 
 function parameter_data($data, $type = 1)
 {
-    // switch ($data) {
-    //     case 1:
-    //         return "STS";
-    //         break;
-    //     case 2:
-    //         return "TS";
-    //         break;
-    //     case 3:
-    //         return "N";
-    //         break;
-    //     case 4:
-    //         return "S";
-    //         break;
-    //     case 5:
-    //         return "SS";
-    //         break;
-    //     default:
-    //         return "undifined";
-    //         break;
-    // }
     if ($type == 1) {
         if ($data > 3) {
             return 1;
@@ -49,8 +38,26 @@ function transformation_data($data)
 {
     $datas = explode(",", $data);
     foreach ($datas as $x => $x_value) {
-        echo parameter_data($x_value, 1) . '|';
+        echo parameter_data($x_value, 1) . ',';
     }
+}
+
+function transfor_data($data)
+{
+    $temp = null;
+    $datas = explode(",", $data);
+    foreach ($datas as $x => $string) {
+        if ($string > 1) {
+            $val = parameter_data($string);
+        } else {
+            $val = $string;
+        }
+
+        if ($val == 1) {
+            $temp = $temp . ',P' . ($x + 1);
+        }
+    }
+    return $temp;
 }
 
 // Algoritma Apriori
@@ -63,6 +70,12 @@ function get_last_apriori()
     $ci->db->order_by('created_proses', 'DESC');
     $query = $ci->db->get();
     return $query;
+}
+
+function get_support_relative($min_support)
+{
+    $datas = get_itemset();
+    return round(($min_support / $datas->num_rows()) * 100, 2);
 }
 
 function get_frequent_support($data, $atribut = null)

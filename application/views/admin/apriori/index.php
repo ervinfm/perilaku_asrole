@@ -75,13 +75,13 @@
                                                                 <td><?= date('d/m/Y', strtotime($dataset->datetime_dataset)) ?></td>
                                                                 <td><?= $dataset->subyek_dataset ?></td>
                                                                 <?php if ($input['p_kriteria'] == 1) { ?>
-                                                                    <td><?= transformation_data($dataset->params1_dataset) ?></td>
+                                                                    <td><?= $dataset->params1_dataset ?></td>
                                                                 <?php } else if ($input['p_kriteria'] == 2) { ?>
-                                                                    <td><?= transformation_data($dataset->params2_dataset) ?></td>
+                                                                    <td><?= $dataset->params2_dataset ?></td>
                                                                 <?php } else if ($input['p_kriteria'] == 3) { ?>
-                                                                    <td><?= transformation_data($dataset->params3_dataset) ?></td>
+                                                                    <td><?= $dataset->params3_dataset ?></td>
                                                                 <?php } else if ($input['p_kriteria'] == 4) { ?>
-                                                                    <td><?= transformation_data($dataset->params4_dataset) ?></td>
+                                                                    <td><?= $dataset->params4_dataset ?></td>
                                                                 <?php } ?>
                                                             </tr>
                                                         <?php } ?>

@@ -21,6 +21,7 @@ class Apriori_m extends CI_Model
             'min_support' => $post['p_support'],
             'min_confident' => $post['p_confident'],
             'kriteria_proses' => $post['kriteria'],
+            'author_proses' => profil()->id_user,
             'status_proses' => 0,
         ];
         $this->db->insert('tbl_proses_log', $params);
@@ -35,6 +36,6 @@ class Apriori_m extends CI_Model
     function reset_itemset($id)
     {
         $this->db->where('id_proses', $id);
-        $this->db->delete('tbl_itemset');
+        $this->db->delete('tbl_itemset1');
     }
 }

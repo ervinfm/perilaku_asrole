@@ -7,11 +7,12 @@
     }
     ?>
 
-    <div class="col-sm-4 offset-sm-4 mb-3">
+    <div class="col-sm-5 offset-sm-4 mb-3">
         <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
             <a href="#" class="btn btn-sm btn-<?= @$_GET['action'] == '' ? 'danger' : 'neutral' ?>">Upload</a>
             <a href="#" class="btn btn-sm btn-<?= @$_GET['action'] == 'cleaning' ? 'warning' : 'neutral' ?>">Cleaning</a>
             <a href="#" class="btn btn-sm btn-<?= @$_GET['action'] == 'transformation' ? 'info' : 'neutral' ?>">Transformation</a>
+            <a href="#" class="btn btn-sm btn-<?= @$_GET['action'] == 'reduction' ? 'danger' : 'neutral' ?>">Reduction</a>
             <a href="#" class="btn btn-sm btn-<?= @$_GET['action'] == 'submit' ? 'success' : 'neutral' ?>">Submit</a>
         </ul>
     </div>
@@ -112,6 +113,41 @@
                                         <span class="badge badge-info">Data sudah di transformasi, Silahkan Lanjutkan Pada Submit data pada Basis Data</span>
                                     </div>
                                     <div class="col-sm-6 mb-2">
+                                        <a href="<?= site_url('admin/dataset/reduction') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-sync"></i> Lanjut Reduction</a>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th width="3%">No</th>
+                                                <th width="10%">Datetime</th>
+                                                <th>Itemset 1</th>
+                                                <th>Itemset 2</th>
+                                                <th>Itemset 3</th>
+                                                <th>Itemset 4</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($transit->result() as $key => $dataset) { ?>
+                                                <tr>
+                                                    <td><?= $key + 1 ?></td>
+                                                    <td><?= $dataset->datetime_dataset  ?></td>
+                                                    <td><?= transfor_data($dataset->params1_dataset) ?></td>
+                                                    <td><?= transfor_data($dataset->params2_dataset) ?></td>
+                                                    <td><?= transfor_data($dataset->params3_dataset) ?></td>
+                                                    <td><?= transfor_data($dataset->params4_dataset) ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <?php } else if (@$_GET['action'] == 'reduction') { ?>
+                                <div class="row">
+                                    <div class="col-sm-6 mb-2">
+                                        <span class="badge badge-info">Data sudah di transformasi, Silahkan Lanjutkan Pada Reduction data </span>
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
                                         <a href="?action=submit" class="btn btn-sm btn-success float-right"><i class="ni ni-box-2"></i> Lanjut Submit</a>
                                     </div>
                                 </div>
@@ -132,10 +168,10 @@
                                                 <tr>
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= $dataset->datetime_dataset  ?></td>
-                                                    <td><?= transformation_data($dataset->params1_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params2_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params3_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params4_dataset) ?></td>
+                                                    <td><?= $dataset->params1_dataset ?></td>
+                                                    <td><?= $dataset->params2_dataset ?></td>
+                                                    <td><?= $dataset->params3_dataset ?></td>
+                                                    <td><?= $dataset->params4_dataset ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -167,10 +203,10 @@
                                                 <tr>
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= $dataset->datetime_dataset  ?></td>
-                                                    <td><?= transformation_data($dataset->params1_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params2_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params3_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params4_dataset) ?></td>
+                                                    <td><?= $dataset->params1_dataset ?></td>
+                                                    <td><?= $dataset->params2_dataset ?></td>
+                                                    <td><?= $dataset->params3_dataset ?></td>
+                                                    <td><?= $dataset->params4_dataset ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

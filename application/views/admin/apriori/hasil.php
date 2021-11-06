@@ -25,23 +25,46 @@ $data4 = get_support_params4($row);
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
+
+                                    <tr>
+                                        <td>ID Proses</td>
+                                        <td>:</td>
+                                        <td><?= $input['id']  ?></td>
+                                    </tr>
                                     <tr>
                                         <td width="20%">Rentang Tanggal</td>
                                         <td width="5%">:</td>
                                         <td><?= date('d M Y', strtotime(get_proses_log($input['id'])->date_first)) . ' - ' . date('d M Y', strtotime(get_proses_log($input['id'])->date_last)) ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Minimum Support</td>
+                                        <td>Kriteria</td>
                                         <td>:</td>
+                                        <td><?= $input['p_kriteria'] == 1 ? 'Kehidupan Sosial Keluarga' : ($input['p_kriteria'] == 2 ? 'Religiusitas' : ($input['p_kriteria'] == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <td width="20%">Minimum Support</td>
+                                        <td width="5%">:</td>
                                         <td><?= get_proses_log($input['id'])->min_support  ?></td>
                                     </tr>
                                     <tr>
                                         <td>Minimum Confident</td>
                                         <td>:</td>
-                                        <td><?= get_proses_log($input['id'])->min_confident  ?></td>
+                                        <td><?= get_proses_log($input['id'])->min_confident . ' %'  ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Min. Support Relative</td>
+                                        <td>:</td>
+                                        <td><?= get_support_relative(get_proses_log($input['id'])->min_support) . ' %' ?></td>
                                     </tr>
                                 </table>
                             </div>

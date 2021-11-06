@@ -79,10 +79,10 @@
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= date('d/m/Y', strtotime($dataset->datetime_dataset)) ?></td>
                                                     <td><?= substr($dataset->subyek_dataset, 0, 15) ?></td>
-                                                    <td><?= transformation_data($dataset->params1_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params2_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params3_dataset) ?></td>
-                                                    <td><?= transformation_data($dataset->params4_dataset) ?></td>
+                                                    <td><?= $dataset->params1_dataset ?></td>
+                                                    <td><?= $dataset->params2_dataset ?></td>
+                                                    <td><?= $dataset->params3_dataset ?></td>
+                                                    <td><?= $dataset->params4_dataset ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

@@ -125,6 +125,39 @@ class Dataset extends CI_Controller
         }
     }
 
+    function reduction()
+    {
+        $data = $this->dataset_m->load_transit();
+        foreach ($data->result() as $key => $dataset) {
+            $datas = [
+                'id' => $dataset->id_dataset,
+                'par1' => transfor_data($dataset->params1_dataset),
+                'par2' => transfor_data($dataset->params2_dataset),
+                'par3' => transfor_data($dataset->params3_dataset),
+                'par4' => transfor_data($dataset->params4_dataset),
+            ];
+            $this->dataset_m->update_dataset_transit($datas);
+        }
+        if ($this->db->affected_rows() > 0) {
+            $data = $this->dataset_m->load_transit();
+            foreach ($data->result() as $key => $dataset) {
+                if ($dataset->params1_dataset == NULL || $dataset->params2_dataset == NULL || $dataset->params3_dataset == NULL || $dataset->params4_dataset == NULL) {
+                    $this->dataset_m->cleaning_data($dataset->id_dataset);
+                }
+            }
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('succes', 'Dataset Baru Berhasil di Reduction!');
+                redirect('admin/dataset/upload?action=reduction');
+            } else {
+                $this->session->set_flashdata('error', 'Preprocessing Gagal, Silahkan Coba Kembali!');
+                redirect('admin/dataset/upload?action=transformation');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Preprocessing Gagal, Silahkan Coba Kembali!');
+            redirect('admin/dataset/upload?action=transformation');
+        }
+    }
+
     public function submit()
     {
         $data = $this->dataset_m->load_transit();
