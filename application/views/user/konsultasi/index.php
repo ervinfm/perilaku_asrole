@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="" method="post">
+                    <form action="<?= site_url('user/konsultasi/proses') ?>" method="post">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="alert alert-secondary" role="alert" id="success-alert">
@@ -55,7 +55,7 @@
                             <div class="col-sm-4 text-white">
                                 <div class="form-group">
                                     <label>Nama Clien *</label>
-                                    <input type="text" value="<?= profil()->nama_user ?>" class="form-control " readonly>
+                                    <input type="text" value="<?= profil()->nama_user ?>" name="subjct" class="form-control " readonly>
                                 </div>
                             </div>
                             <div class="col-sm-4 text-white">

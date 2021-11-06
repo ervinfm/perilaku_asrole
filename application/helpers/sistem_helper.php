@@ -9,12 +9,24 @@ function login()
     }
 }
 
+function cek_level()
+{
+    $ci = &get_instance();
+    if ($ci->session->userdata('level') == 1) {
+        redirect('admin/dashboard');
+    } else if ($ci->session->userdata('level') == 2) {
+        redirect('dashboard');
+    } else {
+        redirect('auth/logout');
+    }
+}
+
 function already_login()
 {
     $ci = &get_instance();
     if ($ci->session->userdata('user_id') != NULL) {
         $ci->session->set_flashdata('warning', 'Anda masih Login dalam sistem, <br>Silahkan Logout untuk keluar sistem!');
-        redirect('dashboard');
+        cek_level();
     }
 }
 
@@ -162,52 +174,6 @@ function get_update_user()
     return $query->row();
 }
 
-// Preprocessing Dataset
-function get_last_itemset()
-{
-    $ci = &get_instance();
-    $ci->db->from('tbl_dataset');
-    $ci->db->group_by('itemset_dataset');
-    $ci->db->order_by('itemset_dataset', 'DESC');
-    $ci->db->limit(1);
-    $query = $ci->db->get();
-    return $query->row();
-}
-
-function parameter_data($data)
-{
-    switch ($data) {
-        case 0:
-            return "STS";
-            break;
-        case 1:
-            return "TS";
-            break;
-        case 2:
-            return "N";
-            break;
-        case 3:
-            return "N";
-            break;
-        case 4:
-            return "S";
-            break;
-        case 5:
-            return "SS";
-            break;
-        default:
-            return "undifined";
-            break;
-    }
-}
-
-function transformation_data($data)
-{
-    $datas = explode(",", $data);
-    foreach ($datas as $x => $x_value) {
-        echo parameter_data($x_value) . '|';
-    }
-}
 
 // Konsultasi
 
@@ -215,23 +181,23 @@ function range_jawaban($name)
 {
     $range = '
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio5" value="option5">
+            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio5" value="1">
             <label class="form-check-label" for="inlineRadio5">Sangat Tidak Setuju</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio4" value="option4">
+            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio4" value="2">
             <label class="form-check-label" for="inlineRadio4">Tidak Setuju</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio3" value="option3">
+            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio3" value="3">
             <label class="form-check-label" for="inlineRadio3">Netral</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio2" value="option2">
+            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio2" value="4">
             <label class="form-check-label" for="inlineRadio2">Setuju</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio1" value="option1">
+            <input class="form-check-input" type="radio" name="' . $name . '" id="inlineRadio1" value="5">
             <label class="form-check-label" for="inlineRadio1">Sangat Setuju</label>
         </div>
     ';

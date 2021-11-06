@@ -52,7 +52,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= $this->uri->segment(2) == 'proses' ? 'active' : null ?>" href="<?= site_url('admin/proses') ?>">
+                            <a class="nav-link <?= $this->uri->segment(2) == 'apriori' ? 'active' : null ?>" href="<?= site_url('admin/apriori') ?>">
                                 <i class="ni ni-compass-04 text-yellow"></i>
                                 <span class="nav-link-text">Association Rule Mining</span>
                             </a>
