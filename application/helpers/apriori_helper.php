@@ -272,7 +272,7 @@ function insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
         'id_proses' => $id,
         'atribut' => $atribut,
         'jumlah' => $jumlah,
-        'support' => $support,
+        'support' => round($support, 2),
         'lolos' => $lolos,
     ];
     $ci->db->insert('tbl_itemset1', $params);
@@ -325,4 +325,15 @@ function insert_itemset_all($datas, $id, $iterasi)
             ];
         }
     }
+}
+
+function get_iterasi1_byid($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset1');
+    if ($id != null) {
+        $ci->db->where('id_proses', $id);
+    }
+    $query = $ci->db->get();
+    return $query;
 }
