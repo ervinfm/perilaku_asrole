@@ -117,7 +117,19 @@
  <!-- Page content -->
  <div class="container-fluid mt--6">
      <div class="row">
-
+         <div class="col-sm-12">
+             <div class="card">
+                 <div class="card-body">
+                     <?php
+                        for ($i = 1; $i < 9; $i++) {
+                            for ($j = $i + 1; $j < 9; $j++) {
+                                echo 'P' . $i . ' -> P' . $j . ' | ';
+                            }
+                            echo '<br>';
+                        }
+                        ?>
+                 </div>
+             </div>
+         </div>
      </div>
-
  </div>

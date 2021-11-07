@@ -289,7 +289,7 @@ function insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $lolos)
         'support' => $support,
         'lolos' => $lolos,
     ];
-    $ci->db->insert('tbl_itemset', $params);
+    $ci->db->insert('tbl_itemset2', $params);
 }
 
 function insert_itemset3($id, $atribut1, $atribut2, $atribut3, $jumlah, $support, $lolos)
@@ -336,4 +336,124 @@ function get_iterasi1_byid($id = null)
     }
     $query = $ci->db->get();
     return $query;
+}
+
+function get_iterasi2_byid($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset2');
+    if ($id != null) {
+        $ci->db->where('id_proses', $id);
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function proses_iterasi1($query1, $post)
+{
+    $pert = [
+        'p1' => null,
+        'p2' => null,
+        'p3' => null,
+        'p4' => null,
+        'p5' => null,
+        'p6' => null,
+        'p7' => null,
+        'p8' => null,
+        'p9' => null,
+        'datas_count' => null,
+        'seleksi' => null,
+    ];
+
+    foreach ($query1->result() as $key => $iterasi) {
+
+        if ($post['kriteria'] == 1) {
+            $data = explode(",", $iterasi->params1_dataset);
+        } else  if ($post['kriteria'] == 2) {
+            $data = explode(",", $iterasi->params2_dataset);
+        } else  if ($post['kriteria'] == 3) {
+            $data = explode(",", $iterasi->params3_dataset);
+        } else  if ($post['kriteria'] == 4) {
+            $data = explode(",", $iterasi->params4_dataset);
+        }
+
+        foreach ($data as $ke => $val) {
+            if ($val == 'P1') {
+                $pert['p1'] = $pert['p1'] + 1;
+            } else if ($val == 'P2') {
+                $pert['p2'] = $pert['p2'] + 1;
+            } else if ($val == 'P3') {
+                $pert['p3'] = $pert['p3'] + 1;
+            } else if ($val == 'P4') {
+                $pert['p4'] = $pert['p4'] + 1;
+            } else if ($val == 'P5') {
+                $pert['p5'] = $pert['p5'] + 1;
+            } else if ($val == 'P6') {
+                $pert['p6'] = $pert['p6'] + 1;
+            } else if ($val == 'P7') {
+                $pert['p7'] = $pert['p7'] + 1;
+            } else if ($val == 'P8') {
+                $pert['p8'] = $pert['p8'] + 1;
+            } else if ($val == 'P9') {
+                $pert['p9'] = $pert['p9'] + 1;
+            }
+        }
+        $pert['datas_count'] = $pert['datas_count'] + 1;
+    }
+    for ($i = 1; $i < 10; $i++) {
+        if ($pert['p' . $i] != null) {
+            $sup = ($pert['p' . $i] / $pert['datas_count']) * 100;
+            if ($pert['p' . $i] > $post['p_support']) {
+                $seleksi = 1;
+            } else {
+                $seleksi = 0;
+            }
+            insert_itemset1($post['id'], 'P' . $i, $pert['p' . $i], $sup, $seleksi);
+        }
+    }
+}
+
+function proses_iterasi2($query, $id)
+{
+    $paused = get_proses_log($id);
+    $atribut = null;
+    foreach (get_iterasi1_byid($id)->result() as $key => $iterasi1) {
+        if ($iterasi1->lolos == 1) {
+            $atribut = $atribut . ',' . $iterasi1->atribut;
+        }
+    }
+
+    $datas = explode(",", $atribut);
+    for ($i = 1; $i < count($datas); $i++) {
+        for ($j = $i + 1; $j <  count($datas); $j++) {
+            foreach ($query->result() as $key => $params) {
+                if ($paused->kriteria_proses == 1) {
+                    $data = explode(",", $params->params1_dataset);
+                } else  if ($paused->kriteria_proses == 2) {
+                    $data = explode(",", $params->params2_dataset);
+                } else  if ($paused->kriteria_proses == 3) {
+                    $data = explode(",", $params->params3_dataset);
+                } else  if ($paused->kriteria_proses == 4) {
+                    $data = explode(",", $params->params4_dataset);
+                }
+            }
+
+            $count = 0;
+            foreach ($data as $key => $x) {
+                if ($x == $datas[$i] || $x == $datas[$j]) {
+                    $count++;
+                }
+            }
+
+            $support = ($count / $query->num_rows()) * 100;
+            if ($count > $paused->min_support) {
+                $lolos = 1;
+            } else {
+                $lolos = 0;
+            }
+            insert_itemset2($id, $datas[$i], $datas[$j], $count, $support, $lolos);
+            echo $datas[$i] . ' => ' . $datas[$j] . ' : ' . $count . ' | ';
+        }
+        echo "<br>";
+    }
 }
