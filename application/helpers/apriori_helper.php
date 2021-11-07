@@ -54,7 +54,7 @@ function transfor_data($data)
         }
 
         if ($val == 1) {
-            $temp = $temp . ',P' . ($x + 1);
+            $temp = $temp . 'P' . ($x + 1) . ',';
         }
     }
     return $temp;
@@ -275,7 +275,7 @@ function insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
         'support' => $support,
         'lolos' => $lolos,
     ];
-    $ci->db->insert('tbl_itemset', $params);
+    $ci->db->insert('tbl_itemset1', $params);
 }
 
 function insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $lolos)

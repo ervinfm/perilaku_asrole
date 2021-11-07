@@ -16,6 +16,7 @@ class Apriori_m extends CI_Model
     function insert_proses_log($post)
     {
         $params = [
+            'id_proses' => $post['id'],
             'date_first' => $post['d_first'],
             'date_last' => $post['d_last'],
             'min_support' => $post['p_support'],

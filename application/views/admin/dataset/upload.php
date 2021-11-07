@@ -168,10 +168,10 @@
                                                 <tr>
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= $dataset->datetime_dataset  ?></td>
-                                                    <td><?= $dataset->params1_dataset ?></td>
-                                                    <td><?= $dataset->params2_dataset ?></td>
-                                                    <td><?= $dataset->params3_dataset ?></td>
-                                                    <td><?= $dataset->params4_dataset ?></td>
+                                                    <td><?= $dataset->params1_dataset == null ? '<span style="color:red"><i>NULL</i></span>' : $dataset->params1_dataset ?></td>
+                                                    <td><?= $dataset->params2_dataset == null ? '<span style="color:red"><i>NULL</i></span>' : $dataset->params2_dataset ?></td>
+                                                    <td><?= $dataset->params3_dataset == null ? '<span style="color:red"><i>NULL</i></span>' : $dataset->params3_dataset ?></td>
+                                                    <td><?= $dataset->params4_dataset == null ? '<span style="color:red"><i>NULL</i></span>' : $dataset->params4_dataset ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
