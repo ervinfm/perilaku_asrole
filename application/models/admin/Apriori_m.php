@@ -34,9 +34,22 @@ class Apriori_m extends CI_Model
         $this->db->delete('tbl_proses_log');
     }
 
-    function reset_itemset($id)
+    function reset_itemset1($id)
     {
         $this->db->where('id_proses', $id);
         $this->db->delete('tbl_itemset1');
+        $this->db->delete('tbl_itemset2');
+    }
+
+    function reset_itemset2($id)
+    {
+        $this->db->where('id_proses', $id);
+        $this->db->delete('tbl_itemset2');
+    }
+
+    function reset_itemset3($id)
+    {
+        $this->db->where('id_proses', $id);
+        $this->db->delete('tbl_itemset3');
     }
 }

@@ -10,6 +10,17 @@ function get_itemset()
     return $query;
 }
 
+function get_itemset_bydate($first, $last)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('datetime_dataset >=', $first);
+    $ci->db->where('datetime_dataset <=', $last);
+    $ci->db->order_by('datetime_dataset', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
 function get_last_itemset()
 {
     $ci = &get_instance();
@@ -19,6 +30,24 @@ function get_last_itemset()
     $ci->db->limit(1);
     $query = $ci->db->get();
     return $query->row();
+}
+
+function cek_itemset($id_proses, $itemset, $lolos = TRUE)
+{
+    $ci = &get_instance();
+    if ($itemset == 1) {
+        $ci->db->from('tbl_itemset1');
+    } else  if ($itemset == 2) {
+        $ci->db->from('tbl_itemset2');
+    } else  if ($itemset == 3) {
+        $ci->db->from('tbl_itemset3');
+    }
+    if ($lolos == TRUE) {
+        $ci->db->where('lolos', 1);
+    }
+    $ci->db->where('id_proses', $id_proses);
+    $query = $ci->db->get();
+    return $query;
 }
 
 function parameter_data($data, $type = 1)
@@ -58,6 +87,23 @@ function transfor_data($data)
         }
     }
     return $temp;
+}
+
+function cek_kesamaan_data_array($data1, $data2)
+{
+    $datas1 = explode(",", $data1); //P1,P2
+    $datas2 = explode(",", $data2); //P1,P3
+    $temp = null;
+
+    if ($datas1[0] != $datas2[0] && $datas1[1] != $datas2[0]) {
+        $temp = $datas1[0] . ',' . $datas1[1] . ',' . $datas2[0];
+        sqrt($temp);
+        return $temp;
+    } else if ($datas1[0] != $datas2[1] && $datas1[1] != $datas2[1]) {
+        $temp = $datas1[0] . ',' . $datas1[1] . ',' . $datas2[1];
+        sqrt($temp);
+        return $temp;
+    }
 }
 
 // Algoritma Apriori
@@ -304,7 +350,7 @@ function insert_itemset3($id, $atribut1, $atribut2, $atribut3, $jumlah, $support
         'support' => $support,
         'lolos' => $lolos,
     ];
-    $ci->db->insert('tbl_itemset', $params);
+    $ci->db->insert('tbl_itemset3', $params);
 }
 
 
@@ -347,6 +393,17 @@ function get_iterasi2_byid($id = null)
     }
     $query = $ci->db->get();
     return $query;
+}
+
+function cek_atribut_itemset3($id, $atribut1, $atribut2, $atribut3)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset3');
+    $ci->db->where('id_proses', $id);
+    $ci->db->where('atribut1', $atribut1);
+    $ci->db->where('atribut2', $atribut2);
+    $ci->db->where('atribut3', $atribut3);
+    return $ci->db->get();
 }
 
 function proses_iterasi1($query1, $post)
@@ -413,11 +470,11 @@ function proses_iterasi1($query1, $post)
     }
 }
 
-function proses_iterasi2($query, $id)
+function proses_iterasi2($query, $post)
 {
-    $paused = get_proses_log($id);
+    $paused = get_proses_log($post['id']);
     $atribut = null;
-    foreach (get_iterasi1_byid($id)->result() as $key => $iterasi1) {
+    foreach (get_iterasi1_byid($post['id'])->result() as $key => $iterasi1) {
         if ($iterasi1->lolos == 1) {
             $atribut = $atribut . ',' . $iterasi1->atribut;
         }
@@ -451,9 +508,66 @@ function proses_iterasi2($query, $id)
             } else {
                 $lolos = 0;
             }
-            insert_itemset2($id, $datas[$i], $datas[$j], $count, $support, $lolos);
-            echo $datas[$i] . ' => ' . $datas[$j] . ' : ' . $count . ' | ';
+            insert_itemset2($post['id'], $datas[$i], $datas[$j], $count, $support, $lolos);
+            // echo $datas[$i] . ' => ' . $datas[$j] . ' : ' . $count . ' | ';
         }
-        echo "<br>";
+    }
+}
+
+function proses_iterasi3($post)
+{
+    $paused = get_proses_log($post['id']);
+    $itemset = cek_itemset($post['id'], 2);
+    foreach ($itemset->result() as $key => $value) {
+        $data = array($value->atribut1, $value->atribut2);
+        foreach ($itemset->result() as $key1 => $value2) {
+            if (!in_array($value2->atribut1, $data)) {
+                $param1[$key] = $value->atribut1;
+                $param2[$key] = $value->atribut2;
+                $param3[$key] = $value2->atribut1;
+            } else if (!in_array($value2->atribut2, $data)) {
+                $param1[$key] = $value->atribut1;
+                $param2[$key] = $value->atribut2;
+                $param3[$key] = $value2->atribut2;
+            }
+        }
+        // $temp_array = array($param1[$key], $param2[$key], $param3[$key]);
+        // sort($temp_array);
+        // $temp[$key] = $temp_array;
+
+        $cek1 = cek_atribut_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key]);
+        $cek2 = cek_atribut_itemset3($post['id'], $param3[$key], $param2[$key], $param1[$key]);
+        $cek3 = cek_atribut_itemset3($post['id'], $param2[$key], $param1[$key], $param3[$key]);
+        $cek4 = cek_atribut_itemset3($post['id'], $param1[$key], $param3[$key], $param2[$key]);
+        $cek5 = cek_atribut_itemset3($post['id'], $param3[$key], $param1[$key], $param2[$key]);
+        $cek6 = cek_atribut_itemset3($post['id'], $param2[$key], $param3[$key], $param1[$key]);
+        if ($cek1->num_rows() == 0 && $cek2->num_rows() == 0 && $cek3->num_rows() == 0 && $cek4->num_rows() == 0 && $cek5->num_rows() == 0 && $cek6->num_rows() == 0) {
+            $temp1 = $param1[$key];
+            $temp2 = $param2[$key];
+            $temp3 = $param3[$key];
+            $count = 0;
+            foreach (get_itemset_bydate($paused->date_first, $paused->date_last)->result() as $key100 => $iterasi100) {
+                if ($paused->kriteria_proses == 1) {
+                    $db = explode(",", $iterasi100->params1_dataset);
+                } else if ($paused->kriteria_proses == 2) {
+                    $db = explode(",", $iterasi100->params2_dataset);
+                } else if ($paused->kriteria_proses == 3) {
+                    $db = explode(",", $iterasi100->params3_dataset);
+                } else if ($paused->kriteria_proses == 4) {
+                    $db = explode(",", $iterasi100->params4_dataset);
+                }
+
+                if (in_array($temp1, $db) == TRUE && in_array($temp2, $db) == TRUE && in_array($temp3, $db) == TRUE) {
+                    $count = $count + 1;
+                }
+            }
+            $support = ($count / get_itemset_bydate($paused->date_first, $paused->date_last)->num_rows()) * 100;
+            if ($count > $post['p_support']) {
+                $seleksi = 1;
+            } else {
+                $seleksi = 0;
+            }
+            insert_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
+        }
     }
 }

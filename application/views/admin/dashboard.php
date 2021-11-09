@@ -121,12 +121,10 @@
              <div class="card">
                  <div class="card-body">
                      <?php
-                        for ($i = 1; $i < 9; $i++) {
-                            for ($j = $i + 1; $j < 9; $j++) {
-                                echo 'P' . $i . ' -> P' . $j . ' | ';
-                            }
-                            echo '<br>';
-                        }
+                        $datas = get_itemset();
+                        echo "<pre>";
+                        print_r($datas->result());
+                        echo "</pre>";
                         ?>
                  </div>
              </div>

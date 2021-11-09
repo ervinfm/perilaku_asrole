@@ -46,16 +46,25 @@ class Apriori extends CI_Controller
         } else if (isset($post['proses'])) {
             $post['id'] = random_string('numeric', 9);
             $this->apriori_m->insert_proses_log($post);
-
             $query1 = $this->apriori_m->data_load_by_date($post['d_first'], $post['d_last']);
             proses_iterasi1($query1, $post);
-            proses_iterasi2($query1, $post['id']);
-
-            $data = [
-                'row' => $query1,
-                'input' => $post
-            ];
-            $this->template->load('admin/template', 'admin/apriori/hasil', $data);
+            if (cek_itemset($post['id'], 1)->num_rows() > 0) {
+                proses_iterasi2($query1, $post);
+                if (cek_itemset($post['id'], 2)->num_rows() > 0) {
+                    proses_iterasi3($post); // Iterasi 3
+                    $data = [
+                        'row' => $query1,
+                        'input' => $post
+                    ];
+                    $this->template->load('admin/template', 'admin/apriori/hasil', $data);
+                } else {
+                    $this->session->set_flashdata('success', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 2');
+                    redirect('admin/apriori/proses');
+                }
+            } else {
+                $this->session->set_flashdata('warning', 'Gagal Menjalankan Algoritma Apriori! <br> Berhenti di Iterasi 1');
+                redirect('admin/apriori/proses');
+            }
         } else if (get_last_apriori()->num_rows() > 0) {
             $paused = get_last_apriori()->row();
             $id = $paused->id_proses;
@@ -81,7 +90,9 @@ class Apriori extends CI_Controller
     function reset_proses($id)
     {
         $this->apriori_m->reset_proses($id);
-        $this->apriori_m->reset_itemset($id);
+        $this->apriori_m->reset_itemset3($id);
+        $this->apriori_m->reset_itemset2($id);
+        $this->apriori_m->reset_itemset1($id);
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata('succes', 'Proses Apriori Berhasil di Reset!');
             redirect('admin/apriori');

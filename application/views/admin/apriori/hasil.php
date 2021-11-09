@@ -87,27 +87,56 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body">
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="iterasi1" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 1 (Keseluruhan)</a>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="">
-                                                <thead class="text-center">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="iterasi1" role="tabpanel">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 1 (Keseluruhan)</a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th>Item</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Support</th>
+                                                    <th width="10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no = 1;
+                                                foreach (get_iterasi1_byid($input['id'])->result() as $key => $iterasi1) { ?>
                                                     <tr>
-                                                        <th width="5%">No</th>
-                                                        <th>Item</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Support</th>
-                                                        <th width="10%">Status</th>
+                                                        <td><?= $no++ ?></td>
+                                                        <td><?= $iterasi1->atribut ?></td>
+                                                        <td><?= $iterasi1->jumlah ?></td>
+                                                        <td><?= round($iterasi1->support, 2) . ' %' ?></td>
+                                                        <td><?= $iterasi1->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $no = 1;
-                                                    foreach (get_iterasi1_byid($input['id'])->result() as $key => $iterasi1) { ?>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 1 (Status Lolos)</a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th>Item</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Support</th>
+                                                    <th width="10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no = 1;
+                                                foreach (get_iterasi1_byid($input['id'])->result() as $key => $iterasi1) {
+                                                    if ($iterasi1->jumlah > get_proses_log($input['id'])->min_support) { ?>
                                                         <tr>
                                                             <td><?= $no++ ?></td>
                                                             <td><?= $iterasi1->atribut ?></td>
@@ -115,64 +144,66 @@
                                                             <td><?= round($iterasi1->support, 2) . ' %' ?></td>
                                                             <td><?= $iterasi1->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
                                                         </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 1 (Status Lolos)</a>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="">
-                                                <thead class="text-center">
-                                                    <tr>
-                                                        <th width="5%">No</th>
-                                                        <th>Item</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Support</th>
-                                                        <th width="10%">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $no = 1;
-                                                    foreach (get_iterasi1_byid($input['id'])->result() as $key => $iterasi1) {
-                                                        if ($iterasi1->jumlah > get_proses_log($input['id'])->min_support) { ?>
-                                                            <tr>
-                                                                <td><?= $no++ ?></td>
-                                                                <td><?= $iterasi1->atribut ?></td>
-                                                                <td><?= $iterasi1->jumlah ?></td>
-                                                                <td><?= round($iterasi1->support, 2) . ' %' ?></td>
-                                                                <td><?= $iterasi1->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
-                                                            </tr>
-                                                    <?php }
-                                                    } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                <?php }
+                                                } ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="iterasi2" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 2 (Keseluruhan)</a>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="">
-                                                <thead class="text-center">
+                        </div>
+                        <div class="tab-pane fade" id="iterasi2" role="tabpanel">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 2 (Keseluruhan)</a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th>Item1</th>
+                                                    <th>Item2</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Support</th>
+                                                    <th width="10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no = 1;
+                                                foreach (get_iterasi2_byid($input['id'])->result() as $key => $iterasi2) { ?>
                                                     <tr>
-                                                        <th width="5%">No</th>
-                                                        <th>Item1</th>
-                                                        <th>Item2</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Support</th>
-                                                        <th width="10%">Status</th>
+                                                        <td><?= $no++ ?></td>
+                                                        <td><?= $iterasi2->atribut1 ?></td>
+                                                        <td><?= $iterasi2->atribut2 ?></td>
+                                                        <td><?= $iterasi2->jumlah ?></td>
+                                                        <td><?= round($iterasi2->support, 2) . ' %' ?></td>
+                                                        <td><?= $iterasi2->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $no = 1;
-                                                    foreach (get_iterasi2_byid($input['id'])->result() as $key => $iterasi2) { ?>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 2 (Status Lolos)</a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th>Item1</th>
+                                                    <th>Item2</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Support</th>
+                                                    <th width="10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no = 1;
+                                                foreach (get_iterasi2_byid($input['id'])->result() as $key => $iterasi2) {
+                                                    if ($iterasi2->jumlah > get_proses_log($input['id'])->min_support) { ?>
                                                         <tr>
                                                             <td><?= $no++ ?></td>
                                                             <td><?= $iterasi2->atribut1 ?></td>
@@ -181,13 +212,19 @@
                                                             <td><?= round($iterasi2->support, 2) . ' %' ?></td>
                                                             <td><?= $iterasi2->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
                                                         </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                <?php }
+                                                } ?>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 2 (Status Lolos)</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="iterasi3" role="tabpanel">
+                            <?php if (cek_itemset($input['id'], 3, FALSE)->num_rows() > 0) { ?>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 3 (Keseluruhan)</a>
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="">
                                                 <thead class="text-center">
@@ -195,6 +232,7 @@
                                                         <th width="5%">No</th>
                                                         <th>Item1</th>
                                                         <th>Item2</th>
+                                                        <th>Item3</th>
                                                         <th>Jumlah</th>
                                                         <th>Support</th>
                                                         <th width="10%">Status</th>
@@ -203,30 +241,69 @@
                                                 <tbody>
                                                     <?php
                                                     $no = 1;
-                                                    foreach (get_iterasi2_byid($input['id'])->result() as $key => $iterasi2) {
-                                                        if ($iterasi2->jumlah > get_proses_log($input['id'])->min_support) { ?>
+                                                    foreach (cek_itemset($input['id'], 3, FALSE)->result() as $key => $iterasi3) { ?>
+                                                        <tr>
+                                                            <td><?= $no++ ?></td>
+                                                            <td><?= $iterasi3->atribut1 ?></td>
+                                                            <td><?= $iterasi3->atribut2 ?></td>
+                                                            <td><?= $iterasi3->atribut3 ?></td>
+                                                            <td><?= $iterasi3->jumlah ?></td>
+                                                            <td><?= round($iterasi3->support, 2) . ' %' ?></td>
+                                                            <td><?= $iterasi3->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 mt-2">
+                                        <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 3 (Status Lolos)</a>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th width="5%">No</th>
+                                                        <th>Item1</th>
+                                                        <th>Item2</th>
+                                                        <th>Item3</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Support</th>
+                                                        <th width="10%">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $no = 1;
+                                                    if (cek_itemset($input['id'], 3, TRUE)->num_rows() > 0) {
+                                                        foreach (cek_itemset($input['id'], 3, TRUE)->result() as $key => $iterasi3) { ?>
                                                             <tr>
                                                                 <td><?= $no++ ?></td>
-                                                                <td><?= $iterasi2->atribut1 ?></td>
-                                                                <td><?= $iterasi2->atribut2 ?></td>
-                                                                <td><?= $iterasi2->jumlah ?></td>
-                                                                <td><?= round($iterasi2->support, 2) . ' %' ?></td>
-                                                                <td><?= $iterasi2->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
+                                                                <td><?= $iterasi3->atribut1 ?></td>
+                                                                <td><?= $iterasi3->atribut2 ?></td>
+                                                                <td><?= $iterasi3->atribut3 ?></td>
+                                                                <td><?= $iterasi3->jumlah ?></td>
+                                                                <td><?= round($iterasi3->support, 2) . ' %' ?></td>
+                                                                <td><?= $iterasi3->lolos == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
                                                             </tr>
-                                                    <?php }
-                                                    } ?>
+                                                        <?php }
+                                                    } else { ?>
+                                                        <tr>
+                                                            <td colspan="7" class="text-center"><i><b>Tidak ada data yang lolos Iterasi 3</b></i></td>
+                                                        </tr>
+                                                    <?php } ?>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="iterasi3" role="tabpanel">
-                                <p class="description">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth.</p>
-                            </div>
-                            <div class="tab-pane fade" id="rule" role="tabpanel">
-                                <p class="description">Ervin</p>
-                            </div>
+                            <?php } else { ?>
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Peringatan!</strong> Proses Mining Apriori Berhenti pada Iterasi 2!
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="tab-pane fade" id="rule" role="tabpanel">
+                            <p class="description">Ervin</p>
                         </div>
                     </div>
 
