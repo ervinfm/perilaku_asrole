@@ -39,11 +39,54 @@ function profil()
     return $query->row();
 }
 
+function sistem()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_sistem');
+    $query = $ci->db->get();
+    return $query->row();
+}
+
+function cek_sistem_access($id, $level)
+{
+    $ci = &get_instance();
+    if (sistem()->status_sistem == 0) {
+        if ($id != sistem()->admin_sistem) {
+            $ci->session->set_flashdata('warning', 'Status Sistem Saat ini adalah <strong>OFF</strong>!<br>Silahkan Coba Kembali nanti!');
+            redirect('auth');
+        }
+    } else if (sistem()->status_sistem == 10) {
+        if ($level != 1) {
+            $ci->session->set_flashdata('warning', 'Status Sistem Saat ini adalah <strong>ADMIN ONLY</strong>!<br> Silahkan Coba Kembali Lagi nanti!');
+            redirect('auth');
+        }
+    }
+}
+
+function cek_user_setting($post)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_user');
+    $ci->db->where('id_user', $post['id']);
+    $ci->db->where('password_user', sha1($post['s_pass']));
+    $query = $ci->db->get();
+    return $query;
+}
+
 function cek_email($email)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_user');
     $ci->db->where('email_user', $email);
+    $query = $ci->db->get();
+    return $query;
+}
+
+function cek_akativasi_akun()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_user');
+    $ci->db->where('status_user', 0);
     $query = $ci->db->get();
     return $query;
 }
@@ -132,6 +175,18 @@ function get_user($val, $cat)
     } else if ($cat == 2) {
         $ci->db->where('username_user', $val);
     }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_user_for_sistem($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_user');
+    if ($id == 1) {
+        $ci->db->where('id_user', $id);
+    }
+    $ci->db->where('level_user', 1);
     $query = $ci->db->get();
     return $query;
 }

@@ -51,7 +51,7 @@ class Apriori extends CI_Controller
             if (cek_itemset($post['id'], 1)->num_rows() > 0) {
                 proses_iterasi2($query1, $post);
                 if (cek_itemset($post['id'], 2)->num_rows() > 0) {
-                    proses_iterasi3($post); // Iterasi 3
+                    proses_iterasi3($post);
                     $data = [
                         'row' => $query1,
                         'input' => $post
@@ -67,7 +67,6 @@ class Apriori extends CI_Controller
             }
         } else if (get_last_apriori()->num_rows() > 0) {
             $paused = get_last_apriori()->row();
-            $id = $paused->id_proses;
             $post = [
                 'd_first' => $paused->date_first,
                 'd_last' => $paused->date_last,
@@ -75,10 +74,7 @@ class Apriori extends CI_Controller
                 'p_confident' => $paused->min_confident,
                 'id' => $paused->id_proses,
             ];
-            // $query = $this->apriori_m->data_load_by_date($post['d_first'], $post['d_last']);
-            $query = $this->apriori_m->data_load_by_date($paused->date_first, $paused->date_last);
             $data = [
-                'row' => $query,
                 'input' => $post
             ];
             $this->template->load('admin/template', 'admin/apriori/hasil', $data);

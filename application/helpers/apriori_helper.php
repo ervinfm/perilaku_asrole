@@ -112,8 +112,10 @@ function get_last_apriori()
 {
     $ci = &get_instance();
     $ci->db->from('tbl_proses_log');
+    $ci->db->where('author_proses', $ci->session->userdata('user_id'));
     $ci->db->where('status_proses', 0);
     $ci->db->order_by('created_proses', 'DESC');
+    $ci->db->limit(1);
     $query = $ci->db->get();
     return $query;
 }
@@ -569,5 +571,73 @@ function proses_iterasi3($post)
             }
             insert_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
         }
+    }
+}
+
+function get_perilaku_transpost($perilaku, $atribut)
+{
+    switch ($atribut) {
+        case 1:
+            if ($perilaku == 'P1') {
+                return "Percaya bahwa Allah selalu hadir setiap saat";
+            } else  if ($perilaku == 'P2') {
+                return "Percaya saat mengalami masalah Allah menolong dengan jalan yang tidak terduga";
+            } else  if ($perilaku == 'P3') {
+                return "Saat mengalami masalah terpikir mengambil jalan yang salah seperti bunuh diri atau menggunakan narkoba";
+            } else  if ($perilaku == 'P4') {
+                return "Menjadi mahasiswa merupakan bagian dari ibadah untuk menggapai surga kelak di akhirat";
+            } else  if ($perilaku == 'P5') {
+                return "Meyakini hidup dan mati sebagai sebuah ujian";
+            } else  if ($perilaku == 'P6') {
+                return "Membaca Al-Quran setiap hari";
+            } else  if ($perilaku == 'P7') {
+                return "Melakukan salat 5 waktu";
+            } else  if ($perilaku == 'P8') {
+                return "Berzikir dan berdoa setelah salat fardu";
+            } else  if ($perilaku == 'P9') {
+                return "Bersyukur atas nikmat yang telah diberikan";
+            }
+            break;
+        case 2:
+            if ($perilaku == 'P1') {
+                return "Memiliki keluarga dan teman yang mendukung kamu";
+            } else  if ($perilaku == 'P2') {
+                return "Memiliki teman dan kehidupan sosial yang membahagiakan";
+            } else  if ($perilaku == 'P3') {
+                return "Memiliki banyak waktu bersama orang-orang yang membuat bahagia";
+            } else  if ($perilaku == 'P4') {
+                return "Berani menyatakan â€œtidakâ€ dengan nyaman untuk hal yang tidak disukai";
+            } else  if ($perilaku == 'P5') {
+                return "Melakukan komunikasi dan aktivitas yang menyenangkan dengan keluarga atau teman setidaknya seminggu sekali";
+            } else  if ($perilaku == 'P6') {
+                return "Merasa bahwa kehidupan pribadi mendukung aktivitas perkuliahan";
+            } else  if ($perilaku == 'P7') {
+                return "Berani meminta bantuan saat membutuhkan";
+            }
+            break;
+        case 3:
+            if ($perilaku == 'P1') {
+                return "Kesulitan untuk melaksanakan penelitian skripsiselama pandemi";
+            } else  if ($perilaku == 'P2') {
+                return "Kesulitan mengikuti perkuliahan secara daring";
+            } else  if ($perilaku == 'P3') {
+                return "Tugas selama pandemi terlalu banyak";
+            } else  if ($perilaku == 'P4') {
+                return "Kesulitan mengikuti ujian dengan metode daring selama pandemi";
+            }
+            break;
+        case 4:
+            if ($perilaku == 'P1') {
+                return "Broken home";
+            } else  if ($perilaku == 'P2') {
+                return "Merasa bahwa anggota keluarga tidak peduli";
+            } else  if ($perilaku == 'P3') {
+                return "Kehilangan anggota keluarga yang sangat disayangi";
+            } else  if ($perilaku == 'P4') {
+                return "Orang tua terlalu mendominasi dalam memutuskan segala hal";
+            } else  if ($perilaku == 'P5') {
+                return "Adanya permasalahan keluarga yang cukup berat (PHK)";
+            }
+            break;
     }
 }

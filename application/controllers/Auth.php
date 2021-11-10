@@ -19,6 +19,7 @@ class Auth extends CI_Controller
 				$cek_pass = $this->auth_m->auth_pass($post);
 				if ($cek_pass->num_rows() > 0) {
 					if ($cek_pass->row()->status_user == 1) {
+						cek_sistem_access($cek_pass->row()->id_user, $cek_pass->row()->level_user);
 						$user = [
 							'user_id' => $cek_pass->row()->id_user,
 							'nama' => $cek_pass->row()->nama_user,

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Nov 2021 pada 15.56
+-- Waktu pembuatan: 10 Nov 2021 pada 07.38
 -- Versi server: 10.4.16-MariaDB
 -- Versi PHP: 7.4.12
 
@@ -211,6 +211,30 @@ INSERT INTO `tbl_proses_log` (`id_proses`, `date_first`, `date_last`, `min_suppo
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `tbl_sistem`
+--
+
+CREATE TABLE `tbl_sistem` (
+  `id_sistem` int(11) NOT NULL,
+  `nama_sistem` varchar(255) NOT NULL,
+  `email_sistem` varchar(255) NOT NULL,
+  `pass_email_sistem` varchar(255) NOT NULL,
+  `status_sistem` int(1) NOT NULL,
+  `logo_sistem` varchar(255) DEFAULT NULL,
+  `admin_sistem` varchar(255) NOT NULL,
+  `updated_sistem` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tbl_sistem`
+--
+
+INSERT INTO `tbl_sistem` (`id_sistem`, `nama_sistem`, `email_sistem`, `pass_email_sistem`, `status_sistem`, `logo_sistem`, `admin_sistem`, `updated_sistem`) VALUES
+(1, 'Sistem Pemetaan Perilaku Mahasiswa UAD', 'mabes.develover@gmail.com', 'mabes@group17', 1, NULL, '99473177322717184', '2021-11-10 00:22:23');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `tbl_user`
 --
 
@@ -233,7 +257,7 @@ CREATE TABLE `tbl_user` (
 INSERT INTO `tbl_user` (`id_user`, `email_user`, `nama_user`, `username_user`, `password_user`, `level_user`, `status_user`, `image_user`, `created_user`) VALUES
 ('819765yh2Do0pCF61jQTK5a3vxMrw7', 'riccoyhandy12@gmail.com', 'Ricco Yhandy Fenando', 'user1', '8cb2237d0679ca88db6464eac60da96345513964', 2, 1, NULL, '2021-10-22 05:50:47'),
 ('850319kcGUjp6TSso54amC3dbqnXYV', 'tiaraanggrainig15@gmail.com', 'Tiara Anggraini Gaib', 'tiara', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-10-22 07:56:07'),
-('948057SjkdyNnrsWzPiAUw78b2t4Hc', 'ervin.fikotm@gmail.com', 'Ervin Fikot M', 'user14', '8cb2237d0679ca88db6464eac60da96345513964', 2, 1, NULL, '2021-10-20 01:31:43'),
+('948057SjkdyNnrsWzPiAUw78b2t4Hc', 'ervin.fikotm@gmail.com', 'Ervin Fikot M', 'user14', '8cb2237d0679ca88db6464eac60da96345513964', 1, 1, NULL, '2021-10-20 01:31:43'),
 ('99473177322717184', 'ervinfm14@gmail.com', 'Tiara Anggraini Gaib', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 'user-24ENf6vMmsjiLdBAHYO8WgyeDKXkQa.jpg', '2021-10-13 05:29:10');
 
 --
@@ -283,6 +307,12 @@ ALTER TABLE `tbl_proses_log`
   ADD PRIMARY KEY (`id_proses`);
 
 --
+-- Indeks untuk tabel `tbl_sistem`
+--
+ALTER TABLE `tbl_sistem`
+  ADD PRIMARY KEY (`id_sistem`);
+
+--
 -- Indeks untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
@@ -323,6 +353,12 @@ ALTER TABLE `tbl_itemset2`
 --
 ALTER TABLE `tbl_itemset3`
   MODIFY `id_itemset3` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_sistem`
+--
+ALTER TABLE `tbl_sistem`
+  MODIFY `id_sistem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

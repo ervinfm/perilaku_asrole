@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
     <meta name="author" content="Creative Tim">
-    <title>Login - Pemetaan Perilaku Mahasiswa UAD</title>
+    <title>Login - <?= sistem()->nama_sistem ?></title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url() ?>assets/template/assets/img/brand/favicon.png" type="image/png">
     <!-- Fonts -->
@@ -52,6 +52,10 @@
                     <div class="card bg-secondary border-0 mb-0">
 
                         <div class="card-body px-lg-5 py-lg-5">
+                            <div class="col-sm-12 mb-3 text-center">
+                                <img src="<?= base_url() ?>assets/image/logo/<?= sistem()->logo_sistem == null ? 'default.png' : sistem()->logo_sistem ?>" style="width:200px" alt="...">
+                            </div>
+
                             <?php if ($this->session->userdata('forgot') != null) { ?>
                                 <div class="text-center text-muted mb-5">
                                     <h3>Please Cek Email and Entry Code Here </h3>
@@ -110,7 +114,9 @@
                             <a href="#" class="text-light text-left" data-toggle="modal" data-target="#forgot"><small>Forgot password?</small></a>
                         </div>
                         <div class="col-4 text-center">
-                            <a href="#" class="text-light" data-toggle="modal" data-target="#activate"><small>Activate?</small></a>
+                            <?php if (cek_akativasi_akun()->num_rows() > 0) { ?>
+                                <a href="#" class="text-light" data-toggle="modal" data-target="#activate"><small>Activate?</small></a>
+                            <?php } ?>
                         </div>
                         <div class="col-4">
                             <a href="#" class="text-light float-right" data-toggle="modal" data-target="#signup"><small>Sign Up Account?</small></a>

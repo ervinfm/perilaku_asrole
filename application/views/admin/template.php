@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
     <meta name="author" content="Creative Tim">
-    <title><?= ucfirst($this->uri->segment(1)) ?> - Pemetaan Perilaku Mahasiswa UAD</title>
+    <title><?= ucfirst($this->uri->segment(2)) ?> - <?= sistem()->nama_sistem ?></title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url() ?>assets/template/assets/img/brand/favicon.png" type="image/png">
     <!-- Fonts -->
@@ -31,7 +31,7 @@
             <!-- Brand -->
             <div class="sidenav-header  align-items-center">
                 <a class="navbar-brand" href="javascript:void(0)">
-                    <img src="<?= base_url() ?>assets/template/assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
+                    <img src="<?= base_url() ?>assets/image/logo/<?= sistem()->logo_sistem == null ? 'default.png' : sistem()->logo_sistem ?>" class="navbar-brand-img" alt="...">
                 </a>
             </div>
             <div class="navbar-inner">
@@ -79,7 +79,7 @@
                     <!-- Navigation -->
                     <ul class="navbar-nav mb-md-3">
                         <li class="nav-item">
-                            <a class="nav-link" href="">
+                            <a class="nav-link <?= $this->uri->segment(2) == 'setting' ? 'active' : null ?>" href="<?= site_url('admin/setting') ?>">
                                 <i class="ni ni-controller"></i>
                                 <span class="nav-link-text">Setting</span>
                             </a>
