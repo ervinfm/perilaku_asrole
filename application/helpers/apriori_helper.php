@@ -76,13 +76,7 @@ function transfor_data($data)
     $temp = null;
     $datas = explode(",", $data);
     foreach ($datas as $x => $string) {
-        if ($string > 1) {
-            $val = parameter_data($string);
-        } else {
-            $val = $string;
-        }
-
-        if ($val == 1) {
+        if ($string > 3) {
             $temp = $temp . 'P' . ($x + 1) . ',';
         }
     }
