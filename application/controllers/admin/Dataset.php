@@ -75,6 +75,23 @@ class Dataset extends CI_Controller
                 $this->session->set_flashdata('error', 'Dataset Gagal di Tambahkan!<br> Pastikan data diisi dengan Benar!');
                 redirect('admin/dataset/insert?n=' . count($params1));
             }
+        } else if (isset($post['delete'])) {
+            $data = $post['id'];
+            if (count($data) > 0) {
+                $this->dataset_m->delete_selected($data);
+                if ($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('succes', 'Dataset Berhasil di Hapus!');
+                    redirect('admin/dataset');
+                } else {
+                    $this->session->set_flashdata('error', 'Dataset Gagal di Hapus!');
+                    redirect('admin/dataset');
+                }
+            } else {
+                $this->session->set_flashdata('error', 'Tidak ada data yang dipilih!');
+                redirect('admin/dataset');
+            }
+        } else {
+            redirect('admin/dataset');
         }
     }
 

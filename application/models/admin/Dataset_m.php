@@ -32,6 +32,12 @@ class Dataset_m extends CI_Model
         return $this->db->insert_batch('tbl_dataset', $data);
     }
 
+    function delete_selected($id)
+    {
+        $this->db->where_in('id_dataset', $id);
+        $this->db->delete('tbl_dataset');
+    }
+
     function update_dataset_transit($val)
     {
         $params = [
