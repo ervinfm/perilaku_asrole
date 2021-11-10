@@ -19,6 +19,65 @@ class Dataset extends CI_Controller
         $this->template->load('admin/template', 'admin/dataset/index', $data);
     }
 
+    public function insert()
+    {
+        if (@$_GET['n'] > 25) {
+            $this->session->set_flashdata('error', 'Jumlah Data Baru terlalu banyak! <br> Pastikan tidak Melebihi 25 Data! ');
+            redirect('admin/dataset/insert?n=25');
+        } else {
+            $this->template->load('admin/template', 'admin/dataset/form');
+        }
+    }
+
+    function proses()
+    {
+        $post = $this->input->post(null, TRUE);
+        if (isset($post['insert'])) {
+            if (count($_POST['d_param1']) > 25) {
+                $itemset = get_last_itemset()->itemset_dataset + 1;
+            } else {
+                $itemset = get_last_itemset()->itemset_dataset;
+            }
+
+            $date = date('Y-m-d');
+            $subjek = $_POST['d_subjek'];
+            $params1 = $_POST['d_param1'];
+            $params2 = $_POST['d_param2'];
+            $params3 = $_POST['d_param3'];
+            $params4 = $_POST['d_param4'];
+            $author = profil()->id_user;
+
+            if ($params1[0] != null || $params2[0] != null || $params3[0] != null || $params4[0] != null) {
+                $data = array();
+                $index = 0;
+                foreach ($params1 as $dataval) {
+                    array_push($data, array(
+                        'itemset_dataset' => $itemset,
+                        'datetime_dataset' => $date,
+                        'subyek_dataset' => ($subjek[$index] == NULL ? random_string('alnum', 5) : $subjek[$index]),
+                        'params1_dataset' => $dataval,
+                        'params2_dataset' => $params2[$index],
+                        'params3_dataset' => $params3[$index],
+                        'params4_dataset' => $params4[$index],
+                        'author_dataset' => $author,
+                    ));
+                    $index++;
+                }
+                $sql = $this->dataset_m->insert_batch($data);
+                if ($sql) {
+                    $this->session->set_flashdata('succes', 'Dataset Berhasil di Tambahkan!');
+                    redirect('admin/dataset');
+                } else {
+                    $this->session->set_flashdata('error', 'Dataset Gagal di Tambahkan!');
+                    redirect('admin/dataset/insert?n=' . $index);
+                }
+            } else {
+                $this->session->set_flashdata('error', 'Dataset Gagal di Tambahkan!<br> Pastikan data diisi dengan Benar!');
+                redirect('admin/dataset/insert?n=' . count($params1));
+            }
+        }
+    }
+
     function reset_dataset()
     {
         $post = $this->input->post(null, TRUE);

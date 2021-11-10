@@ -24,7 +24,8 @@
                     <div class="row">
                         <?php if ($this->uri->segment(3) == null) { ?>
                             <div class="col-sm-12 mb-2 mt-0 pt-0">
-                                <a href="" class="btn btn-sm btn-danger float-right" data-toggle="modal" data-target="#modalResetDataset"><i class="ni ni-fat-remove"></i> Reset Dataset</a>
+                                <a href="<?= site_url('admin/dataset/insert?n=1') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-plus-circle"></i> Tambah </a>
+                                <a href="" class="btn btn-sm btn-danger float-right" data-toggle="modal" data-target="#modalResetDataset"><i class="fa fa-times-circle"></i> Reset</a>
                                 <div class="modal fade" id="modalResetDataset" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">

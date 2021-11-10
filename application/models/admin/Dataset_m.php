@@ -27,6 +27,11 @@ class Dataset_m extends CI_Model
         return $query;
     }
 
+    function insert_batch($data)
+    {
+        return $this->db->insert_batch('tbl_dataset', $data);
+    }
+
     function update_dataset_transit($val)
     {
         $params = [
