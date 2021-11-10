@@ -13,8 +13,9 @@ class Apriori extends CI_Controller
     public function index()
     {
         if (get_last_apriori()->num_rows() > 0) {
+            $data = get_last_apriori();
             $this->session->set_flashdata('warning', 'Silahkan selesaikan Proses Apriori yang berjalan sebelumnya!');
-            redirect('admin/apriori/proses');
+            redirect('admin/apriori/hasil/' . $data->row()->id_proses);
         } else {
             $this->template->load('admin/template', 'admin/apriori/index');
         }
@@ -52,35 +53,33 @@ class Apriori extends CI_Controller
                 proses_iterasi2($query1, $post);
                 if (cek_itemset($post['id'], 2)->num_rows() > 0) {
                     proses_iterasi3($post);
-                    $data = [
-                        'row' => $query1,
-                        'input' => $post
-                    ];
-                    $this->template->load('admin/template', 'admin/apriori/hasil', $data);
+                    if (cek_itemset($post['id'], 3)->num_rows() > 0) {
+                        $this->session->set_flashdata('success', 'Proses Mining Berhasil!');
+                        redirect('admin/apriori/hasil/' . $post['id']);
+                    } else {
+                        $this->session->set_flashdata('warning', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 2');
+                        redirect('admin/apriori/hasil/' . $post['id']);
+                    }
                 } else {
-                    $this->session->set_flashdata('success', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 2');
-                    redirect('admin/apriori/proses');
+                    $this->session->set_flashdata('warning', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 1');
+                    redirect('admin/apriori/hasil/' . $post['id']);
                 }
             } else {
-                $this->session->set_flashdata('warning', 'Gagal Menjalankan Algoritma Apriori! <br> Berhenti di Iterasi 1');
-                redirect('admin/apriori/proses');
+                $this->session->set_flashdata('error', 'Gagal Menjalankan Algoritma Apriori! <br> Periksa Kembali Dataset!');
+                redirect('admin/apriori/hasil/' . $post['id']);
             }
-        } else if (get_last_apriori()->num_rows() > 0) {
-            $paused = get_last_apriori()->row();
-            $post = [
-                'd_first' => $paused->date_first,
-                'd_last' => $paused->date_last,
-                'p_support' => $paused->min_support,
-                'p_confident' => $paused->min_confident,
-                'id' => $paused->id_proses,
-            ];
-            $data = [
-                'input' => $post
-            ];
-            $this->template->load('admin/template', 'admin/apriori/hasil', $data);
         } else {
             redirect('admin/apriori');
         }
+    }
+
+    public function hasil($id_proses)
+    {
+        $temp = get_proses_log($id_proses);
+        $data = [
+            'row' => $temp,
+        ];
+        $this->template->load('admin/template', 'admin/apriori/hasil', $data);
     }
 
     function reset_proses($id)
