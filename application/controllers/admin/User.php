@@ -24,6 +24,7 @@ class User extends CI_Controller
         if (isset($post['insert'])) {
             $this->user_m->insert($post);
             if ($this->db->affected_rows() > 0) {
+                insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Pengguna Baru Berhasil di Ditambahkan!');
                 redirect('admin/user');
             } else {
@@ -33,6 +34,7 @@ class User extends CI_Controller
         } else  if (isset($post['update'])) {
             $this->user_m->update($post);
             if ($this->db->affected_rows() > 0) {
+                insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Pengguna Baru Berhasil di Diperbaharui!');
                 redirect('admin/user');
             } else {
@@ -46,6 +48,7 @@ class User extends CI_Controller
     {
         $this->user_m->delete($id);
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Pengguna Baru Berhasil di Dihapus!');
             redirect('admin/user');
         } else {

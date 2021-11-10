@@ -179,14 +179,48 @@ function get_user($val, $cat)
     return $query;
 }
 
+function get_user_detail($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_user');
+    if ($id != null) {
+        $ci->db->where('id_user', $id);
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
 function get_user_for_sistem($id = null)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_user');
-    if ($id == 1) {
+    if ($id != null) {
         $ci->db->where('id_user', $id);
     }
     $ci->db->where('level_user', 1);
+    $query = $ci->db->get();
+    return $query;
+}
+
+function insert_user_log($activity)
+{
+    $ci = &get_instance();
+    $params = [
+        'id_user' => $ci->session->userdata('user_id'),
+        'target_user_log' => $activity,
+        'device_user_log' => $ci->agent->platform() . ' | ' . $ci->agent->browser() . ' | ' . $ci->input->ip_address(),
+    ];
+    $ci->db->insert('tbl_user_log', $params);
+}
+
+function get_user_log($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_user_log');
+    if ($id != null) {
+        $ci->db->where('id_user', $id);
+    }
+    $ci->db->order_by('created_user_log', 'DESC');
     $query = $ci->db->get();
     return $query;
 }

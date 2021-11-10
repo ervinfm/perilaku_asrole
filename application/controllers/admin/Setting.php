@@ -41,6 +41,7 @@ class Setting extends CI_Controller
             }
             $this->setting_m->update($post);
             if ($this->db->affected_rows() > 0) {
+                insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Pembaharuan Sistem Berhasil!');
                 redirect('admin/setting');
             } else {
@@ -51,6 +52,7 @@ class Setting extends CI_Controller
             if (cek_user_setting($post)->num_rows() > 0) {
                 $akses['setting_token'] = random_string('alnum', 50);
                 $this->session->set_userdata($akses);
+                insert_user_log(uri_string());
                 redirect('admin/setting');
             } else {
                 $this->session->set_flashdata('passw', $post['s_pass']);
@@ -75,6 +77,7 @@ class Setting extends CI_Controller
         unlink($target_file);
         $this->setting_m->reset_logo();
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Reset Logo Sistem Berhasil!');
             redirect('admin/setting');
         } else {

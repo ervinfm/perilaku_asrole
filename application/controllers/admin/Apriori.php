@@ -45,6 +45,7 @@ class Apriori extends CI_Controller
                 redirect('admin/apriori');
             }
         } else if (isset($post['proses'])) {
+            insert_user_log(uri_string());
             $post['id'] = random_string('numeric', 9);
             $this->apriori_m->insert_proses_log($post);
             $query1 = $this->apriori_m->data_load_by_date($post['d_first'], $post['d_last']);
@@ -75,6 +76,7 @@ class Apriori extends CI_Controller
 
     public function hasil($id_proses)
     {
+        insert_user_log(uri_string());
         $temp = get_proses_log($id_proses);
         $data = [
             'row' => $temp,
@@ -89,6 +91,7 @@ class Apriori extends CI_Controller
         $this->apriori_m->reset_itemset2($id);
         $this->apriori_m->reset_itemset1($id);
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Proses Apriori Berhasil di Reset!');
             redirect('admin/apriori');
         } else {

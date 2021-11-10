@@ -65,6 +65,7 @@ class Dataset extends CI_Controller
                 }
                 $sql = $this->dataset_m->insert_batch($data);
                 if ($sql) {
+                    insert_user_log(uri_string());
                     $this->session->set_flashdata('succes', 'Dataset Berhasil di Tambahkan!');
                     redirect('admin/dataset');
                 } else {
@@ -80,6 +81,7 @@ class Dataset extends CI_Controller
             if (count($data) > 0) {
                 $this->dataset_m->delete_selected($data);
                 if ($this->db->affected_rows() > 0) {
+                    insert_user_log(uri_string());
                     $this->session->set_flashdata('succes', 'Dataset Berhasil di Hapus!');
                     redirect('admin/dataset');
                 } else {
@@ -102,6 +104,7 @@ class Dataset extends CI_Controller
             if (sha1($post['r_pass']) == profil()->password_user) {
                 $this->dataset_m->reset_dataset();
                 if ($this->db->affected_rows() > 0) {
+                    insert_user_log(uri_string());
                     $this->session->set_flashdata('succes', 'Dataset Berhasil di Reset!');
                     redirect('admin/dataset');
                 } else {
@@ -154,6 +157,7 @@ class Dataset extends CI_Controller
                 }
                 $this->dataset_m->upload($temp_data);
                 if ($this->db->affected_rows() > 0) {
+                    insert_user_log(uri_string());
                     $this->session->set_flashdata('succes', 'Dataset Berhasil di Unggah!, Silahkan Pilih Next untuk Melanjutkan');
                     redirect('admin/dataset/upload');
                 } else {
@@ -176,6 +180,7 @@ class Dataset extends CI_Controller
     {
         $this->dataset_m->reset_transit();
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Dataset Baru Berhasil di Reset!');
             redirect('admin/dataset/upload');
         } else {
@@ -193,6 +198,7 @@ class Dataset extends CI_Controller
             }
         }
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Dataset Baru Berhasil di Cleaning!');
             redirect('admin/dataset/upload?action=cleaning');
         } else {
@@ -222,6 +228,7 @@ class Dataset extends CI_Controller
                 }
             }
             if ($this->db->affected_rows() > 0) {
+                insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Dataset Baru Berhasil di Reduction!');
                 redirect('admin/dataset/upload?action=reduction');
             } else {
@@ -252,6 +259,7 @@ class Dataset extends CI_Controller
             $this->dataset_m->submit($temp_data);
         }
         if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
             $this->dataset_m->reset_transit();
             $this->session->set_flashdata('succes', 'Dataset Berhasil di simpan pada Basis Data!');
             redirect('admin/dataset');
