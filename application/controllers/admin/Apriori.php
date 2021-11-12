@@ -86,13 +86,26 @@ class Apriori extends CI_Controller
         $this->template->load('admin/template', 'admin/apriori/hasil', $data);
     }
 
+    function simpan_proses($id)
+    {
+        $this->apriori_m->simpan_proses($id);
+        if ($this->db->affected_rows() > 0) {
+            insert_user_log(uri_string());
+            $this->session->set_flashdata('succes', 'Proses Apriori Berhasil di Simpan!');
+            redirect('admin/hasil');
+        } else {
+            $this->session->set_flashdata('error', 'Proses Apriori Gagal di Simpan!');
+            redirect('admin/apriori/hasil/' . $id);
+        }
+    }
+
     function reset_proses($id)
     {
-        $this->apriori_m->reset_proses($id);
         $this->apriori_m->reset_itemset3($id);
         $this->apriori_m->reset_itemset2($id);
         $this->apriori_m->reset_itemset1($id);
         $this->apriori_m->reset_hasil($id);
+        $this->apriori_m->reset_proses($id);
         if ($this->db->affected_rows() > 0) {
             insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Proses Apriori Berhasil di Reset!');

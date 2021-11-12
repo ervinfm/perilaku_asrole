@@ -28,6 +28,13 @@ class Apriori_m extends CI_Model
         $this->db->insert('tbl_proses_log', $params);
     }
 
+    function simpan_proses($id_proses)
+    {
+        $params['status_proses'] = 1;
+        $this->db->where('id_proses', $id_proses);
+        $this->db->update('tbl_proses_log', $params);
+    }
+
     function reset_proses($id)
     {
         $this->db->where('id_proses', $id);

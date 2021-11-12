@@ -102,16 +102,25 @@ function cek_kesamaan_data_array($data1, $data2)
 
 // Algoritma Apriori
 
-function get_last_apriori()
+function get_last_apriori($status = 0)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_proses_log');
     $ci->db->where('author_proses', $ci->session->userdata('user_id'));
-    $ci->db->where('status_proses', 0);
+    $ci->db->where('status_proses', $status);
     $ci->db->order_by('created_proses', 'DESC');
     $ci->db->limit(1);
     $query = $ci->db->get();
     return $query;
+}
+
+function get_apriori($id)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_proses_log');
+    $ci->db->where('id_proses', $id);
+    $query = $ci->db->get();
+    return $query->row();
 }
 
 function get_support_relative($min_support)
@@ -609,14 +618,11 @@ function insert_proses_hasil($id_proses, $kombinasi1, $kombinasi2, $sup_xUy, $su
     $ci->db->insert('tbl_proses_hasil', $params);
 }
 
-function get_hasil_apriori($id_proses, $lolos = FALSE)
+function get_hasil_apriori($id_proses)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_proses_hasil');
     $ci->db->where('id_proses', $id_proses);
-    if ($lolos) {
-        $ci->db->where('lolos', 1);
-    }
     $query = $ci->db->get();;
     return $query;
 }
@@ -845,5 +851,18 @@ function get_perilaku_transpost($perilaku, $atribut)
                 return "Adanya permasalahan keluarga yang cukup berat (PHK)";
             }
             break;
+    }
+}
+
+function level_stres($value)
+{
+    if ($value >= 75) {
+        return "Strees Berat";
+    } else if ($value < 75 && $value >= 50) {
+        return "Strees Sedang";
+    } else if ($value < 50 && $value >= 25) {
+        return "Strees Ringan";
+    } else if ($value < 2575 && $value >= 50) {
+        return "Normal";
     }
 }

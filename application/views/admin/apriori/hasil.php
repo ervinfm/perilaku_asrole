@@ -13,8 +13,10 @@
                             <h1> Proses Association Rule Mining</h1>
                         </div>
                         <div class="col-sm-6">
-                            <a href="<?= site_url() ?>" class="btn btn-sm btn-success float-right ml-2" onclick="return confirm('Yakin Submit Proses Apriori ?, Pastikan Semua Proses Berjalan Benar sebelum ditandai sebagai selesai!')"><i class="fa fa-check-circle"></i> Simpan Hasil </a>
-                            <a href="<?= site_url('admin/apriori/reset_proses/' . $row->id_proses) ?>" class="btn btn-sm btn-danger float-right" onclick="return confirm('Yakin Reset Proses Apriori ?, Data Proses akan dihapus Permanen!')"><i class="fa fa-trash"></i> Reset </a>
+                            <?php if ($row->status_proses == 0) { ?>
+                                <a href="<?= site_url('admin/apriori/simpan_proses/' . $row->id_proses) ?>" class="btn btn-sm btn-success float-right ml-2" onclick="return confirm('Yakin Submit Proses Apriori ?, Pastikan Semua Proses Berjalan Benar sebelum ditandai sebagai selesai!')"><i class="fa fa-check-circle"></i> Simpan Hasil </a>
+                                <a href="<?= site_url('admin/apriori/reset_proses/' . $row->id_proses) ?>" class="btn btn-sm btn-danger float-right" onclick="return confirm('Yakin Reset Proses Apriori ?, Data Proses akan dihapus Permanen!')"><i class="fa fa-trash"></i> Reset </a>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

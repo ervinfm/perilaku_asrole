@@ -349,7 +349,6 @@ function icon_matbul()
     return $salam;
 }
 
-
 // Konsultasi
 
 function range_jawaban($name)
