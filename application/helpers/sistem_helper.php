@@ -210,7 +210,7 @@ function insert_user_log($activity)
         'target_user_log' => $activity,
         'device_user_log' => $ci->agent->platform() . ' | ' . $ci->agent->browser() . ' | ' . $ci->input->ip_address(),
     ];
-    $ci->db->insert('tbl_user_log', $params);
+    // $ci->db->insert('tbl_user_log', $params);
 }
 
 function get_user_log($id = null)
@@ -226,6 +226,24 @@ function get_user_log($id = null)
 }
 
 // Dashboard Function
+
+function get_proses()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_proses_log');
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_last_proses()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_proses_log');
+    $ci->db->order_by('created_proses', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
 function get_dataset()
 {
     $ci = &get_instance();
@@ -261,6 +279,74 @@ function get_update_user()
     $ci->db->limit(1);
     $query = $ci->db->get();
     return $query->row();
+}
+
+function ramah_tamah()
+{
+    //ambil jam dan menit
+    $jam = date('H:i');
+
+    //atur salam menggunakan IF
+    if ($jam > '05:30' && $jam < '10:00') {
+        $salam = 'Pagi';
+    } elseif ($jam >= '10:01' && $jam < '15:00') {
+        $salam = 'Siang';
+    } elseif ($jam >= '15:01' && $jam < '18:00') {
+        $salam = 'Sore';
+    } else {
+        $salam = 'Malam';
+    }
+    return $salam;
+}
+
+function tanggal_indo($tanggal, $cetak_hari = false)
+{
+    $hari = array(
+        1 =>    'Senin',
+        'Selasa',
+        'Rabu',
+        'Kamis',
+        'Jumat',
+        'Sabtu',
+        'Minggu'
+    );
+
+    $bulan = array(
+        1 =>   'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'Mei',
+        'Jun',
+        'Jul',
+        'Agus',
+        'Sep',
+        'Okt',
+        'Nov',
+        'Des'
+    );
+    $split       = explode('-', $tanggal);
+    $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
+
+    if ($cetak_hari) {
+        $num = date('N', strtotime($tanggal));
+        return $hari[$num] . ', ' . $tgl_indo;
+    }
+    return $tgl_indo;
+}
+
+function icon_matbul()
+{
+    //ambil jam dan menit
+    $jam = date('H:i');
+
+    //atur salam menggunakan IF
+    if ($jam > '06:00' && $jam < '17:00') {
+        $salam = 1;
+    } else {
+        $salam = 2;
+    }
+    return $salam;
 }
 
 

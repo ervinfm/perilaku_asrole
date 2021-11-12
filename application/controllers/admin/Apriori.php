@@ -55,9 +55,11 @@ class Apriori extends CI_Controller
                 if (cek_itemset($post['id'], 2)->num_rows() > 0) {
                     proses_iterasi3($post);
                     if (cek_itemset($post['id'], 3)->num_rows() > 0) {
+                        aturan_asosiasi_hasil($post['id'], 3);
                         $this->session->set_flashdata('success', 'Proses Mining Berhasil!');
                         redirect('admin/apriori/hasil/' . $post['id']);
                     } else {
+                        aturan_asosiasi_hasil($post['id'], 2);
                         $this->session->set_flashdata('warning', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 2');
                         redirect('admin/apriori/hasil/' . $post['id']);
                     }
@@ -90,6 +92,7 @@ class Apriori extends CI_Controller
         $this->apriori_m->reset_itemset3($id);
         $this->apriori_m->reset_itemset2($id);
         $this->apriori_m->reset_itemset1($id);
+        $this->apriori_m->reset_hasil($id);
         if ($this->db->affected_rows() > 0) {
             insert_user_log(uri_string());
             $this->session->set_flashdata('succes', 'Proses Apriori Berhasil di Reset!');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Nov 2021 pada 07.38
+-- Waktu pembuatan: 12 Nov 2021 pada 13.42
 -- Versi server: 10.4.16-MariaDB
 -- Versi PHP: 7.4.12
 
@@ -45,17 +45,9 @@ CREATE TABLE `tbl_dataset` (
 --
 
 INSERT INTO `tbl_dataset` (`id_dataset`, `itemset_dataset`, `datetime_dataset`, `subyek_dataset`, `params1_dataset`, `params2_dataset`, `params3_dataset`, `params4_dataset`, `author_dataset`, `created_dataset`) VALUES
-(427, '1', '2021-11-07', 'DHNF', 'P1,P1,P2,P3,P6,P7,P9,', 'P1,P2,P3,P4,P5,P6,P7,', 'P1,P2,P3,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(428, '1', '2021-11-07', 'AFA', 'P1,P2,P4,P5,P9,', 'P1,P2,P4,P5,', 'P1,P2,P3,P4,', 'P1,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(429, '1', '2021-11-07', 'Nahnuriyah ', 'P1,P2,P3,P4,P5,P7,P9,', 'P1,P2,P3,P5,P6,P7,', 'P1,P4,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(430, '1', '2021-11-07', 'GG', 'P1,P1,P2,P3,P4,P5,P7,P8,P9,', 'P1,P2,P3,P4,P5,P6,P7,', 'P2,P3,P4,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(431, '1', '2021-11-07', 'Yet', 'P1,P2,P3,P4,P5,P6,P7,P8,P9,', 'P1,P2,P3,P4,P5,P6,P7,', 'P1,P2,P3,P4,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(432, '1', '2021-11-07', 'Fairuz Fatchiyyah Darajah', 'P1,P2,P3,P4,P5,P6,P7,P8,P9,', 'P1,P2,P3,P4,P5,P6,P7,', 'P1,P2,P3,P4,', 'P2,P3,', '99473177322717184', '2021-11-07 09:46:16'),
-(433, '1', '2021-11-07', 'Anita', 'P1,P2,P3,P4,P6,P7,P8', 'P1,P2,P6,', 'P1,P2,', 'P1,P2,P3,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(434, '1', '2021-11-07', 'Azzakiy ', 'P1,P2,P3,P5,P6,P7,P8', 'P1,P3,P4,', 'P1,P2,P3,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(435, '1', '2021-11-07', 'Risqi', 'P1,P2,P3,P4,P6,P7,P8,', 'P1,P2,P3,', 'P1,P2,P3,', 'P1,P2,P3,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(436, '1', '2021-11-07', 'Muhammad iqbal Zulfikar', 'P1,P2,P3,P4,P5,P6,P7,P8,P9,', 'P1,P2,P3,P4,P6,', 'P1,P2,P3,', 'P1,P2,P3,P4,P5,', '99473177322717184', '2021-11-07 09:46:16'),
-(437, '1', '2021-11-07', 'Ghiee', 'P1,P2,P3,P4,P5,P6,P7,P8,P9,', 'P1,P2,P3,', 'P1,P2,P4,', 'P1,P3,P5,', '99473177322717184', '2021-11-07 09:46:16');
+(448, '1', '2021-11-11', 'AFA', 'P1,P2,P4,P5,P9,', 'P1,P2,P4,P5,', 'P1,P2,P3,P4,', 'P4,', '99473177322717184', '2021-11-11 11:18:09'),
+(449, '1', '2021-11-11', 'Nahnuriyah ', 'P1,P2,P4,P7,P9,', 'P1,P2,P3,P5,P6,P7,', 'P1,P4,', 'P4,', '99473177322717184', '2021-11-11 11:18:09'),
+(450, '1', '2021-11-11', 'Azzakiy ', 'P1,P2,P5,P6,P7,P8,P9,', 'P1,P3,P4,', 'P3,', 'P4,', '99473177322717184', '2021-11-11 11:18:09');
 
 -- --------------------------------------------------------
 
@@ -95,11 +87,7 @@ CREATE TABLE `tbl_itemset1` (
 --
 
 INSERT INTO `tbl_itemset1` (`id_itemset1`, `id_proses`, `atribut`, `jumlah`, `support`, `lolos`) VALUES
-(1, 926183405, 'P1', '10', '90.91', '1'),
-(2, 926183405, 'P2', '9', '81.82', '1'),
-(3, 926183405, 'P3', '11', '100', '1'),
-(4, 926183405, 'P4', '7', '63.64', '1'),
-(5, 926183405, 'P5', '10', '90.91', '1');
+(116, 27456819, 'P4', '3', '100', '1');
 
 -- --------------------------------------------------------
 
@@ -117,22 +105,6 @@ CREATE TABLE `tbl_itemset2` (
   `lolos` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `tbl_itemset2`
---
-
-INSERT INTO `tbl_itemset2` (`id_itemset2`, `id_proses`, `atribut1`, `atribut2`, `jumlah`, `support`, `lolos`) VALUES
-(1, 926183405, 'P1', 'P2', 1, 9.0909090909091, 0),
-(2, 926183405, 'P1', 'P3', 2, 18.181818181818, 1),
-(3, 926183405, 'P1', 'P4', 1, 9.0909090909091, 0),
-(4, 926183405, 'P1', 'P5', 2, 18.181818181818, 1),
-(5, 926183405, 'P2', 'P3', 1, 9.0909090909091, 0),
-(6, 926183405, 'P2', 'P4', 0, 0, 0),
-(7, 926183405, 'P2', 'P5', 1, 9.0909090909091, 0),
-(8, 926183405, 'P3', 'P4', 1, 9.0909090909091, 0),
-(9, 926183405, 'P3', 'P5', 2, 18.181818181818, 1),
-(10, 926183405, 'P4', 'P5', 1, 9.0909090909091, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -149,13 +121,6 @@ CREATE TABLE `tbl_itemset3` (
   `support` varchar(100) DEFAULT NULL,
   `lolos` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `tbl_itemset3`
---
-
-INSERT INTO `tbl_itemset3` (`id_itemset3`, `id_proses`, `atribut1`, `atribut2`, `atribut3`, `jumlah`, `support`, `lolos`) VALUES
-(1, 926183405, 'P1', 'P3', 'P5', 10, '90.909090909091', 1);
 
 -- --------------------------------------------------------
 
@@ -186,6 +151,32 @@ INSERT INTO `tbl_konsultasi` (`id_konsultasi`, `subyek_konsultasi`, `params1_kon
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `tbl_proses_hasil`
+--
+
+CREATE TABLE `tbl_proses_hasil` (
+  `id_proses_hasil` int(11) NOT NULL,
+  `id_proses` int(11) NOT NULL,
+  `kombinasi1` varchar(255) DEFAULT NULL,
+  `kombinasi2` varchar(255) DEFAULT NULL,
+  `support_xUy` double DEFAULT NULL,
+  `support_x` double DEFAULT NULL,
+  `confidence` double DEFAULT NULL,
+  `jumlah_a` int(11) DEFAULT NULL,
+  `jumlah_b` int(11) DEFAULT NULL,
+  `jumlah_ab` int(11) DEFAULT NULL,
+  `px` double DEFAULT NULL,
+  `py` double DEFAULT NULL,
+  `pxuy` double DEFAULT NULL,
+  `uji_lift` double DEFAULT NULL,
+  `aturan_korelasi` varchar(255) NOT NULL,
+  `iterasi` int(11) DEFAULT NULL COMMENT 'dari itemset 2/3',
+  `lolos_proses_hasil` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `tbl_proses_log`
 --
 
@@ -206,7 +197,7 @@ CREATE TABLE `tbl_proses_log` (
 --
 
 INSERT INTO `tbl_proses_log` (`id_proses`, `date_first`, `date_last`, `min_support`, `min_confident`, `kriteria_proses`, `status_proses`, `author_proses`, `created_proses`) VALUES
-(926183405, '2021-11-07', '2021-11-07', '1', '25', 4, 0, '99473177322717184', '2021-11-09 14:55:19');
+(27456819, '2021-11-07', '2021-11-12', '1', '26', 4, 0, '99473177322717184', '2021-11-12 12:39:48');
 
 -- --------------------------------------------------------
 
@@ -230,7 +221,7 @@ CREATE TABLE `tbl_sistem` (
 --
 
 INSERT INTO `tbl_sistem` (`id_sistem`, `nama_sistem`, `email_sistem`, `pass_email_sistem`, `status_sistem`, `logo_sistem`, `admin_sistem`, `updated_sistem`) VALUES
-(1, 'Sistem Pemetaan Perilaku Mahasiswa UAD', 'mabes.develover@gmail.com', 'mabes@group17', 1, NULL, '99473177322717184', '2021-11-10 00:22:23');
+(1, 'Sistem Pemetaan Perilaku Mahasiswa Universitas Ahmad Dahlan', 'mabes.develover@gmail.com', 'mabes@group17', 1, NULL, '99473177322717184', '2021-11-10 18:28:20');
 
 -- --------------------------------------------------------
 
@@ -258,7 +249,73 @@ INSERT INTO `tbl_user` (`id_user`, `email_user`, `nama_user`, `username_user`, `
 ('819765yh2Do0pCF61jQTK5a3vxMrw7', 'riccoyhandy12@gmail.com', 'Ricco Yhandy Fenando', 'user1', '8cb2237d0679ca88db6464eac60da96345513964', 2, 1, NULL, '2021-10-22 05:50:47'),
 ('850319kcGUjp6TSso54amC3dbqnXYV', 'tiaraanggrainig15@gmail.com', 'Tiara Anggraini Gaib', 'tiara', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-10-22 07:56:07'),
 ('948057SjkdyNnrsWzPiAUw78b2t4Hc', 'ervin.fikotm@gmail.com', 'Ervin Fikot M', 'user14', '8cb2237d0679ca88db6464eac60da96345513964', 1, 1, NULL, '2021-10-20 01:31:43'),
-('99473177322717184', 'ervinfm14@gmail.com', 'Tiara Anggraini Gaib', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 'user-24ENf6vMmsjiLdBAHYO8WgyeDKXkQa.jpg', '2021-10-13 05:29:10');
+('99473177322717184', 'ervinfm14@gmail.com', 'Tiara Anggraini Gaib', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 'user-JCgGbja9n0zAQUHP1M6lyxNIswVt5X.png', '2021-10-13 05:29:10');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_user_log`
+--
+
+CREATE TABLE `tbl_user_log` (
+  `id_user_log` int(11) NOT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `target_user_log` varchar(255) DEFAULT NULL,
+  `device_user_log` varchar(255) NOT NULL,
+  `created_user_log` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tbl_user_log`
+--
+
+INSERT INTO `tbl_user_log` (`id_user_log`, `id_user`, `target_user_log`, `device_user_log`, `created_user_log`) VALUES
+(1, '99473177322717184', 'admin/dataset/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:34:37'),
+(2, '99473177322717184', 'admin/dataset/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:34:52'),
+(3, '948057SjkdyNnrsWzPiAUw78b2t4Hc', 'admin/setting/proses', 'Windows 10 | Firefox | 127.0.0.1', '2021-11-10 17:53:07'),
+(4, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:54:43'),
+(5, '99473177322717184', 'admin/apriori/hasil/617082539', 'Windows 10 | Chrome | ::1', '2021-11-10 17:54:43'),
+(6, '99473177322717184', 'admin/apriori/reset_proses/617082539', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:02'),
+(7, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:17'),
+(8, '99473177322717184', 'admin/apriori/hasil/081576249', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:17'),
+(9, '99473177322717184', 'admin/apriori/reset_proses/81576249', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:38'),
+(10, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:57'),
+(11, '99473177322717184', 'admin/apriori/hasil/458291037', 'Windows 10 | Chrome | ::1', '2021-11-10 17:55:57'),
+(12, '99473177322717184', 'admin/apriori/reset_proses/458291037', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:13'),
+(13, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:28'),
+(14, '99473177322717184', 'admin/apriori/hasil/348509167', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:28'),
+(15, '99473177322717184', 'admin/apriori/reset_proses/348509167', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:37'),
+(16, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:48'),
+(17, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-10 17:56:49'),
+(18, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-10 18:17:26'),
+(19, '99473177322717184', 'admin/dataset/reset_dataset', 'Windows 10 | Chrome | ::1', '2021-11-10 18:27:01'),
+(20, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-10 18:27:03'),
+(21, '99473177322717184', 'admin/setting/proses', 'Windows 10 | Chrome | ::1', '2021-11-10 18:28:20'),
+(22, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:02:32'),
+(23, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:06:39'),
+(24, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:07:06'),
+(25, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:07:29'),
+(26, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:07:35'),
+(27, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:07:57'),
+(28, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:08:40'),
+(29, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:15:43'),
+(30, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:16:27'),
+(31, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:16:50'),
+(32, '99473177322717184', 'admin/apriori/hasil/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:17:14'),
+(33, '99473177322717184', 'admin/apriori/reset_proses/584639210', 'Windows 10 | Chrome | ::1', '2021-11-11 11:17:40'),
+(34, '99473177322717184', 'admin/dataset/upload', 'Windows 10 | Chrome | ::1', '2021-11-11 11:17:57'),
+(35, '99473177322717184', 'admin/dataset/cleaning', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:02'),
+(36, '99473177322717184', 'admin/dataset/reduction', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:06'),
+(37, '99473177322717184', 'admin/dataset/submit', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:09'),
+(38, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:29'),
+(39, '99473177322717184', 'admin/apriori/hasil/498751306', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:29'),
+(40, '99473177322717184', 'admin/apriori/reset_proses/498751306', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:37'),
+(41, '99473177322717184', 'admin/apriori/proses', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:50'),
+(42, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:18:50'),
+(43, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:19:22'),
+(44, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:19:43'),
+(45, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:20:02'),
+(46, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:46:28');
 
 --
 -- Indexes for dumped tables
@@ -301,6 +358,12 @@ ALTER TABLE `tbl_konsultasi`
   ADD PRIMARY KEY (`id_konsultasi`);
 
 --
+-- Indeks untuk tabel `tbl_proses_hasil`
+--
+ALTER TABLE `tbl_proses_hasil`
+  ADD PRIMARY KEY (`id_proses_hasil`);
+
+--
 -- Indeks untuk tabel `tbl_proses_log`
 --
 ALTER TABLE `tbl_proses_log`
@@ -321,6 +384,12 @@ ALTER TABLE `tbl_user`
   ADD UNIQUE KEY `username_user` (`username_user`);
 
 --
+-- Indeks untuk tabel `tbl_user_log`
+--
+ALTER TABLE `tbl_user_log`
+  ADD PRIMARY KEY (`id_user_log`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -328,37 +397,49 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `tbl_dataset`
 --
 ALTER TABLE `tbl_dataset`
-  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=438;
+  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=451;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_dataset_transit`
 --
 ALTER TABLE `tbl_dataset_transit`
-  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4046;
+  MODIFY `id_dataset` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4158;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_itemset1`
 --
 ALTER TABLE `tbl_itemset1`
-  MODIFY `id_itemset1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_itemset1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_itemset2`
 --
 ALTER TABLE `tbl_itemset2`
-  MODIFY `id_itemset2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_itemset2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_itemset3`
 --
 ALTER TABLE `tbl_itemset3`
-  MODIFY `id_itemset3` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_itemset3` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_proses_hasil`
+--
+ALTER TABLE `tbl_proses_hasil`
+  MODIFY `id_proses_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_sistem`
 --
 ALTER TABLE `tbl_sistem`
   MODIFY `id_sistem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `tbl_user_log`
+--
+ALTER TABLE `tbl_user_log`
+  MODIFY `id_user_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -52,4 +52,10 @@ class Apriori_m extends CI_Model
         $this->db->where('id_proses', $id);
         $this->db->delete('tbl_itemset3');
     }
+
+    function reset_hasil($id)
+    {
+        $this->db->where('id_proses', $id);
+        $this->db->delete('tbl_proses_hasil');
+    }
 }

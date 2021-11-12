@@ -307,6 +307,20 @@ function get_proses_log($id)
     return $query->row();
 }
 
+function get_itemset_by_idproses($id_proses)
+{
+    $ci = &get_instance();
+    $proses = get_proses_log($id_proses);
+
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('datetime_dataset >=', $proses->date_first);
+    $ci->db->where('datetime_dataset <=', $proses->date_last);
+    $ci->db->order_by('datetime_dataset', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
+
 function insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
@@ -564,6 +578,204 @@ function proses_iterasi3($post)
                 $seleksi = 0;
             }
             insert_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
+        }
+    }
+}
+
+
+// Hasil Apriori
+
+function insert_proses_hasil($id_proses, $kombinasi1, $kombinasi2, $sup_xUy, $sup_x, $conf, $n_a, $n_b, $n_ab, $px, $py, $pxuy, $lift, $korelasi, $iterasi, $lolos)
+{
+    $ci = &get_instance();
+    $params = [
+        'id_proses' => $id_proses,
+        'kombinasi1' => $kombinasi1,
+        'kombinasi2' => $kombinasi2,
+        'support_xUy' => $sup_xUy,
+        'support_x' => $sup_x,
+        'confidence' => $conf,
+        'jumlah_a' => $n_a,
+        'jumlah_b' => $n_b,
+        'jumlah_ab' => $n_ab,
+        'px' => $px,
+        'py' => $py,
+        'pxuy' => $pxuy,
+        'uji_lift' => $lift,
+        'aturan_korelasi' => $korelasi,
+        'iterasi' => $iterasi,
+        'lolos_proses_hasil' => $lolos,
+    ];
+    $ci->db->insert('tbl_proses_hasil', $params);
+}
+
+function get_hasil_apriori($id_proses, $lolos = FALSE)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_proses_hasil');
+    $ci->db->where('id_proses', $id_proses);
+    if ($lolos) {
+        $ci->db->where('lolos', 1);
+    }
+    $query = $ci->db->get();;
+    return $query;
+}
+
+function get_iterasi($id_proses, $iterasi, $lolos = false)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset' . $iterasi);
+    $ci->db->where('id_proses', $id_proses);
+    if ($lolos == TRUE) {
+        $ci->db->where('lolos', 1);
+    }
+    $query = $ci->db->get();;
+    return $query;
+}
+
+function get_support_atribut($id_proses, $iterasi, $atribut1, $atribut2 = null, $atribut3 = null, $lolos = false)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset' . $iterasi);
+    $ci->db->where('id_proses', $id_proses);
+    if ($iterasi == 1) {
+        $ci->db->where('atribut', $atribut1);
+    } else if ($iterasi == 2) {
+        $ci->db->where('atribut1', $atribut1);
+        $ci->db->where('atribut2', $atribut2);
+        $ci->db->or_where('atribut1', $atribut2);
+        $ci->db->where('atribut2', $atribut1);
+    } else if ($iterasi == 3) {
+        $ci->db->where('atribut1', $atribut1);
+        $ci->db->where('atribut2', $atribut2);
+        $ci->db->where('atribut3', $atribut3);
+        $ci->db->or_where('atribut1', $atribut3);
+        $ci->db->where('atribut2', $atribut2);
+        $ci->db->where('atribut3', $atribut1);
+        $ci->db->or_where('atribut1', $atribut1);
+        $ci->db->where('atribut2', $atribut3);
+        $ci->db->where('atribut3', $atribut2);
+    }
+    if ($lolos == TRUE) {
+        $ci->db->where('lolos', 1);
+    }
+    $query = $ci->db->get();;
+    return $query;
+}
+
+function korelasi_uji_lift($nilai_ul)
+{
+    if ($nilai_ul < 1) {
+        return "Korelasi Negatif";
+    } else if ($nilai_ul > 1) {
+        return "Korelasi Positif";
+    } else if ($nilai_ul == 1) {
+        return "Tidak Ada Korelasi";
+    }
+}
+
+function aturan_asosiasi_hasil($id, $iterasi)
+{
+    $proses_data = get_proses_log($id);
+    if ($iterasi == 3) {
+        foreach (get_iterasi($id, '3', TRUE)->result() as $key => $value) {
+            $supxUy1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, 1, $value->atribut3)->row()->jumlah;
+            $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+            $supxUy2 = get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
+            $supx2 = get_support_atribut($id, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
+            $supxUy3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
+            $supx3 =  get_support_atribut($id, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
+
+            $confident1 = ($supx1 / $supxUy1) * 100;
+            $confident2 = ($supx2 / $supxUy2) * 100;
+            $confident3 = ($supx3 / $supxUy3) * 100;
+
+            $jumlahAB1 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+            $jumlahA1 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
+            $jumlahB1 = get_support_atribut($id, 1, $value->atribut3)->num_rows();
+
+            $jumlahAB2 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+            $jumlahA2 =  get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->num_rows();
+            $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+
+            $jumlahAB3 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+            $jumlahA3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->num_rows();
+            $jumlahB3 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+
+            $dataset_count = get_itemset_by_idproses($id)->num_rows();
+            $pAB1 = $jumlahAB1 / $dataset_count;
+            $pA1 = $jumlahA1 / $dataset_count / $dataset_count;
+            $pB1 = $jumlahB1 / $dataset_count / $dataset_count;
+
+            $pAB2 = $jumlahAB2 / $dataset_count;
+            $pA2 = $jumlahA2 / $dataset_count / $dataset_count;
+            $pB2 = $jumlahB2 / $dataset_count / $dataset_count;
+
+            $pAB3 = $jumlahAB3 / $dataset_count;
+            $pA3 = $jumlahA3 / $dataset_count / $dataset_count;
+            $pB3 = $jumlahB3 / $dataset_count / $dataset_count;
+
+            $PaUb1 = $pAB1 / ($pA1 * $pB1);
+            $PaUb2 = $pAB2 / ($pA2 * $pB2);
+            $PaUb3 = $pAB3 / ($pA3 * $pB3);
+
+            $korelasi_1 = korelasi_uji_lift($PaUb1);
+            $korelasi_2 = korelasi_uji_lift($PaUb2);
+            $korelasi_3 = korelasi_uji_lift($PaUb3);
+
+            $iterasi = 3;
+            $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
+            $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
+            $lolos_3 = ($confident3 > $proses_data->min_confident ? 1 : 0);
+
+
+            insert_proses_hasil($proses_data->id_proses, ($value->atribut1 . ',' . $value->atribut2), $value->atribut3, $supxUy1, $supx1, $confident1, $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, $PaUb1, $korelasi_1, $iterasi, $lolos_1);
+            insert_proses_hasil($proses_data->id_proses, ($value->atribut3 . ',' . $value->atribut2), $value->atribut1, $supxUy2, $supx2, $confident2, $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, $PaUb2, $korelasi_2, $iterasi, $lolos_2);
+            insert_proses_hasil($proses_data->id_proses, ($value->atribut1 . ',' . $value->atribut3), $value->atribut2, $supxUy3, $supx3, $confident3, $jumlahA3, $jumlahA3, $jumlahAB3, $pA3, $pB3, $pAB3, $PaUb3, $korelasi_3, $iterasi, $lolos_3);
+            // // OutpuA1$pA1
+            // echo $value->atribut1 . ',' . $value->atribut2 . ' => ' . $value->atribut3 . ' (' .  $supx1 . ' / ' . $supxUy1 . ' | confident = ' . $confident1 . ' | Lift = ' . $PaUb1 . ' | ' . $korelasi_1 . ')<br>';
+            // echo $value->atribut3 . ',' . $value->atribut2 . ' => ' . $value->atribut1 . ' (' .  $supx2 . ' / ' . $supxUy2 . ' | confident = ' . $confident2 . ' | Lift = ' . $PaUb2 . ' | ' . $korelasi_2 . ')<br>';
+            // echo $value->atribut1 . ',' . $value->atribut3 . ' => ' . $value->atribut2 . ' (' .  $supx3 . ' / ' . $supxUy3 . ' | confident = ' . $confident3 . ' | Lift = ' . $PaUb3 . ' | ' . $korelasi_3 . ')<br>';
+        }
+    } else if ($iterasi == 2) {
+        foreach (get_iterasi($id, '2', TRUE)->result() as $key => $value) {
+            $supxUy1 = get_support_atribut($id, 2, $value->atribut1)->row()->jumlah + get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
+            $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+            $supxUy2 = get_support_atribut($id, 2, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
+            $supx2 = get_support_atribut($id, 1, $value->atribut2, $value->atribut1)->row()->jumlah;
+
+            $confident1 = ($supx1 / $supxUy1) * 100;
+            $confident2 = ($supx2 / $supxUy2) * 100;
+
+            $jumlahAB1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
+            $jumlahA1 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+            $jumlahB1 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+
+            $jumlahAB2 = get_support_atribut($id, 2, $value->atribut2, $value->atribut1)->num_rows();
+            $jumlahA2 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+            $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+
+            $dataset_count = get_itemset_by_idproses($id)->num_rows();
+            $pAB1 = $jumlahAB1 / $dataset_count;
+            $pA1 = $jumlahA1 / $dataset_count / $dataset_count;
+            $pB1 = $jumlahB1 / $dataset_count / $dataset_count;
+
+            $pAB2 = $jumlahAB2 / $dataset_count;
+            $pA2 = $jumlahA2 / $dataset_count / $dataset_count;
+            $pB2 = $jumlahB2 / $dataset_count / $dataset_count;
+
+            $PaUb1 = $pAB1 / ($pA1 * $pB1);
+            $PaUb2 = $pAB2 / ($pA2 * $pB2);
+
+            $korelasi_1 = korelasi_uji_lift($PaUb1);
+            $korelasi_2 = korelasi_uji_lift($PaUb2);
+
+            $iterasi = 3;
+            $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
+            $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
+
+            insert_proses_hasil($proses_data->id_proses, ($value->atribut1), $value->atribut2, $supxUy1, $supx1, $confident1, $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, $PaUb1, $korelasi_1, $iterasi, $lolos_1);
+            insert_proses_hasil($proses_data->id_proses, ($value->atribut2), $value->atribut1, $supxUy2, $supx2, $confident2, $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, $PaUb2, $korelasi_2, $iterasi, $lolos_2);
         }
     }
 }

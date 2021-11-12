@@ -74,7 +74,7 @@
                     <div class="nav-wrapper">
                         <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 active" data-toggle="tab" href="#iterasi1"><i class="ni ni-atom mr-2"></i>Iterasi 1</a>
+                                <a class="nav-link mb-sm-3 mb-md-0 " data-toggle="tab" href="#iterasi1"><i class="ni ni-atom mr-2"></i>Iterasi 1</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link mb-sm-3 mb-md-0" data-toggle="tab" href="#iterasi2"><i class="ni ni-atom mr-2"></i>Iterasi 2</a>
@@ -83,12 +83,12 @@
                                 <a class="nav-link mb-sm-3 mb-md-0" data-toggle="tab" href="#iterasi3"><i class="ni ni-atom mr-2"></i>Iterasi 3</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0" data-toggle="tab" href="#rule"><i class="ni ni-calendar-grid-58 mr-2"></i>Association Rule</a>
+                                <a class="nav-link mb-sm-3 mb-md-0 active" data-toggle="tab" href="#rule"><i class="ni ni-calendar-grid-58 mr-2"></i>Association Rule</a>
                             </li>
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="iterasi1" role="tabpanel">
+                        <div class="tab-pane fade" id="iterasi1" role="tabpanel">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <a class="btn btn-sm btn-primary text-white mb-2"><i class="ni ni-archive-2"></i> Iterasi 1 (Keseluruhan)</a>
@@ -308,8 +308,51 @@
                                 </div>
                             <?php } ?>
                         </div>
-                        <div class="tab-pane fade" id="rule" role="tabpanel">
-                            <p class="description"></p>
+                        <div class="tab-pane fade show active" id="rule" role="tabpanel">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-sm btn-success text-white mb-2"><i class="ni ni-atom"></i> Pembentukan Aturan Asosiasi</a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="tabledata">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th width="30%">X => Y</th>
+                                                    <th>Confident</th>
+                                                    <th>Uji Lift</th>
+                                                    <th>Korelasi</th>
+                                                    <th width="10%">Keterangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (get_hasil_apriori($row->id_proses)->num_rows() > 0) {
+                                                    $no = 1;
+                                                    foreach (get_hasil_apriori($row->id_proses)->result() as $key2 => $hasil) { ?>
+                                                        <tr>
+                                                            <td><?= $no++ ?></td>
+                                                            <td><?= $hasil->kombinasi1 . ' => ' . $hasil->kombinasi2 ?></td>
+                                                            <td><?= $hasil->confidence . '%' ?></td>
+                                                            <td><?= $hasil->uji_lift ?></td>
+                                                            <td><?= $hasil->aturan_korelasi ?></td>
+                                                            <td><?= $hasil->lolos_proses_hasil == 1 ? '<a class="btn btn-sm btn-success rounded-circle text-white"><i class="fa fa-check-circle"></i></a>' : '<a class="btn btn-sm btn-danger rounded-circle text-white"><i class="fa fa-times-circle"></i></a>' ?></td>
+                                                        </tr>
+                                                    <?php }
+                                                } else { ?>
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <span class="alert-icon"><i class="ni ni-fat-remove"></i></span>
+                                                                <span class="alert-text"><strong>Gagal!</strong> Proses Mining Gagal dan Tidak Menghasilkan Aturan Asosiasi!</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
