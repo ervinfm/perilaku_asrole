@@ -21,28 +21,12 @@
                     <td><?= range_jawaban('quesA3') ?></td>
                 </tr>
                 <tr>
-                    <td>Menjadi mahasiswa merupakan bagian dari ibadah untuk menggapai surga kelak di akhirat?</td>
+                    <td>Melakukan salat 5 waktu dan Membaca Al-Quran?</td>
                     <td><?= range_jawaban('quesA4') ?></td>
                 </tr>
                 <tr>
-                    <td>Meyakini hidup dan mati sebagai sebuah ujian?</td>
-                    <td><?= range_jawaban('quesA5') ?></td>
-                </tr>
-                <tr>
-                    <td>Membaca Al-Quran setiap hari?</td>
-                    <td><?= range_jawaban('quesA6') ?></td>
-                </tr>
-                <tr>
-                    <td>Melakukan salat 5 waktu?</td>
-                    <td><?= range_jawaban('quesA7') ?></td>
-                </tr>
-                <tr>
-                    <td>Berzikir dan berdoa setelah salat fardu?</td>
-                    <td><?= range_jawaban('quesA8') ?></td>
-                </tr>
-                <tr>
                     <td> Bersyukur atas nikmat yang telah diberikan?</td>
-                    <td><?= range_jawaban('quesA9') ?></td>
+                    <td><?= range_jawaban('quesA5') ?></td>
                 </tr>
             </table>
         </div>
@@ -72,20 +56,12 @@
                         <td><?= range_jawaban('quesB3') ?></td>
                     </tr>
                     <tr>
-                        <td>Berani menyatakan â€œtidakâ€ dengan nyaman untuk hal yang tidak disukai?</td>
+                        <td>Berani menyatakan tidak nyaman untuk hal yang tidak disukai?</td>
                         <td><?= range_jawaban('quesB4') ?></td>
                     </tr>
                     <tr>
-                        <td>Melakukan komunikasi dan aktivitas yang menyenangkan dengan keluarga atau teman setidaknya seminggu sekali?</td>
-                        <td><?= range_jawaban('quesB5') ?></td>
-                    </tr>
-                    <tr>
                         <td>Merasa bahwa kehidupan pribadi mendukung aktivitas perkuliahan?</td>
-                        <td><?= range_jawaban('quesB6') ?></td>
-                    </tr>
-                    <tr>
-                        <td>Berani meminta bantuan saat membutuhkan?</td>
-                        <td><?= range_jawaban('quesB7') ?></td>
+                        <td><?= range_jawaban('quesB5') ?></td>
                     </tr>
                 </table>
             </div>
@@ -103,7 +79,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="60%">Kesulitan untuk melaksanakan penelitian skripsiselama pandemi ?</td>
+                    <td width="60%">Kesulitan untuk melaksanakan penelitian skripsi selama pandemi ?</td>
                     <td><?= range_jawaban('quesC1') ?></td>
                 </tr>
                 <tr>
@@ -117,6 +93,10 @@
                 <tr>
                     <td>Kesulitan mengikuti ujian dengan metode daring selama pandemi ?</td>
                     <td><?= range_jawaban('quesC4') ?></td>
+                </tr>
+                <tr>
+                    <td>Kesulitan Bimbingan Magang/Skripsi selama pandemi ??</td>
+                    <td><?= range_jawaban('quesC5') ?></td>
                 </tr>
             </table>
         </div>
