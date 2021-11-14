@@ -56,3 +56,4 @@ $route['translate_uri_dashes'] = FALSE;
 // User Routes
 $route['dashboard'] = 'user/dashboard';
 $route['konsultasi'] = 'user/konsultasi';
+$route['konsultasi/hasil/(:any)'] = 'user/konsultasi/hasil/$1';

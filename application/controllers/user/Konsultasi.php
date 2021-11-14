@@ -21,21 +21,21 @@ class Konsultasi extends CI_Controller
         if (isset($post['quesioner'])) {
             if ($post['quesA1'] || $post['quesA2'] || $post['quesA3'] || $post['quesA4'] || $post['quesA5'] || $post['quesA6'] || $post['quesA7'] || $post['quesA8'] || $post['quesA9']) {
                 $questA = $post['quesA1'];
-                for ($i = 2; $i <= 9; $i++) {
+                for ($i = 2; $i <= 5; $i++) {
                     $questA = $questA . ',' . $post['quesA' . $i];
                 }
                 $post['params1'] = $questA;
             }
             if ($post['quesB1'] || $post['quesB2'] || $post['quesB3'] || $post['quesB4'] || $post['quesB5'] || $post['quesB6'] || $post['quesB7']) {
                 $questB = $post['quesB1'];
-                for ($i = 2; $i <= 7; $i++) {
+                for ($i = 2; $i <= 5; $i++) {
                     $questB = $questB . ',' . $post['quesB' . $i];
                 }
                 $post['params2'] = $questB;
             }
             if ($post['quesC1'] || $post['quesC2'] || $post['quesC3'] || $post['quesC4']) {
                 $questC = $post['quesC1'];
-                for ($i = 2; $i <= 4; $i++) {
+                for ($i = 2; $i <= 5; $i++) {
                     $questC = $questC . ',' . $post['quesC' . $i];
                 }
                 $post['params3'] = $questC;
@@ -49,12 +49,20 @@ class Konsultasi extends CI_Controller
             }
             $this->konsultasi_m->insert_konsultasi($post);
             if ($this->db->affected_rows() > 0) {
+                $post['id_proses'] = random_string('alnum', 25);
+                insert_log($post['id_proses'], $post['id'], 1, 25);
                 $this->session->set_flashdata('succes', 'Dataset Berhasil!');
-                redirect('konsultasi');
+                redirect('konsultasi/hasil/' . $post['id_proses']);
             } else {
-                $this->session->set_flashdata('error', 'Dataset Gagal!');
+                $this->session->set_flashdata('error', 'Pengisian Data Kuesioner Gagal!');
                 redirect('konsultasi');
             }
         }
+    }
+
+    public function hasil($id)
+    {
+        $data['row'] = get_konsultasi_proses($id);
+        $this->template->load('user/template', 'user/konsultasi/hasil', $data);
     }
 }
