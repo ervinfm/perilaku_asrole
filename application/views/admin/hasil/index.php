@@ -1,8 +1,3 @@
-<?php
-$temp = get_last_apriori()->row();
-
-?>
-
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body"></div>
@@ -19,8 +14,8 @@ $temp = get_last_apriori()->row();
                         </div>
                         <div class="col-sm-6">
                             <?php if (get_last_apriori()->num_rows() == 0) { ?>
-                                <a href="" class="btn btn-default float-right btn-sm"><i class="ni ni-paper-diploma"></i> Cetak Hasil</a>
-                                <a href="" class="btn btn-primary float-right btn-sm mr-2"><i class="ni ni-badge"></i> Lihat Detail</a>
+                                <a href="<?= site_url('admin/hasil/cetak/' . $row->id_proses) ?>" class="btn btn-default float-right btn-sm" target="_blank"><i class="ni ni-paper-diploma"></i> Cetak Hasil</a>
+                                <a href="<?= site_url('admin/hasil/detail/' . $row->id_proses) ?>" class="btn btn-primary float-right btn-sm mr-2"><i class="ni ni-badge"></i> Lihat Detail</a>
                             <?php } ?>
                         </div>
                     </div>
@@ -50,7 +45,7 @@ $temp = get_last_apriori()->row();
                                         <tr>
                                             <td>Kriteria</td>
                                             <td>:</td>
-                                            <td><?= $row->kriteria_proses == 1 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 2 ? 'Religiusitas' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
+                                            <td><?= $row->kriteria_proses == 1 ? 'Religiusitas' : ($row->kriteria_proses == 2 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -108,7 +103,7 @@ $temp = get_last_apriori()->row();
                                         <tr>
                                             <td>Kriteria</td>
                                             <td>:</td>
-                                            <td><?= $row->kriteria_proses == 1 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 2 ? 'Religiusitas' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
+                                            <td><?= $row->kriteria_proses == 1 ? 'Religiusitas' : ($row->kriteria_proses == 2 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
                                         </tr>
                                         <tr>
                                             <td width="20%">Minimum Support</td>
@@ -220,6 +215,42 @@ $temp = get_last_apriori()->row();
                                     </table>
                                 </div>
                             </div>
+                            <div class="col-sm-12 mt-3">
+                                <a class="btn btn-sm btn-primary text-white mb-3"><i class="fa fa-info-circle"></i> Rincian Konversi</a>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="5%">No</th>
+                                                <th class="text-center">Jika</th>
+                                                <th class="text-center">Maka</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $no = 1;
+                                            foreach (get_hasil_apriori($row->id_proses)->result() as $key4 => $konversi) {
+                                                if ($konversi->lolos_proses_hasil == 1) { ?>
+                                                    <tr>
+                                                        <td><?= $no++ ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $temp = explode(",", $konversi->kombinasi1);
+                                                            if (count($temp) > 1) {
+                                                                echo get_perilaku_transpost($temp[0], $row->kriteria_proses) . ' dan ' . get_perilaku_transpost($temp[1], $row->kriteria_proses);
+                                                            } else {
+                                                                echo get_perilaku_transpost($temp[0], $row->kriteria_proses);
+                                                            }
+                                                            ?>
+                                                        </td>
+                                                        <td><?= get_perilaku_transpost($konversi->kombinasi2, $row->kriteria_proses) ?></td>
+                                                    </tr>
+                                            <?php }
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -241,7 +272,7 @@ $temp = get_last_apriori()->row();
                                             <tr>
                                                 <td><b>Rata-Rata Confident</b></td>
                                                 <td class="text-center">:</td>
-                                                <td><?= $average_conf . ' %' ?></td>
+                                                <td><?= round($average_conf, 2) . ' %' ?></td>
                                             </tr>
                                         </table>
                                     </table>

@@ -40,8 +40,8 @@
                                             <label for="example-date-input" class="form-control-label">Sub Kriteria *</label>
                                             <select name="p_kriteria" class="form-control" required>
                                                 <option value="">- pilih sub kriteria - </option>
-                                                <option value="1" <?= $this->session->flashdata('P_kriteria') == 1 ? 'selected' : null ?>>1. Kehidupan Sosial dan Keluarga (Kepedulian)</option>
-                                                <option value="2" <?= $this->session->flashdata('P_kriteria') == 2 ? 'selected' : null ?>>2. Religiusitas (Kepedulian)</option>
+                                                <option value="1" <?= $this->session->flashdata('P_kriteria') == 1 ? 'selected' : null ?>>1. Religiusitas (Kepedulian)</option>
+                                                <option value="2" <?= $this->session->flashdata('P_kriteria') == 2 ? 'selected' : null ?>>2. Kehidupan Sosial dan Keluarga (Kepedulian)</option>
                                                 <option value="3" <?= $this->session->flashdata('P_kriteria') == 3 ? 'selected' : null ?>>3. Masalah Akademik (Permasalahan) </option>
                                                 <option value="4" <?= $this->session->flashdata('P_kriteria') == 4 ? 'selected' : null ?>>4. Masalah Keluarga (Permasalahan)</option>
                                             </select>

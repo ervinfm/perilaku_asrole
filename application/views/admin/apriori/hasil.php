@@ -39,7 +39,7 @@
                                     <tr>
                                         <td>Kriteria</td>
                                         <td>:</td>
-                                        <td><?= $row->kriteria_proses == 1 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 2 ? 'Religiusitas' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
+                                        <td><?= $row->kriteria_proses == 1 ? 'Religiusitas ' : ($row->kriteria_proses == 2 ? 'Kehidupan Sosial Keluarga' : ($row->kriteria_proses == 3 ? 'Masalah Akademik' : 'Masalah Keluarga'))  ?></td>
                                     </tr>
                                 </table>
                             </div>

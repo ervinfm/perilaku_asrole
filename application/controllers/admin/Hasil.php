@@ -7,6 +7,7 @@ class Hasil extends CI_Controller
     {
         parent::__construct();
         login();
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -16,11 +17,38 @@ class Hasil extends CI_Controller
             $this->session->set_flashdata('warning', 'Silahkan Simpan Hasil Proses Apriori pada <b> Association Rule Mining</b> terlebih dahulu!');
             $this->template->load('admin/template', 'admin/hasil/index', $data);
         } else {
-            $apriori = get_last_apriori(1)->row();
-            $data = [
-                'row' => $apriori,
-            ];
-            $this->template->load('admin/template', 'admin/hasil/index', $data);
+            if (get_last_apriori(1)->num_rows() > 0) {
+                $apriori = get_last_apriori(1)->row();
+                $data = [
+                    'row' => $apriori,
+                ];
+                $this->template->load('admin/template', 'admin/hasil/index', $data);
+            } else {
+                $this->session->set_flashdata('warning', 'Belum Ada Poses Mining Apriori Sebelumnya!<br>Silahkan Lakukan Proses Apriori Terlebih Dahulu!');
+                redirect('admin/apriori');
+            }
         }
+    }
+
+    public function detail($id)
+    {
+        $apriori = get_proses_log($id);
+        $data = [
+            'row' => $apriori,
+        ];
+        $this->template->load('admin/template', 'admin/hasil/detail', $data);
+    }
+
+    function cetak($id)
+    {
+        $this->load->library('pdf');
+
+        $this->pdf->setPaper('legal', 'landscape');
+        $this->pdf->filename = "Laporan Apriori.pdf";
+        $apriori = get_proses_log($id);
+        $data = [
+            'row' => $apriori,
+        ];
+        $this->pdf->load_view('admin/hasil/cetak', $data);
     }
 }

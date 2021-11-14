@@ -42,8 +42,8 @@
                                                 <td><?= $data->min_confident . ' %' ?></td>
                                                 <td><?= tanggal_indo(date('Y-m-d', strtotime($data->created_proses))) . ' ' . date('H:i:s', strtotime($data->created_proses)) ?></td>
                                                 <td>
-                                                    <a href="" class="btn btn-sm btn-primary rounded-circle" title="Lihat Detail"><i class="fa fa-file-invoice"></i></a>
-                                                    <a href="" class="btn btn-sm btn-default rounded-circle" title="Cetak Hasil"><i class="fa fa-print"></i></a>
+                                                    <a href="<?= site_url('admin/riwayat/detail/' . $data->id_proses) ?>" class="btn btn-sm btn-primary rounded-circle" title="Lihat Detail"><i class="fa fa-file-invoice"></i></a>
+                                                    <a href="<?= site_url('admin/riwayat/cetak/' . $data->id_proses) ?>" target="_blank" class="btn btn-sm btn-default rounded-circle" title="Cetak Hasil"><i class="fa fa-print"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } ?>
