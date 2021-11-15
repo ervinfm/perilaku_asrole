@@ -202,7 +202,7 @@
                                                         <td>
                                                             <?php
                                                             $comb = explode(",", $simpulan->kombinasi1);
-                                                            echo 'Jika ' . $comb[0] . ' dan ' . $simpulan->kombinasi2 . ' Maka ' . $simpulan->kombinasi2;
+                                                            echo 'Jika ' . $comb[0] . ' dan ' . $comb[1] . ' Maka ' . $simpulan->kombinasi2;
                                                             ?>
                                                         </td>
                                                         <td><?= $simpulan->confidence ?></td>

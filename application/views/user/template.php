@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
     <meta name="author" content="Creative Tim">
-    <title><?= ucfirst($this->uri->segment(1)) ?> - Pemetaan Perilaku Mahasiswa UAD</title>
+    <title><?= ucfirst($this->uri->segment(1)) ?> - <?= sistem()->nama_sistem ?></title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url() ?>assets/template/assets/img/brand/favicon.png" type="image/png">
     <!-- Fonts -->
@@ -44,7 +44,7 @@
                     <!-- Search form -->
                     <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
                         <div class="form-group mb-0">
-                            <img src="<?= base_url() ?>assets/template/assets/img/brand/white.png" alt="..." style="width:100px"><span class="judul ml-3">| Sistem Pemetaan Perilaku Mahasiswa</span>
+                            <img src="<?= base_url() ?>assets/template/assets/img/brand/white.png" alt="..." style="width:100px"><span class="judul ml-3">| <?= sistem()->nama_sistem ?></span>
                         </div>
                         <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="Close">
                             <span aria-hidden="true">×</span>

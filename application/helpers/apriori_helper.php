@@ -710,16 +710,16 @@ function aturan_asosiasi_hasil($id, $iterasi)
 
             $dataset_count = get_itemset_by_idproses($id)->num_rows();
             $pAB1 = $jumlahAB1 / $dataset_count;
-            $pA1 = $jumlahA1 / $dataset_count / $dataset_count;
-            $pB1 = $jumlahB1 / $dataset_count / $dataset_count;
+            $pA1 = $jumlahA1 / $dataset_count;
+            $pB1 = $jumlahB1 / $dataset_count;
 
             $pAB2 = $jumlahAB2 / $dataset_count;
-            $pA2 = $jumlahA2 / $dataset_count / $dataset_count;
-            $pB2 = $jumlahB2 / $dataset_count / $dataset_count;
+            $pA2 = $jumlahA2 / $dataset_count;
+            $pB2 = $jumlahB2 / $dataset_count;
 
             $pAB3 = $jumlahAB3 / $dataset_count;
-            $pA3 = $jumlahA3 / $dataset_count / $dataset_count;
-            $pB3 = $jumlahB3 / $dataset_count / $dataset_count;
+            $pA3 = $jumlahA3 / $dataset_count;
+            $pB3 = $jumlahB3 / $dataset_count;
 
             $PaUb1 = $pAB1 / ($pA1 * $pB1);
             $PaUb2 = $pAB2 / ($pA2 * $pB2);
