@@ -1,3 +1,12 @@
+<?php
+$min = array();
+foreach (get_konsultasi_hasil($row->id_proses)->result() as $key => $term) {
+    array_push($min, $term->confidence);
+}
+$min_conf = min($min);
+
+?>
+
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body">
@@ -36,11 +45,74 @@
                     </div>
                 </div>
                 <div class="card-body text-white">
-                    <?php
-                    konsul_iterasi1($row->id_proses);
-                    konsul_iterasi2($row->id_proses);
-                    konsul_iterasi3($row->id_proses);
-                    ?>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert alert-success" role="alert">
+                                <strong>Berhasil!</strong> Proses Konsultasi Perilaku Berhasil !
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <table class="table table-bordered text-white">
+                                <tr>
+                                    <td width="30%">ID Konsultasi</td>
+                                    <td width="5%">:</td>
+                                    <td><?= $row->id_konsultasi ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Konsultasi</td>
+                                    <td>:</td>
+                                    <td><?= tanggal_indo(date('Y-m-d', strtotime($row->created_proses))) . ' ' . date('H:i:s', strtotime($row->created_proses)) ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Clien</td>
+                                    <td>:</td>
+                                    <td><?= profil()->nama_user ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Proses Konsultasi</td>
+                                    <td>:</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>Status Konsultasi</td>
+                                    <td>:</td>
+                                    <td>Selesai</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <table class="table table-bordered text-white">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">No</th>
+                                        <th>Kombinasi Premis</th>
+                                        <th width="10%">Confident</th>
+                                        <th>Uji Lift</th>
+                                        <th>Korelasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 1;
+                                    foreach (get_konsultasi_hasil($row->id_proses)->result() as $key => $hasil) {
+                                        if ($hasil->confidence == $min_conf) { ?>
+                                            <tr>
+                                                <td><?= $no++ ?></td>
+                                                <td><?= $hasil->kombinasi1 . ' => ' . $hasil->kombinasi2 ?></td>
+                                                <td><?= $hasil->confidence . ' %' ?></td>
+                                                <td><?= $hasil->uji_lift ?></td>
+                                                <td><?= $hasil->aturan_korelasi ?></td>
+                                            </tr>
+                                    <?php }
+                                    } ?>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12">
+                                <a href="<?= site_url('hasil') ?>" class="btn btn-info mt-5"><i class="ni ni-briefcase-24"></i> Rekomendasi Konsultasi </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

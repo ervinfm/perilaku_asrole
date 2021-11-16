@@ -862,7 +862,7 @@ function level_stres($value)
         return "Strees Sedang";
     } else if ($value < 50 && $value >= 25) {
         return "Strees Ringan";
-    } else if ($value < 2575 && $value >= 50) {
+    } else if ($value < 25) {
         return "Normal";
     }
 }

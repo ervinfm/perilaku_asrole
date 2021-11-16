@@ -59,8 +59,12 @@ class Konsultasi extends CI_Controller
                 $post['id_proses'] = random_string('numeric', 10);
                 insert_log($post['id_proses'], $post['id'], 1, 25);
                 konsul_iterasi1($post['id_proses']);
+                konsul_iterasi2($post['id_proses']);
+                konsul_iterasi3($post['id_proses']);
+                konsul_asosiasi_hasil($post['id_proses']);
+                update_status_proses($post['id_proses']);
 
-                $this->session->set_flashdata('succes', 'Dataset Berhasil!');
+                $this->session->set_flashdata('succes', 'Proses Konsultasi Berhasil');
                 redirect('konsultasi/hasil/' . $post['id_proses']);
             } else {
                 $this->session->set_flashdata('error', 'Pengisian Data Kuesioner Gagal!');

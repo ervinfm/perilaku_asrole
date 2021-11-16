@@ -124,7 +124,7 @@ function insert_konsul_hasil($id_proses, $kombinasi1, $kombinasi2, $sup_xUy, $su
         'iterasi' => $iterasi,
         'lolos_proses_hasil' => $lolos,
     ];
-    $ci->db->insert('tbl_proses_hasil', $params);
+    $ci->db->insert('tbl_konsultasi_hasil', $params);
 }
 
 function konsul_iterasi1($id_proses)
@@ -167,8 +167,8 @@ function konsul_iterasi1($id_proses)
             } else {
                 $seleksi = 0;
             }
-            // konsul_insert_itemset1($id_proses, 'P' . $i, $pert['p' . $i], $sup, $seleksi);
-            echo "P" . $i . ' => count=' . $pert['p' . $i] . ' | support=' . $sup . ' | seleksi=' . $seleksi . '<br>';
+            konsul_insert_itemset1($id_proses, 'P' . $i, $pert['p' . $i], $sup, $seleksi);
+            // echo "P" . $i . ' => count=' . $pert['p' . $i] . ' | support=' . $sup . ' | seleksi=' . $seleksi . '<br>';
         }
     }
 }
@@ -209,8 +209,8 @@ function konsul_iterasi2($id_proses)
             } else {
                 $lolos = 0;
             }
-            // konsul_insert_itemset2($proses->id_proses, $datas[$i], $datas[$j], $count, $support, $lolos);
-            echo $datas[$i] . ' => ' . $datas[$j] . ' | count : ' . $count . '| support : ' . $support . ' | lolos : ' . $lolos . '<br>';
+            konsul_insert_itemset2($proses->id_proses, $datas[$i], $datas[$j], $count, $support, $lolos);
+            // echo $datas[$i] . ' => ' . $datas[$j] . ' | count : ' . $count . '| support : ' . $support . ' | lolos : ' . $lolos . '<br>';
         }
     }
 }
@@ -219,51 +219,150 @@ function konsul_iterasi3($id_proses)
 {
     $proses = get_konsultasi_log($id_proses)->row();
     $dataset = get_dataset_konsul($proses->id_konsultasi);
+    $itemset = konsul_get_iterasi2($id_proses);
+    foreach ($itemset->result() as $key => $value) {
+        $data = array($value->atribut1, $value->atribut2);
+        foreach ($itemset->result() as $key1 => $value2) {
+            if (!in_array($value2->atribut1, $data)) {
+                $param1[$key] = $value->atribut1;
+                $param2[$key] = $value->atribut2;
+                $param3[$key] = $value2->atribut1;
+            } else if (!in_array($value2->atribut2, $data)) {
+                $param1[$key] = $value->atribut1;
+                $param2[$key] = $value->atribut2;
+                $param3[$key] = $value2->atribut2;
+            }
+        }
+        // $temp_array = array($param1[$key], $param2[$key], $param3[$key]);
+        // sort($temp_array);
+        // $temp[$key] = $temp_array;
 
-    $temp = konsul_get_iterasi2($id_proses);
-    $atribut = null;
-    foreach ($temp->result() as $key => $iterasi3) {
-        if ($iterasi3->lolos == 1) {
-            $data = array($iterasi3->atribut1, $iterasi3->atribut2);
-            foreach ($temp->result() as $key1 => $value2) {
-                if ($iterasi3->lolos == 1) {
-                    if (!in_array($value2->atribut1, $data)) {
-                        $param1[$key] = $iterasi3->atribut1;
-                        $param2[$key] = $iterasi3->atribut2;
-                        $param3[$key] = $value2->atribut1;
-                    } else if (!in_array($value2->atribut2, $data)) {
-                        $param1[$key] = $iterasi3->atribut1;
-                        $param2[$key] = $iterasi3->atribut2;
-                        $param3[$key] = $value2->atribut2;
-                    }
-                }
+        $cek1 = cek_atribut_itemset3($proses->id_proses, $param1[$key], $param2[$key], $param3[$key]);
+        $cek2 = cek_atribut_itemset3($proses->id_proses, $param3[$key], $param2[$key], $param1[$key]);
+        $cek3 = cek_atribut_itemset3($proses->id_proses, $param2[$key], $param1[$key], $param3[$key]);
+        $cek4 = cek_atribut_itemset3($proses->id_proses, $param1[$key], $param3[$key], $param2[$key]);
+        $cek5 = cek_atribut_itemset3($proses->id_proses, $param3[$key], $param1[$key], $param2[$key]);
+        $cek6 = cek_atribut_itemset3($proses->id_proses, $param2[$key], $param3[$key], $param1[$key]);
+        if ($cek1->num_rows() == 0 && $cek2->num_rows() == 0 && $cek3->num_rows() == 0 && $cek4->num_rows() == 0 && $cek5->num_rows() == 0 && $cek6->num_rows() == 0) {
+            $temp1 = $param1[$key];
+            $temp2 = $param2[$key];
+            $temp3 = $param3[$key];
+            $count = 0;
+
+            if (in_array($temp1, $dataset[0]) == TRUE && in_array($temp2, $dataset[0]) == TRUE && in_array($temp3, $dataset[0]) == TRUE) {
+                $count = $count + 1;
             }
+            if (in_array($temp1, $dataset[1]) == TRUE && in_array($temp2, $dataset[1]) == TRUE && in_array($temp3, $dataset[1]) == TRUE) {
+                $count = $count + 1;
+            }
+            if (in_array($temp1, $dataset[2]) == TRUE && in_array($temp2, $dataset[2]) == TRUE && in_array($temp3, $dataset[2]) == TRUE) {
+                $count = $count + 1;
+            }
+            if (in_array($temp1, $dataset[3]) == TRUE && in_array($temp2, $dataset[3]) == TRUE && in_array($temp3, $dataset[3]) == TRUE) {
+                $count = $count + 1;
+            }
+
+            $support = ($count / count($dataset)) * 100;
+            if ($count > $proses->min_support) {
+                $seleksi = 1;
+            } else {
+                $seleksi = 0;
+            }
+            // echo $param1[$key] . ',' . $param2[$key] . '=>' . $param3[$key] . ' count : ' . $count . ' | sup: ' . $support . ' | seleksi : ' . $seleksi . '<br>';
+            insert_itemset3($proses->id_proses, $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
         }
-        $count[$key] = $support[$key] = $lolos[$key] = 0;
-        $atribut = $param1[$key] . ',' . $param2[$key] . ',' . $param3[$key];
-        $datas = explode(",", $atribut);
-        for ($i = 0; $i < count($datas); $i++) {
-            // $count = 0;
-            if (in_array($datas[$i], $dataset[0]) && in_array($datas[$i + 1], $dataset[0]) && in_array($datas[$i + 2], $dataset[0])) {
-                $count[$key]++;
-            }
-            if (in_array($datas[$i], $dataset[1]) && in_array($datas[$i + 1], $dataset[1]) && in_array($datas[$i + 2], $dataset[1])) {
-                $count[$key]++;
-            }
-            if (in_array($datas[$i], $dataset[2]) && in_array($datas[$i + 1], $dataset[2]) && in_array($datas[$i + 2], $dataset[2])) {
-                $count[$key]++;
-            }
-            if (in_array($datas[$i], $dataset[3]) && in_array($datas[$i + 1], $dataset[3]) && in_array($datas[$i + 2], $dataset[3])) {
-                $count[$key]++;
-            }
-        }
-        $support[$key] = ($count[$key] / 4) * 100;
-        if ($count[$key] > $proses->min_support) {
-            $lolos[$key] = 1;
-        } else {
-            $lolos = 0;
-        }
-        // konsul_insert_itemset3($proses->id_proses, $param1[$key], $param2[$key], $param3[$key], $count[$key], $support[$key], $lolos[$key]);
-        echo $param1[$key] . ',' . $param2[$key] . ' => ' . $param3[$key] . '| count : ' . $count[$key]  . '| support : ' . $support[$key] . ' | lolos : ' . $lolos[$key] . '<br>';
     }
+}
+
+function konsul_asosiasi_hasil($id)
+{
+    $proses = get_konsultasi_log($id)->row();
+    $dataset = get_dataset_konsul($proses->id_konsultasi);
+    foreach (get_iterasi($id, '3', false)->result() as $key => $value) {
+        $supxUy1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, 1, $value->atribut3)->row()->jumlah;
+        $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+        $supxUy2 = get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
+        $supx2 = get_support_atribut($id, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
+        $supxUy3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
+        $supx3 =  get_support_atribut($id, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
+
+        $confident1 = ($supx1 / $supxUy1) * 100;
+        $confident2 = ($supx2 / $supxUy2) * 100;
+        $confident3 = ($supx3 / $supxUy3) * 100;
+
+        $jumlahAB1 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA1 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
+        $jumlahB1 = get_support_atribut($id, 1, $value->atribut3)->num_rows();
+
+        $jumlahAB2 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA2 =  get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->num_rows();
+        $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+
+        $jumlahAB3 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->num_rows();
+        $jumlahB3 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+
+        $dataset_count = count($dataset);
+        $pAB1 = $jumlahAB1 / $dataset_count;
+        $pA1 = $jumlahA1 / $dataset_count;
+        $pB1 = $jumlahB1 / $dataset_count;
+
+        $pAB2 = $jumlahAB2 / $dataset_count;
+        $pA2 = $jumlahA2 / $dataset_count;
+        $pB2 = $jumlahB2 / $dataset_count;
+
+        $pAB3 = $jumlahAB3 / $dataset_count;
+        $pA3 = $jumlahA3 / $dataset_count;
+        $pB3 = $jumlahB3 / $dataset_count;
+
+        $PaUb1 = $pAB1 / ($pA1 * $pB1);
+        $PaUb2 = $pAB2 / ($pA2 * $pB2);
+        $PaUb3 = $pAB3 / ($pA3 * $pB3);
+
+        $korelasi_1 = korelasi_uji_lift($PaUb1);
+        $korelasi_2 = korelasi_uji_lift($PaUb2);
+        $korelasi_3 = korelasi_uji_lift($PaUb3);
+
+        $iterasi = 3;
+        $lolos_1 = ($confident1 > $proses->min_confident ? 1 : 0);
+        $lolos_2 = ($confident2 > $proses->min_confident ? 1 : 0);
+        $lolos_3 = ($confident3 > $proses->min_confident ? 1 : 0);
+
+
+        insert_konsul_hasil($proses->id_proses, ($value->atribut1 . ',' . $value->atribut2), $value->atribut3, $supxUy1, $supx1, $confident1, $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, $PaUb1, $korelasi_1, $iterasi, $lolos_1);
+        insert_konsul_hasil($proses->id_proses, ($value->atribut3 . ',' . $value->atribut2), $value->atribut1, $supxUy2, $supx2, $confident2, $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, $PaUb2, $korelasi_2, $iterasi, $lolos_2);
+        insert_konsul_hasil($proses->id_proses, ($value->atribut1 . ',' . $value->atribut3), $value->atribut2, $supxUy3, $supx3, $confident3, $jumlahA3, $jumlahA3, $jumlahAB3, $pA3, $pB3, $pAB3, $PaUb3, $korelasi_3, $iterasi, $lolos_3);
+        // // OutpuA1$pA1
+        // echo $value->atribut1 . ',' . $value->atribut2 . ' => ' . $value->atribut3 . ' (' .  $supx1 . ' / ' . $supxUy1 . ' | confident = ' . $confident1 . ' | Lift = ' . $PaUb1 . ' | ' . $korelasi_1 . ')<br>';
+        // echo $value->atribut3 . ',' . $value->atribut2 . ' => ' . $value->atribut1 . ' (' .  $supx2 . ' / ' . $supxUy2 . ' | confident = ' . $confident2 . ' | Lift = ' . $PaUb2 . ' | ' . $korelasi_2 . ')<br>';
+        // echo $value->atribut1 . ',' . $value->atribut3 . ' => ' . $value->atribut2 . ' (' .  $supx3 . ' / ' . $supxUy3 . ' | confident = ' . $confident3 . ' | Lift = ' . $PaUb3 . ' | ' . $korelasi_3 . ')<br>';
+    }
+}
+
+function get_konsultasi_hasil($id)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_hasil');
+    $ci->db->where('id_proses', $id);
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_last_konsul()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_log');
+    $ci->db->where('author_proses', $ci->session->userdata('user_id'));
+    $ci->db->order_by('created_proses', 'DESC');
+    $ci->db->limit(1);
+    $query = $ci->db->get();
+    return $query->row();
+}
+
+function update_status_proses($id_proses)
+{
+    $ci = &get_instance();
+    $params['status_proses'] = 1;
+    $ci->db->where('id_proses', $id_proses);
+    $ci->db->update('tbl_konsultasi_log', $params);
 }

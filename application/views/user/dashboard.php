@@ -42,7 +42,7 @@
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <a href="">
+                    <a href="<?= site_url('hasil') ?>">
                         <div class="card card-stats">
                             <!-- Card body -->
                             <div class="card-body">
@@ -66,7 +66,7 @@
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <a href="">
+                    <a href="<?= site_url('riwayat') ?>">
                         <div class="card card-stats">
                             <!-- Card body -->
                             <div class="card-body">
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <p class="mt-3 mb-0 text-sm">
-                                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                                    <span class="text-success mr-2"><i class="fa fa-calendar-alt"></i> <?= date('d/m/Y') ?></span>
                                     <span class="text-nowrap">Terakhir Digunakan</span>
                                 </p>
                             </div>
