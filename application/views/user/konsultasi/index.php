@@ -49,21 +49,46 @@
                             <div class="col-sm-4 text-white">
                                 <div class="form-group">
                                     <label>ID Konsultasi *</label>
-                                    <input type="text" name="id" value="<?= random_string('numeric', 20) ?>" class="form-control " readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 text-white">
-                                <div class="form-group">
-                                    <label>Nama Clien *</label>
-                                    <input type="text" value="<?= profil()->nama_user ?>" name="subjct" class="form-control " readonly>
+                                    <input type="text" name="id" value="<?= random_string('numeric', 20) ?>" class="form-control form-control-sm" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-4 text-white">
                                 <div class="form-group">
                                     <label>Tanggal Konsultasi *</label>
-                                    <input type="text" value="<?= tgl_indo(date('Y-m-d'), true) ?>" class="form-control " readonly>
+                                    <input type="text" value="<?= tgl_indo(date('Y-m-d'), true) ?>" class="form-control form-control-sm" readonly>
                                 </div>
                             </div>
+                            <div class="col-sm-4 text-white">
+                                <div class="form-group">
+                                    <label>Periode Konsultasi *</label>
+                                    <input type="text" value="<?= get_konsultasi_history_user()->num_rows() == 0 ? '(0) Belum Pernah Konsultasi' : (get_konsultasi_history_user()->num_rows() . ' Kali ') ?>" class="form-control form-control-sm" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-white">
+                                <div class="form-group">
+                                    <label>Nim Mahasiswa *</label>
+                                    <input type="text" value="<?= profil()->nim_user ?>" class="form-control form-control-sm" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-white">
+                                <div class="form-group">
+                                    <label>Nama Mahasiswa *</label>
+                                    <input type="text" value="<?= profil()->nama_user ?>" name="subjct" class="form-control form-control-sm" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-white">
+                                <div class="form-group">
+                                    <label>Fakultas Mahasiswa *</label>
+                                    <input type="text" value="<?= get_fakultas(profil()->id_fakultas)->row()->nama_fakultas ?>" class="form-control form-control-sm" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-white">
+                                <div class="form-group">
+                                    <label>Program Studi Mahasiswa *</label>
+                                    <input type="text" value="<?= get_prodi_row(profil()->id_prodi)->row()->nama_prodi ?>" class="form-control form-control-sm" readonly>
+                                </div>
+                            </div>
+
                             <div class="col-sm-12 text-white">
                                 <?php $this->view('user/konsultasi/question') ?>
                             </div>

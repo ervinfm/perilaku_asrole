@@ -234,4 +234,11 @@ class Auth extends CI_Controller
 		$this->session->sess_destroy();
 		redirect('auth');
 	}
+
+	function get_prodi()
+	{
+		$id_fakultas = $this->input->post('id', TRUE);
+		$data = get_prodi($id_fakultas)->result();
+		echo json_encode($data);
+	}
 }

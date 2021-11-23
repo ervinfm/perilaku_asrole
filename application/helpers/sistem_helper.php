@@ -377,3 +377,41 @@ function range_jawaban($name)
     ';
     return $range;
 }
+
+function get_fakultas($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_fakultas');
+    if ($id != null) {
+        $ci->db->where('id_fakultas', $id);
+    } else {
+        $ci->db->order_by('id_fakultas', 'ASC');
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_prodi($id_fakultas = null, $id_prodi = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_prodi');
+    if ($id_prodi != null) {
+        $ci->db->where('id_prodi', $id_prodi);
+    } else if ($id_fakultas != null) {
+        $ci->db->where('id_fakultas', $id_fakultas);
+    } else {
+        $ci->db->order_by('nama_prodi', 'ASC');
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_prodi_row($id)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_prodi');
+    $ci->db->where('id_prodi', $id);
+
+    $query = $ci->db->get();
+    return $query;
+}

@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/template/assets/css/argon.css?v=1.2.0" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.7.0/sweetalert2.css" integrity="sha512-qWufF7Q/gWXkGNDLvqEBFmg2ZfZGtPK5i4syfx7eazH4cUO7FVRnwHzmdgKfJyyXn4koxBCXknEwIIgyE0GZPA==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.7.0/sweetalert2.js" integrity="sha512-EY+sOlhMaflzdMPOJAw2CazW4nADfI5B+tFFnfiqQj/4Zjz+S2uWzmx9963PqnCFYFc4qo6ev4pcULlnUdAA0g==" crossorigin="anonymous"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script> -->
 
 </head>
 
@@ -180,7 +181,7 @@
 
     <!-- Modal Signup -->
     <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <form action="<?= site_url('auth/proses') ?>" method="POST">
                     <div class="modal-body">
@@ -194,23 +195,48 @@
                             <div class="col-sm-12">
                                 <p style="color:red; font-size:12px"><i>Daftarkan Identitas Anda dengan Benar *</i></p>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Email Address *</label>
-                                <input type="email" name="s_email" value="<?= @$this->session->flashdata('s_Email') ?>" class="form-control form-control-sm" required>
+                            <div class="col-sm-6">
+                                <a href="#!" class="btn btn-sm btn-primary mb-2">Data Profil Mahasiswa</a>
+                                <div class="form-group">
+                                    <label>ID Student (NIM) *</label>
+                                    <input type="number" name="s_nim" value="<?= @$this->session->flashdata('s_Email') ?>" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Name *</label>
+                                    <input type="text" name="s_name" value="<?= @$this->session->flashdata('s_Name') ?>" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 form-group">
+                                        <label>Fakultas *</label>
+                                        <select name="s_fakultas" class="form-control form-control-sm" id="fakultas" required>
+                                            <option value="">- pilih fakultas -</option>
+                                            <?php foreach (get_fakultas()->result() as $key => $fakultas) { ?>
+                                                <option value="<?= $fakultas->id_fakultas ?>"><?= $fakultas->id_fakultas . ' - ' . $fakultas->nama_fakultas ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label>Program Studi *</label>
+                                        <select name="s_prodi" class="form-control form-control-sm" id="prodi" required>
+                                            <option value="">- pilih program studi -</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Full Name *</label>
-                                <input type="text" name="s_name" value="<?= @$this->session->flashdata('s_Name') ?>" class="form-control form-control-sm" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Username *</label>
-                                <input type="text" name="s_username" value="<?= @$this->session->flashdata('s_Username') ?>" class="form-control form-control-sm" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Password *</label>
-                                <input type="password" name="s_password" value="<?= @$this->session->flashdata('s_Password') ?>" class="form-control form-control-sm" required>
+                            <div class="col-sm-6">
+                                <a href="#!" class="btn btn-sm btn-primary mb-2">Data Akun Mahasiswa</a>
+                                <div class="form-group">
+                                    <label>Email Address *</label>
+                                    <input type="email" name="s_email" value="<?= @$this->session->flashdata('s_Email') ?>" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Username *</label>
+                                    <input type="text" name="s_username" value="<?= @$this->session->flashdata('s_Username') ?>" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password *</label>
+                                    <input type="password" name="s_password" value="<?= @$this->session->flashdata('s_Password') ?>" class="form-control form-control-sm" required>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -272,6 +298,36 @@
     <script src="<?= base_url() ?>assets/template/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
     <!-- Argon JS -->
     <script src="<?= base_url() ?>assets/template/assets/js/argon.js?v=1.2.0"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#fakultas').change(function() {
+                var id = $(this).val();
+                $.ajax({
+                    url: "<?= site_url('auth/get_prodi'); ?>",
+                    method: "POST",
+                    data: {
+                        id: id
+                    },
+                    async: true,
+                    dataType: 'json',
+                    success: function(data) {
+
+                        var html = '';
+                        var i;
+                        for (i = 0; i < data.length; i++) {
+                            html += '<option value=' + data[i].id_prodi + '>' + data[i].id_prodi + ' - ' + data[i].nama_prodi + '</option>';
+                        }
+                        $('#prodi').html(html);
+
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
 </body>
 
 </html>

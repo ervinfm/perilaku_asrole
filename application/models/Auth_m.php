@@ -41,8 +41,11 @@ class Auth_m extends CI_Model
     {
         $params = [
             'id_user' => $post['id'],
+            'id_fakultas' => $post['s_fakultas'],
+            'id_prodi' => $post['s_prodi'],
             'email_user' => $post['s_email'],
             'nama_user' => $post['s_name'],
+            'nim_user' => $post['s_nim'],
             'username_user' => $post['s_username'],
             'password_user' => sha1($post['s_password']),
             'level_user' => 2,

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Nov 2021 pada 02.38
+-- Waktu pembuatan: 24 Nov 2021 pada 00.31
 -- Versi server: 10.4.16-MariaDB
 -- Versi PHP: 7.4.12
 
@@ -131,7 +131,10 @@ INSERT INTO `tbl_itemset1` (`id_itemset1`, `id_proses`, `atribut`, `jumlah`, `su
 (208, '4906382571', 'P2', '4', '80', '1'),
 (209, '4906382571', 'P3', '4', '80', '1'),
 (210, '4906382571', 'P4', '4', '80', '1'),
-(211, '4906382571', 'P5', '4', '80', '1');
+(211, '4906382571', 'P5', '4', '80', '1'),
+(212, '8756932410', 'P1', '1', '20', '0'),
+(213, '8756932410', 'P2', '1', '20', '0'),
+(214, '8756932410', 'P3', '2', '40', '1');
 
 -- --------------------------------------------------------
 
@@ -312,7 +315,8 @@ CREATE TABLE `tbl_konsultasi` (
 INSERT INTO `tbl_konsultasi` (`id_konsultasi`, `subyek_konsultasi`, `params1_konsultasi`, `params2_konsultasi`, `params3_konsultasi`, `params4_konsultasi`, `author_konsultasi`, `status_konsultasi`, `created_konsultasi`) VALUES
 ('23068165807479594321', 'Tiara Anggraini', 'P1,P2,P5', 'P1,P2,P5', 'P1,P2,P3,P5', 'P3', '819765yh2Do0pCF61jQTK5a3vxMrw7', 0, '2021-11-15 17:50:30'),
 ('45730041997265138268', 'Tiara Anggraini', 'P1,P2,P5', 'P1,P2,P5', 'P1,P2,P3,P5', 'P3', '819765yh2Do0pCF61jQTK5a3vxMrw7', 0, '2021-11-15 17:49:14'),
-('81095760732825694134', 'Tiara Anggraini', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', '819765yh2Do0pCF61jQTK5a3vxMrw7', 0, '2021-11-16 01:16:50');
+('81095760732825694134', 'Tiara Anggraini', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', 'P1,P2,P3,P4,P5', '819765yh2Do0pCF61jQTK5a3vxMrw7', 0, '2021-11-16 01:16:50'),
+('96205174593470123688', 'Tiara Anggraini', 'P1', 'P2', 'P3', 'P4', '819765yh2Do0pCF61jQTK5a3vxMrw7', 0, '2021-11-16 03:14:33');
 
 -- --------------------------------------------------------
 
@@ -395,6 +399,7 @@ CREATE TABLE `tbl_konsultasi_log` (
 
 INSERT INTO `tbl_konsultasi_log` (`id_proses`, `id_konsultasi`, `min_support`, `min_confident`, `author_proses`, `status_proses`, `created_proses`) VALUES
 ('4906382571', '81095760732825694134', 1, 25, '819765yh2Do0pCF61jQTK5a3vxMrw7', 1, '2021-11-16 01:16:50'),
+('8756932410', '96205174593470123688', 1, 25, '819765yh2Do0pCF61jQTK5a3vxMrw7', 1, '2021-11-16 03:14:33'),
 ('9108245673', '23068165807479594321', 1, 25, '819765yh2Do0pCF61jQTK5a3vxMrw7', 1, '2021-11-15 17:50:30');
 
 -- --------------------------------------------------------
@@ -525,7 +530,10 @@ INSERT INTO `tbl_sistem` (`id_sistem`, `nama_sistem`, `email_sistem`, `pass_emai
 
 CREATE TABLE `tbl_user` (
   `id_user` varchar(50) NOT NULL,
+  `id_prodi` varchar(100) DEFAULT NULL,
+  `id_fakultas` varchar(100) DEFAULT NULL,
   `email_user` varchar(255) NOT NULL,
+  `nim_user` varchar(100) DEFAULT NULL,
   `nama_user` varchar(255) NOT NULL,
   `username_user` varchar(255) NOT NULL,
   `password_user` varchar(255) NOT NULL,
@@ -539,11 +547,11 @@ CREATE TABLE `tbl_user` (
 -- Dumping data untuk tabel `tbl_user`
 --
 
-INSERT INTO `tbl_user` (`id_user`, `email_user`, `nama_user`, `username_user`, `password_user`, `level_user`, `status_user`, `image_user`, `created_user`) VALUES
-('819765yh2Do0pCF61jQTK5a3vxMrw7', 'riccoyhandy12@gmail.com', 'Tiara Anggraini', 'user', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-10-22 05:50:47'),
-('850319kcGUjp6TSso54amC3dbqnXYV', 'tiaraanggrainig15@gmail.com', 'Tiara Anggraini Gaib', 'tiara', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-10-22 07:56:07'),
-('948057SjkdyNnrsWzPiAUw78b2t4Hc', 'ervin.fikotm@gmail.com', 'Ervin Fikot M', 'user14', '8cb2237d0679ca88db6464eac60da96345513964', 1, 1, NULL, '2021-10-20 01:31:43'),
-('99473177322717184', 'ervinfm14@gmail.com', 'Tiara Anggraini Gaib', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 'user-JCgGbja9n0zAQUHP1M6lyxNIswVt5X.png', '2021-10-13 05:29:10');
+INSERT INTO `tbl_user` (`id_user`, `id_prodi`, `id_fakultas`, `email_user`, `nim_user`, `nama_user`, `username_user`, `password_user`, `level_user`, `status_user`, `image_user`, `created_user`) VALUES
+('819765yh2Do0pCF61jQTK5a3vxMrw7', NULL, NULL, 'riccoyhandy12@gmail.com', NULL, 'Tiara Anggraini', 'user', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-10-22 05:50:47'),
+('872594mwrOfNe29L8gzRqDStoP1kCH', '55201', '009', 'ervin.fikotm@gmail.com', '1700018127', 'Ervin Fikot M', 'user1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 2, 1, NULL, '2021-11-23 23:07:42'),
+('948057SjkdyNnrsWzPiAUw78b2t4Hc', NULL, NULL, 'user@gmail.com', NULL, 'Ervin Fikot M', 'user14', '8cb2237d0679ca88db6464eac60da96345513964', 1, 1, NULL, '2021-10-20 01:31:43'),
+('99473177322717184', NULL, NULL, 'ervinfm14@gmail.com', NULL, 'Tiara Anggraini Gaib', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 'user-JCgGbja9n0zAQUHP1M6lyxNIswVt5X.png', '2021-10-13 05:29:10');
 
 -- --------------------------------------------------------
 
@@ -610,6 +618,89 @@ INSERT INTO `tbl_user_log` (`id_user_log`, `id_user`, `target_user_log`, `device
 (44, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:19:43'),
 (45, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:20:02'),
 (46, '99473177322717184', 'admin/apriori/hasil/134280695', 'Windows 10 | Chrome | ::1', '2021-11-11 11:46:28');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_fakultas`
+--
+
+CREATE TABLE `tb_fakultas` (
+  `id_fakultas` varchar(50) NOT NULL,
+  `nama_fakultas` varchar(255) NOT NULL,
+  `created_fakultas` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_fakultas`
+--
+
+INSERT INTO `tb_fakultas` (`id_fakultas`, `nama_fakultas`, `created_fakultas`) VALUES
+('001', 'Fakultas Agama Islam', '2021-11-23 20:23:00'),
+('002', 'Fakultas Ekonomi dan Bisnis', '2021-11-23 20:23:00'),
+('003', 'Fakultas Hukum', '2021-11-23 20:23:00'),
+('004', 'Fakultas Psikolgi', '2021-11-23 20:23:00'),
+('005', 'Fakultas Farmasi', '2021-11-23 20:23:00'),
+('006', 'Fakultas Kedokteran', '2021-11-23 20:23:00'),
+('007', 'Fakultas Kesehatan Masyarakat', '2021-11-23 20:23:00'),
+('008', 'Fakultas Keguruan dan Ilmu Pendidikan', '2021-11-23 20:23:00'),
+('009', 'Fakultas Teknologi Industri', '2021-11-23 20:21:33'),
+('010', 'Fakultas Sastra Budaya dan Komunikasi', '2021-11-23 20:23:28'),
+('011', 'Fakultas Sains dan Teknologi Terapan', '2021-11-23 20:23:28');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_prodi`
+--
+
+CREATE TABLE `tb_prodi` (
+  `id_prodi` varchar(50) NOT NULL,
+  `id_fakultas` varchar(50) NOT NULL,
+  `nama_prodi` varchar(255) NOT NULL,
+  `created_prodi` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_prodi`
+--
+
+INSERT INTO `tb_prodi` (`id_prodi`, `id_fakultas`, `nama_prodi`, `created_prodi`) VALUES
+('11201', '006', 'Kedokteran', '2021-11-23 22:39:32'),
+('13201', '007', 'Kesehatan Masyarakat', '2021-11-23 22:41:49'),
+('13211', '007', 'Gizi', '2021-11-23 22:42:26'),
+('20201', '009', 'Teknik Elektro', '2021-11-23 20:56:44'),
+('24201', '009', 'Teknik Kimia', '2021-11-23 22:48:18'),
+('26201', '009', 'Teknik Industri', '2021-11-23 22:47:52'),
+('41221', '009', 'Teknologi Pangan', '2021-11-23 22:48:32'),
+('44201', '011', 'Matematika', '2021-11-23 22:59:42'),
+('45201', '011', 'Fisika', '2021-11-23 22:58:54'),
+('46201', '011', 'Biologi', '2021-11-23 22:59:10'),
+('48101', '005', 'Farmasi', '2021-11-23 22:38:12'),
+('55201', '009', 'Teknik Informatika', '2021-11-23 20:21:14'),
+('57201', '011', 'Sistem Informasi\r\n', '2021-11-23 20:27:06'),
+('60201', '002', 'Ekonomi Pembangunan', '2021-11-23 22:31:29'),
+('61101', '002', 'Manajemen', '2021-11-23 22:25:32'),
+('61206', '001', 'Perbankan Syari\'ah', '2021-11-23 22:22:11'),
+('62201', '002', 'Akuntansi', '2021-11-23 22:29:44'),
+('70201', '010', 'Ilmu Komunikasi', '2021-11-23 22:52:49'),
+('70234', '001', 'Pendidikan Agama Islam', '2021-11-23 22:21:44'),
+('73201', '004', 'Psikologi', '2021-11-23 22:35:21'),
+('74201', '003', 'Ilmu Hukum', '2021-11-23 22:34:59'),
+('76231', '001', 'Ilmu Hadis', '2021-11-23 22:33:01'),
+('79201', '010', 'Sastra Indonesia', '2021-11-23 22:51:53'),
+('79202', '010', 'Sastra Inggris', '2021-11-23 22:52:09'),
+('79203', '001', 'Bahasa dan Sastra Arab', '2021-11-23 20:27:06'),
+('84202', '008', 'Pendidikan Matematika', '2021-11-23 22:44:31'),
+('84203', '008', ' Pendidikan Fisika', '2021-11-23 22:44:49'),
+('84205', '008', 'Pendidikan Biologi', '2021-11-23 20:27:06'),
+('86201', '008', 'Bimbingan Konseling', '2021-11-23 22:43:38'),
+('86206', '008', ' Pendidikan Guru dan Sekolah Dasar', '2021-11-23 22:45:27'),
+('86207', '008', 'Pendidikan Guru Pendidikan Anak Usia Dini', '2021-11-23 22:46:27'),
+('87205', '008', ' Pendidikan Pancasila dan Kewarganegaraan', '2021-11-23 22:45:04'),
+('88103', '008', ' Pendidikan Bahasa Inggris', '2021-11-23 22:43:59'),
+('88201', '008', ' Pendidikan Bahasa dan Sastra Indonesia', '2021-11-23 22:44:15'),
+('93312', '002', 'Bisnis Jasa Makanan', '2021-11-23 22:31:00');
 
 --
 -- Indexes for dumped tables
@@ -696,6 +787,19 @@ ALTER TABLE `tbl_user_log`
   ADD PRIMARY KEY (`id_user_log`);
 
 --
+-- Indeks untuk tabel `tb_fakultas`
+--
+ALTER TABLE `tb_fakultas`
+  ADD PRIMARY KEY (`id_fakultas`);
+
+--
+-- Indeks untuk tabel `tb_prodi`
+--
+ALTER TABLE `tb_prodi`
+  ADD PRIMARY KEY (`id_prodi`),
+  ADD KEY `id_fakultas` (`id_fakultas`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -715,7 +819,7 @@ ALTER TABLE `tbl_dataset_transit`
 -- AUTO_INCREMENT untuk tabel `tbl_itemset1`
 --
 ALTER TABLE `tbl_itemset1`
-  MODIFY `id_itemset1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `id_itemset1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_itemset2`

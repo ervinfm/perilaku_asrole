@@ -366,3 +366,12 @@ function update_status_proses($id_proses)
     $ci->db->where('id_proses', $id_proses);
     $ci->db->update('tbl_konsultasi_log', $params);
 }
+
+function get_konsultasi_history_user()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_log');
+    $ci->db->where('author_proses', $ci->session->userdata('user_id'));
+    $query = $ci->db->get();
+    return $query;
+}

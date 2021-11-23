@@ -79,6 +79,12 @@
                     <!-- Navigation -->
                     <ul class="navbar-nav mb-md-3">
                         <li class="nav-item">
+                            <a class="nav-link <?= $this->uri->segment(2) == 'admisi' ? 'active' : null ?>" href="<?= site_url('admin/admisi') ?>">
+                                <i class="ni ni-building"></i>
+                                <span class="nav-link-text">Fakultas dan Prodi</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link <?= $this->uri->segment(2) == 'setting' ? 'active' : null ?>" href="<?= site_url('admin/setting') ?>">
                                 <i class="ni ni-controller"></i>
                                 <span class="nav-link-text">Setting</span>

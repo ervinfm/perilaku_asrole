@@ -1,11 +1,3 @@
-<?php
-$min = array();
-foreach (get_konsultasi_hasil($row->id_proses)->result() as $key => $term) {
-    array_push($min, $term->confidence);
-}
-$min_conf = min($min);
-
-?>
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body">
@@ -70,8 +62,8 @@ $min_conf = min($min);
                                                         <td><?= $min_conf . ' %' . '   (+' . ($min_conf - 25) . ')' ?></td>
                                                         <td><?= level_stres($min_conf) ?></td>
                                                         <td>
-                                                            <a href="" class="btn btn-info btn-sm rounded-circle" title="Detail"><i class="fa fa-info-circle"></i></a>
-                                                            <a href="" class="btn btn-warning btn-sm rounded-circle" title="Cetak"><i class="fa fa-print"></i></a>
+                                                            <a href="<?= site_url('riwayat/detail/' . $data->id_proses) ?>" class="btn btn-info btn-sm rounded-circle" title="Detail"><i class="fa fa-info-circle"></i></a>
+                                                            <a href="<?= site_url('riwayat/cetak/' . $data->id_proses) ?>" target="_blank" class="btn btn-warning btn-sm rounded-circle" title="Cetak"><i class="fa fa-print"></i></a>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
