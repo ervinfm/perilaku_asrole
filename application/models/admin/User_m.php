@@ -19,6 +19,9 @@ class User_m extends CI_Model
     {
         $params = [
             'id_user' => random_string('alnum', 30),
+            'id_fakultas' => $post['u_fakultas'],
+            'id_prodi' => $post['u_prodi'],
+            'nim_user' => $post['u_nim'],
             'email_user' => $post['u_email'],
             'nama_user' => $post['u_nama'],
             'username_user' => $post['u_username'],
@@ -32,6 +35,9 @@ class User_m extends CI_Model
     function update($post)
     {
         $params = [
+            'id_fakultas' => $post['u_fakultas'],
+            'id_prodi' => $post['u_prodi'],
+            'nim_user' => $post['u_nim'],
             'email_user' => $post['u_email'],
             'nama_user' => $post['u_nama'],
             'username_user' => $post['u_username'],

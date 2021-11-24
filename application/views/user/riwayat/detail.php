@@ -48,34 +48,47 @@ $min_conf = min($min);
                     <div class="row">
                         <div class="col-sm-12">
                             <span class="h3 m-0 text-white">A. Deskripsi Konsultasi</span>
-                            <table class="table table-bordered text-white mt-2">
-                                <tr>
-                                    <td width="30%">ID Konsultasi</td>
-                                    <td width="5%">:</td>
-                                    <td><?= $row->id_konsultasi ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Tanggal Konsultasi</td>
-                                    <td>:</td>
-                                    <td><?= tanggal_indo(date('Y-m-d', strtotime($row->created_proses))) . ' ' . date('H:i:s', strtotime($row->created_proses)) ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Nama Clien</td>
-                                    <td>:</td>
-                                    <td><?= profil()->nama_user ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Proses Konsultasi</td>
-                                    <td>:</td>
-                                    <td>100%</td>
-                                </tr>
-                                <tr>
-                                    <td>Status Konsultasi</td>
-                                    <td>:</td>
-                                    <td>Selesai</td>
-                                </tr>
-                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <table class="table table-bordered text-white mt-2">
+                                        <tr>
+                                            <td width="30%">ID Konsultasi</td>
+                                            <td width="5%">:</td>
+                                            <td><?= $row->id_konsultasi ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tanggal Konsultasi</td>
+                                            <td>:</td>
+                                            <td><?= tanggal_indo(date('Y-m-d', strtotime($row->created_proses))) . ' ' . date('H:i:s', strtotime($row->created_proses)) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>ID Clien</td>
+                                            <td>:</td>
+                                            <td><?= profil()->nim_user ?></td>
+                                        </tr>
 
+                                    </table>
+                                </div>
+                                <div class="col-sm-6">
+                                    <table class="table table-bordered text-white mt-2">
+                                        <tr>
+                                            <td>Nama Clien</td>
+                                            <td>:</td>
+                                            <td><?= profil()->nama_user ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fakultas</td>
+                                            <td>:</td>
+                                            <td><?= get_fakultas(profil()->id_fakultas)->row()->nama_fakultas ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Program Studi</td>
+                                            <td>:</td>
+                                            <td><?= get_prodi_row(profil()->id_prodi)->row()->nama_prodi ?></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-12 mt-2">
                             <span class="h3 m-0 text-white">B. Aturan Asosiasi</span>

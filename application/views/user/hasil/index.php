@@ -57,7 +57,11 @@ $min_conf = min($min);
                                     <td>:</td>
                                     <td><?= tanggal_indo(date('Y-m-d', strtotime($row->created_proses))) . ' ' . date('H:i:s', strtotime($row->created_proses)) ?></td>
                                 </tr>
-
+                                <tr>
+                                    <td width="30%">ID Clien</td>
+                                    <td width="5%">:</td>
+                                    <td><?= profil()->nim_user ?></td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-sm-6">
@@ -68,9 +72,14 @@ $min_conf = min($min);
                                     <td><?= profil()->nama_user ?></td>
                                 </tr>
                                 <tr>
-                                    <td>Proses Konsultasi</td>
-                                    <td>:</td>
-                                    <td>100% (Selesai)</td>
+                                    <td width="30%">Program Studi Clien</td>
+                                    <td width="5%">:</td>
+                                    <td><?= get_prodi_row(profil()->id_prodi)->row()->nama_prodi ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Program Studi Clien</td>
+                                    <td width="5%">:</td>
+                                    <td><?= get_fakultas(profil()->id_fakultas)->row()->nama_fakultas ?></td>
                                 </tr>
                             </table>
                         </div>

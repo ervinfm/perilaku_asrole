@@ -26,20 +26,20 @@ class User extends CI_Controller
             if ($this->db->affected_rows() > 0) {
                 insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Pengguna Baru Berhasil di Ditambahkan!');
-                redirect('admin/user');
+                redirect('admin/user' . ($post['u_level'] == 2 ? '?level=users' : null));
             } else {
                 $this->session->set_flashdata('error', 'Pengguna Baru Gagal di Ditambahkan!');
-                redirect('admin/user');
+                redirect('admin/user' . ($post['u_level'] == 2 ? '?level=users' : null));
             }
         } else  if (isset($post['update'])) {
             $this->user_m->update($post);
             if ($this->db->affected_rows() > 0) {
                 insert_user_log(uri_string());
                 $this->session->set_flashdata('succes', 'Pengguna Baru Berhasil di Diperbaharui!');
-                redirect('admin/user');
+                redirect('admin/user' . ($post['u_level'] == 2 ? '?level=users' : null));
             } else {
                 $this->session->set_flashdata('error', 'Pengguna Baru Gagal di Diperbaharui!');
-                redirect('admin/user');
+                redirect('admin/user' . ($post['u_level'] == 2 ? '?level=users' : null));
             }
         }
     }

@@ -272,7 +272,35 @@
             $('#tabledata').DataTable();
         });
     </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
+            $('#fakultas').change(function() {
+                var id = $(this).val();
+                $.ajax({
+                    url: "<?= site_url('auth/get_prodi'); ?>",
+                    method: "POST",
+                    data: {
+                        id: id
+                    },
+                    async: true,
+                    dataType: 'json',
+                    success: function(data) {
+
+                        var html = '';
+                        var i;
+                        for (i = 0; i < data.length; i++) {
+                            html += '<option value=' + data[i].id_prodi + '>' + data[i].id_prodi + ' - ' + data[i].nama_prodi + '</option>';
+                        }
+                        $('#prodi').html(html);
+
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
 </body>
 
 </html>
