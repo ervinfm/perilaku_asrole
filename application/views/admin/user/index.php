@@ -137,31 +137,40 @@ switch (@$_GET['level']) {
                         </div>
                         <div class="col-sm-12 mt-3">
                             <div class="table-responsive">
-                                <table class="table align-items-center table-flush" id="tabledata">
-                                    <thead class="thead-light">
+                                <table class="table" id="tabledata">
+                                    <thead>
                                         <tr>
                                             <th scope="col" class="sort" data-sort="name">Pengguna</th>
+                                            <?php if ($level == 2) { ?>
+                                                <th scope="col" class="sort" data-sort="budget">Fakultas/Prodi</th>
+                                            <?php } ?>
                                             <th scope="col" class="sort" data-sort="budget">Email</th>
                                             <th scope="col" class="sort" data-sort="status">Status</th>
                                             <th scope="col" class="sort" data-sort="completion">Level</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="list">
+                                    <tbody>
                                         <?php foreach ($row->result() as $key => $user) {
-                                            if ($user->level_user == $level) {
-                                        ?>
+                                            if ($user->level_user == $level) { ?>
                                                 <tr>
-                                                    <th scope="row">
+                                                    <td scope="row">
                                                         <div class="media align-items-center">
                                                             <a href="#" class="avatar rounded-circle mr-3">
                                                                 <img alt="Image placeholder" src="<?= base_url() . 'assets/image/' . ($user->image_user == null ? 'default.jpg' : $user->image_user) ?>">
                                                             </a>
                                                             <div class="media-body">
                                                                 <span class="name mb-0 text-sm"><?= $user->nama_user ?></span>
+                                                                <?php if ($level == 2) { ?>
+                                                                    <br>
+                                                                    <span class="name mb-0 text-sm"><i style="font-size:10px"><?= $user->nim_user ?></i></span>
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
-                                                    </th>
+                                                    </td>
+                                                    <?php if ($level == 2) { ?>
+                                                        <td><?= $user->id_fakultas . ' / ' . $user->id_prodi ?></td>
+                                                    <?php  } ?>
                                                     <td class="budget">
                                                         <?= $user->email_user ?>
                                                     </td>

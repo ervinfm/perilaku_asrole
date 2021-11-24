@@ -857,11 +857,11 @@ function get_perilaku_transpost($perilaku, $atribut)
 function level_stres($value)
 {
     if ($value >= 75) {
-        return "Strees Berat";
+        return "Stres Berat";
     } else if ($value < 75 && $value >= 50) {
-        return "Strees Sedang";
+        return "Stres Sedang";
     } else if ($value < 50 && $value >= 25) {
-        return "Strees Ringan";
+        return "Stres Ringan";
     } else if ($value < 25) {
         return "Normal";
     }

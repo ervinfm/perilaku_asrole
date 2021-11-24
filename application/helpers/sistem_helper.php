@@ -63,6 +63,16 @@ function cek_sistem_access($id, $level)
     }
 }
 
+function inisial_string($string)
+{
+    $arr = explode(' ', $string);
+    $singkatan = '';
+    foreach ($arr as $kata) {
+        $singkatan .= substr($kata, 0, 1);
+    }
+    return strtoupper($singkatan);
+}
+
 function cek_user_setting($post)
 {
     $ci = &get_instance();
@@ -250,6 +260,23 @@ function get_dataset()
     $ci->db->from('tbl_dataset');
     $query = $ci->db->get();
     return $query;
+}
+
+function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $param4, $fak)
+{
+    $ci = &get_instance();
+    $params = [
+        'itemset_dataset' => $itemset,
+        'datetime_dataset' => $date,
+        'subyek_dataset' => $subyek,
+        'params1_dataset' => $param1,
+        'params2_dataset' => $param2,
+        'params3_dataset' => $param3,
+        'params4_dataset' => $param4,
+        'author_dataset' => $ci->session->userdata('user_id'),
+        'id_fakultas' => $fak,
+    ];
+    $ci->db->insert('tbl_dataset', $params);
 }
 
 function get_update_dataset()

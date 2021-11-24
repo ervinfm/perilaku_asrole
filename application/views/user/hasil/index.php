@@ -102,10 +102,10 @@ $min_conf = min($min);
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center" style="font-family: 'Orbitron', sans-serif; font-size:20px">Stress : <?= $min_conf . '%' ?></td>
+                                            <td class="text-center" style="font-family: 'Orbitron', sans-serif; font-size:20px">Stres : <?= round($min_conf, 2) . '%' ?></td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center" style="font-family: 'Orbitron', sans-serif; font-size:13px"> + <?= $min_conf - 25 ?> Normal</td>
+                                            <td class="text-center" style="font-family: 'Orbitron', sans-serif; font-size:13px"> + <?= round($min_conf, 2) - 25 ?> Normal</td>
                                         </tr>
                                     </table>
                                 </div>
