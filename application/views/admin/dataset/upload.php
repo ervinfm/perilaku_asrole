@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table" id="tabledata">
                                         <thead>
                                             <tr>
                                                 <th width="3%">No</th>
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tabledata">
                                         <thead>
                                             <tr>
                                                 <th width="3%">No</th>
@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tabledata">
                                         <thead>
                                             <tr>
                                                 <th width="3%">No</th>
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tabledata">
                                         <thead>
                                             <tr>
                                                 <th width="3%">No</th>
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tabledata">
                                         <thead>
                                             <tr>
                                                 <th width="3%">No</th>

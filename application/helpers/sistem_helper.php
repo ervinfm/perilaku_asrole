@@ -376,6 +376,14 @@ function icon_matbul()
     return $salam;
 }
 
+function konversi_tanggal_timestamp($datas)
+{
+    $date_filter = substr($datas, 0, 9);
+    $parts = explode('/', $date_filter);
+    $new_format = $parts[2] . '-' . $parts[0] . '-' . $parts[1];
+    return $new_format;
+}
+
 // Konsultasi
 
 function range_jawaban($name)

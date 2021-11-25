@@ -77,7 +77,7 @@ $min_conf = min($min);
                                     <td><?= get_prodi_row(profil()->id_prodi)->row()->nama_prodi ?></td>
                                 </tr>
                                 <tr>
-                                    <td width="30%">Program Studi Clien</td>
+                                    <td width="30%">Fakultas Clien</td>
                                     <td width="5%">:</td>
                                     <td><?= get_fakultas(profil()->id_fakultas)->row()->nama_fakultas ?></td>
                                 </tr>

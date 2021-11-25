@@ -131,28 +131,66 @@ class Dataset extends CI_Controller
                 foreach ($object->getWorksheetIterator() as $worksheet) {
                     $highestRow = $worksheet->getHighestRow();
                     $highestColumn = $worksheet->getHighestColumn();
-                    if ($highestColumn < 100) {
-                        for ($row = 2; $row <= $highestRow; $row++) {
-                            // $date = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
-                            $date = date('Y-m-d');
-                            $subyek = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
-                            $params1 = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-                            $params2 = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-                            $params3 = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
-                            $params4 = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
-                            $temp_data[] = array(
-                                'datetime_dataset'    => $date,
-                                'subyek_dataset'    => $subyek,
-                                'params1_dataset'    => $params1,
-                                'params2_dataset'    => $params2,
-                                'params3_dataset'    => $params3,
-                                'params4_dataset'    => $params4,
-                                'author_dataset'    => profil()->id_user,
-                            );
+                    for ($row = 2; $row <= $highestRow; $row++) {
+                        // Tanggal Menyesuaikan format SQL
+                        $date_tmp = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
+                        $date =  konversi_tanggal_timestamp($date_tmp);
+
+                        $subyek = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+                        $prodi = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+
+                        $temp1 = $temp2 = $temp3 = $temp4 = null;
+                        // Untuk Kriteria 1 Religiusitas (kolom 22-30)
+                        for ($a = 22; $a <= 30; $a++) {
+                            if ($a == 22) {
+                                $temp1 = $worksheet->getCellByColumnAndRow($a, $row)->getValue();
+                            } else {
+                                $temp1 =  $temp1 . ',' . $worksheet->getCellByColumnAndRow($a, $row)->getValue();
+                            }
                         }
-                    } else {
-                        $this->session->set_flashdata('error', 'Dataset Gagal di Unggah, Jumlah Data Melebihi 100 Baris!');
-                        redirect('admin/dataset/upload');
+
+                        // Untuk Kriteria 2 Kehidupan Sosial Dan Keluarga (kolom 15-21)
+                        for ($b = 15; $b <= 21; $b++) {
+                            if ($b == 15) {
+                                $temp2 = $worksheet->getCellByColumnAndRow($b, $row)->getValue();
+                            } else {
+                                $temp2 =  $temp2 . ',' . $worksheet->getCellByColumnAndRow($b, $row)->getValue();
+                            }
+                        }
+
+                        // Untuk Kriteria 3 Masalah Akademik (kolom 54-57)
+                        for ($c = 54; $c <= 57; $c++) {
+                            if ($c == 54) {
+                                $temp3 = $worksheet->getCellByColumnAndRow($c, $row)->getValue();
+                            } else {
+                                $temp3 =  $temp3 . ',' . $worksheet->getCellByColumnAndRow($c, $row)->getValue();
+                            }
+                        }
+
+                        // Untuk Kriteria 4 Masalah Keluarga (kolom 63-67)
+                        for ($d = 63; $d <= 67; $d++) {
+                            if ($d == 54) {
+                                $temp4 = $worksheet->getCellByColumnAndRow($d, $row)->getValue();
+                            } else {
+                                $temp4 =  $temp4 . ',' . $worksheet->getCellByColumnAndRow($d, $row)->getValue();
+                            }
+                        }
+
+                        $params1 = $temp1;
+                        $params2 = $temp2;
+                        $params3 = $temp3;
+                        $params4 = $temp4;
+                        $fakultas = get_fakultas_by_nameprodi($prodi)->id_fakultas;
+                        $temp_data[] = array(
+                            'datetime_dataset'  => $date,
+                            'subyek_dataset'    => $subyek,
+                            'params1_dataset'   => $params1,
+                            'params2_dataset'   => $params2,
+                            'params3_dataset'   => $params3,
+                            'params4_dataset'   => $params4,
+                            'author_dataset'    => $this->session->userdata('user_id'),
+                            'id_fakultas' => $fakultas,
+                        );
                     }
                 }
                 $this->dataset_m->upload($temp_data);
@@ -255,6 +293,7 @@ class Dataset extends CI_Controller
                 'params3_dataset'   => $dataset->params3_dataset,
                 'params4_dataset'   => $dataset->params4_dataset,
                 'author_dataset'    => profil()->id_user,
+                'id_fakultas'       => $dataset->id_fakultas,
             ];
             $this->dataset_m->submit($temp_data);
         }

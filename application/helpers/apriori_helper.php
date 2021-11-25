@@ -10,6 +10,15 @@ function get_itemset()
     return $query;
 }
 
+function get_fakultas_by_nameprodi($string)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_prodi');
+    $ci->db->like('nama_prodi', $string, 'both');
+    $query = $ci->db->get();
+    return $query->row();
+}
+
 function get_itemset_bydate($first, $last)
 {
     $ci = &get_instance();

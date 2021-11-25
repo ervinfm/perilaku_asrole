@@ -130,9 +130,9 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <?php
-
-                    ?>
+                    <!-- <?php
+                            print_r(get_fakultas_by_nameprodi('sastra indonesia')->row()->nama_prodi);
+                            ?> -->
                 </div>
             </div>
         </div>
