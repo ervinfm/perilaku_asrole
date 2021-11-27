@@ -54,7 +54,7 @@ class Konsultasi extends CI_Controller
             $post['params2'] = $questB;
             $post['params3'] = $questC;
             $post['params4'] = $questD;
-            insert_dataset(null, date('Y-m-d'), profil()->nama_user, $questA, $questB, $questC, $questD, profil()->id_fakultas);
+            insert_dataset(null, date('Y-m-d'), profil()->nama_user, $questA, $questB, $questC, $questD, profil()->id_fakultas, profil()->id_prodi);
             $this->konsultasi_m->insert_konsultasi($post);
             if ($this->db->affected_rows() > 0) {
                 $post['id_proses'] = random_string('numeric', 10);

@@ -180,7 +180,8 @@ class Dataset extends CI_Controller
                         $params2 = $temp2;
                         $params3 = $temp3;
                         $params4 = $temp4;
-                        $fakultas = get_fakultas_by_nameprodi($prodi)->id_fakultas;
+                        $fakultas = get_fakultas_by_nameprodi($prodi)->id_fakultas == null ? get_fakultas_by_nameprodi('Ilmu Hadis')->id_fakultas : get_fakultas_by_nameprodi($prodi)->id_fakultas;
+                        $prodi = get_fakultas_by_nameprodi($prodi)->id_prodi == null ? get_fakultas_by_nameprodi('Ilmu Hadis')->id_prodi : get_fakultas_by_nameprodi($prodi)->id_prodi;
                         $temp_data[] = array(
                             'datetime_dataset'  => $date,
                             'subyek_dataset'    => $subyek,
@@ -190,6 +191,7 @@ class Dataset extends CI_Controller
                             'params4_dataset'   => $params4,
                             'author_dataset'    => $this->session->userdata('user_id'),
                             'id_fakultas' => $fakultas,
+                            'id_prodi' => $prodi,
                         );
                     }
                 }
@@ -294,6 +296,7 @@ class Dataset extends CI_Controller
                 'params4_dataset'   => $dataset->params4_dataset,
                 'author_dataset'    => profil()->id_user,
                 'id_fakultas'       => $dataset->id_fakultas,
+                'id_prodi'       => $dataset->id_prodi,
             ];
             $this->dataset_m->submit($temp_data);
         }

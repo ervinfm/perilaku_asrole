@@ -262,7 +262,7 @@ function get_dataset()
     return $query;
 }
 
-function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $param4, $fak)
+function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $param4, $fak, $prodi)
 {
     $ci = &get_instance();
     $params = [
@@ -275,6 +275,7 @@ function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $pa
         'params4_dataset' => $param4,
         'author_dataset' => $ci->session->userdata('user_id'),
         'id_fakultas' => $fak,
+        'id_prodi' => $prodi,
     ];
     $ci->db->insert('tbl_dataset', $params);
 }

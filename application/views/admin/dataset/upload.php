@@ -39,6 +39,7 @@
                                                 <th width="3%">No</th>
                                                 <th width="10%">Datetime</th>
                                                 <th width="10%">Subjek</th>
+                                                <th>ID Fakultas</th>
                                                 <th>Itemset 1</th>
                                                 <th>Itemset 2</th>
                                                 <th>Itemset 3</th>
@@ -51,6 +52,7 @@
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= $dataset->datetime_dataset ?></td>
                                                     <td><?= $dataset->subyek_dataset ?></td>
+                                                    <td><a href="<?= site_url('admin/admisi/prodi/data/' . $dataset->id_fakultas) ?>" target="_blank"><?= $dataset->id_fakultas ?></a></td>
                                                     <td><?= $dataset->params1_dataset ?></td>
                                                     <td><?= $dataset->params2_dataset ?></td>
                                                     <td><?= $dataset->params3_dataset ?></td>
@@ -86,6 +88,7 @@
                                                 <th width="3%">No</th>
                                                 <th width="10%">Datetime</th>
                                                 <th width="10%">Subjek</th>
+
                                                 <th>Itemset 1</th>
                                                 <th>Itemset 2</th>
                                                 <th>Itemset 3</th>
@@ -98,6 +101,7 @@
                                                     <td><?= $key + 1 ?></td>
                                                     <td><?= $dataset->datetime_dataset  ?></td>
                                                     <td><?= $dataset->subyek_dataset ?></td>
+
                                                     <td><?= $dataset->params1_dataset == NULL ? '<i style="color:red">Error</i>' : $dataset->params1_dataset ?></td>
                                                     <td><?= $dataset->params2_dataset == NULL ? '<i style="color:red">Error</i>' : $dataset->params2_dataset ?></td>
                                                     <td><?= $dataset->params3_dataset == NULL ? '<i style="color:red">Error</i>' : $dataset->params3_dataset ?></td>

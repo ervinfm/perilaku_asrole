@@ -68,7 +68,7 @@
                                                 <tr>
                                                     <th width="2%">No</th>
                                                     <th width="8%">Datetime</th>
-                                                    <th width="8%">Subjek</th>
+                                                    <th width="8%">Subjek / (Fakultas/Prodi)</th>
                                                     <th>Itemset 1</th>
                                                     <th>Itemset 2</th>
                                                     <th>Itemset 3</th>
@@ -81,7 +81,7 @@
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
                                                         <td><?= date('d/m/Y', strtotime($dataset->datetime_dataset)) ?></td>
-                                                        <td><?= substr($dataset->subyek_dataset, 0, 15) ?></td>
+                                                        <td><?= substr($dataset->subyek_dataset, 0, 10) . ' - (' ?><a href="<?= site_url('admin/admisi/prodi/data/' . $dataset->id_fakultas) ?>" target="_blank"><?= $dataset->id_fakultas . ' / ' . $dataset->id_prodi ?></a>)</td>
                                                         <td><?= $dataset->params1_dataset ?></td>
                                                         <td><?= $dataset->params2_dataset ?></td>
                                                         <td><?= $dataset->params3_dataset ?></td>
