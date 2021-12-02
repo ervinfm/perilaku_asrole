@@ -21,7 +21,7 @@
                             <form action="<?= site_url('admin/apriori/proses') ?>" method="post">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <a href="#" for="input1" class="btn btn-sm btn-warning mb-2">Langkah 1 : Cari Data Perilaku Mahasiswa</a>
+                                        <a href="#" for="input1" class="btn btn-sm btn-warning mb-2">Cari Data Perilaku Mahasiswa</a>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -51,77 +51,65 @@
                                         <button type="submit" name="cari" class="btn btn-default btn-block mt-3"><i class="fa fa-search"></i> Cari Data</button>
                                     </div>
                                 </div>
-                                <?php if (@$row) { ?>
-                                    <hr class="m-0 mb-2 p-0">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <a href="#" for="input1" class="btn btn-sm btn-info mb-2">Dataset Perilaku Mahasiswa Rentang Tanggal <?= date('d M Y', strtotime($this->session->flashdata('Date_first'))) ?> - <?= date('d M Y', strtotime($this->session->flashdata('Date_last'))) ?> </a>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="table-responsive">
-                                                <table class="table" id="tabledata">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="2%">No</th>
-                                                            <th>Tanggal</th>
-                                                            <th>Subjek</th>
-                                                            <th>Itemset / Support</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach ($row->result() as $key => $dataset) { ?>
-                                                            <tr>
-                                                                <td><?= $key + 1 ?></td>
-                                                                <td><?= date('d/m/Y', strtotime($dataset->datetime_dataset)) ?></td>
-                                                                <td><?= $dataset->subyek_dataset ?></td>
-                                                                <?php if ($input['p_kriteria'] == 1) { ?>
-                                                                    <td><?= $dataset->params1_dataset ?></td>
-                                                                <?php } else if ($input['p_kriteria'] == 2) { ?>
-                                                                    <td><?= $dataset->params2_dataset ?></td>
-                                                                <?php } else if ($input['p_kriteria'] == 3) { ?>
-                                                                    <td><?= $dataset->params3_dataset ?></td>
-                                                                <?php } else if ($input['p_kriteria'] == 4) { ?>
-                                                                    <td><?= $dataset->params4_dataset ?></td>
-                                                                <?php } ?>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 mt-3">
-                                            <a class="btn btn-danger float-right" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"> Lanjut Langkah 2 <i class="fa fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
-                                <?php } ?>
                             </form>
-                        </div>
-                        <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
-                            <form action="<?= site_url('admin/apriori/proses') ?>" method="post">
-                                <input type="hidden" name="d_first" value="<?= $this->session->flashdata('Date_first') ?>" required>
-                                <input type="hidden" name="d_last" value="<?= $this->session->flashdata('Date_last') ?>" required>
-                                <input type="hidden" name="kriteria" value="<?= $this->session->flashdata('P_kriteria') ?>" required>
+                            <?php if (@$row) { ?>
+                                <hr class="m-0 mb-2 p-0">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <a href="#" for="input1" class="btn btn-sm btn-danger mb-2">Langkah 2 : Input Nilai Min. Support dan Min. Confident</a>
+                                        <a href="#" for="input1" class="btn btn-sm btn-info mb-2">Dataset Perilaku Mahasiswa Rentang Tanggal <?= date('d M Y', strtotime($this->session->flashdata('Date_first'))) ?> - <?= date('d M Y', strtotime($this->session->flashdata('Date_last'))) ?> </a>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="form-control-label">Minimum Support *</label>
-                                            <input class="form-control" type="number" name="p_support" min="0" max="100" value="<?= $this->session->flashdata('P_support') ?>" id="example-date-input" required>
+                                    <div class="col-sm-12">
+                                        <div class="table-responsive">
+                                            <table class="table" id="tabledata">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="2%">No</th>
+                                                        <th>Tanggal</th>
+                                                        <th>Subjek</th>
+                                                        <th>Itemset / Support</th>
+                                                        <th>Fakultas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($row->result() as $key => $dataset) { ?>
+                                                        <tr>
+                                                            <td><?= $key + 1 ?></td>
+                                                            <td><?= date('d/m/Y', strtotime($dataset->datetime_dataset)) ?></td>
+                                                            <td><?= $dataset->subyek_dataset ?></td>
+                                                            <?php if ($input['p_kriteria'] == 1) { ?>
+                                                                <td><?= $dataset->params1_dataset ?></td>
+                                                            <?php } else if ($input['p_kriteria'] == 2) { ?>
+                                                                <td><?= $dataset->params2_dataset ?></td>
+                                                            <?php } else if ($input['p_kriteria'] == 3) { ?>
+                                                                <td><?= $dataset->params3_dataset ?></td>
+                                                            <?php } else if ($input['p_kriteria'] == 4) { ?>
+                                                                <td><?= $dataset->params4_dataset ?></td>
+                                                            <?php } ?>
+                                                            <td>
+                                                                <?= get_fakultas($dataset->id_fakultas)->row()->nama_fakultas ?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="form-control-label">Minimum Confident *</label>
-                                            <input class="form-control" type="number" name="p_confident" min="0" max="100" value="<?= $this->session->flashdata('P_confident') ?>" id="example-date-input" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2 mt-3">
-                                        <button type="submit" name="proses" class="btn btn-default mt-3"><i class="fa fa-sync"></i> Proses Data</button>
+                                    <div class="col-sm-12 mt-3">
+                                        <form action="<?= site_url('admin/apriori/proses') ?>" method="post">
+                                            <input type="hidden" name="d_first" value="<?= $this->session->flashdata('Date_first') ?>">
+                                            <input type="hidden" name="d_last" value="<?= $this->session->flashdata('Date_last') ?>">
+                                            <input type="hidden" name="kriteria" value="<?= $this->session->flashdata('P_kriteria') ?>">
+                                            <input type="hidden" name="p_support" value="1">
+                                            <input type="hidden" name="p_confident" value="24">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <button type="submit" name="proses" class="btn btn-danger float-right mt-3"><i class="fa fa-sync"></i> Proses Dataset</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </form>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

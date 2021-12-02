@@ -13,4 +13,10 @@ class Dashboard extends CI_Controller
     {
         $this->template->load('admin/template', 'admin/dashboard');
     }
+
+    public function testing()
+    {
+        $this->load->library('asrole');
+        $this->asrole->nama();
+    }
 }

@@ -41,7 +41,7 @@ function get_last_itemset()
     return $query->row();
 }
 
-function cek_itemset($id_proses, $itemset, $lolos = TRUE)
+function cek_itemset($id_proses, $itemset, $fak, $lolos = TRUE)
 {
     $ci = &get_instance();
     if ($itemset == 1) {
@@ -55,6 +55,7 @@ function cek_itemset($id_proses, $itemset, $lolos = TRUE)
         $ci->db->where('lolos', 1);
     }
     $ci->db->where('id_proses', $id_proses);
+    $ci->db->where('id_fakultas', $fak);
     $query = $ci->db->get();
     return $query;
 }
@@ -167,11 +168,7 @@ function get_frequent_support($data, $atribut = null)
 
 function get_support_params1($row)
 {
-    $var1 = 0;
-    $var2 = 0;
-    $var3 = 0;
-    $var4 = 0;
-    $var5 = 0;
+    $var1 = $var2 = $var3 = $var4 = $var5 = 0;
 
     foreach ($row->result() as $key => $data) {
         $var1 = $var1 + get_frequent_support($data->params1_dataset, 'sup1');
@@ -325,7 +322,7 @@ function get_proses_log($id)
     return $query->row();
 }
 
-function get_itemset_by_idproses($id_proses)
+function get_itemset_by_idproses($id_proses, $id_fak)
 {
     $ci = &get_instance();
     $proses = get_proses_log($id_proses);
@@ -333,17 +330,19 @@ function get_itemset_by_idproses($id_proses)
     $ci->db->from('tbl_dataset');
     $ci->db->where('datetime_dataset >=', $proses->date_first);
     $ci->db->where('datetime_dataset <=', $proses->date_last);
+    $ci->db->where('id_fakultas ', $id_fak);
     $ci->db->order_by('datetime_dataset', 'DESC');
     $query = $ci->db->get();
     return $query;
 }
 
 
-function insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
+function insert_itemset1($id, $id_fak, $atribut, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut' => $atribut,
         'jumlah' => $jumlah,
         'support' => round($support, 2),
@@ -352,11 +351,12 @@ function insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
     $ci->db->insert('tbl_itemset1', $params);
 }
 
-function insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $lolos)
+function insert_itemset2($id, $id_fak, $atribut1, $atribut2, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut1' => $atribut1,
         'atribut2' => $atribut2,
         'jumlah' => $jumlah,
@@ -366,11 +366,12 @@ function insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $lolos)
     $ci->db->insert('tbl_itemset2', $params);
 }
 
-function insert_itemset3($id, $atribut1, $atribut2, $atribut3, $jumlah, $support, $lolos)
+function insert_itemset3($id, $id_fak, $atribut1, $atribut2, $atribut3, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut1' => $atribut1,
         'atribut2' => $atribut2,
         'atribut3' => $atribut3,
@@ -401,24 +402,62 @@ function insert_itemset_all($datas, $id, $iterasi)
     }
 }
 
-function get_iterasi1_byid($id = null)
+function get_iterasi1_byid($id = null, $fak = null)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_itemset1');
-    if ($id != null) {
+    if ($id != null && $fak != null) {
+        $ci->db->where('id_proses', $id);
+        $ci->db->where('id_fakultas', $fak);
+    } else if ($id != null) {
         $ci->db->where('id_proses', $id);
     }
     $query = $ci->db->get();
     return $query;
 }
 
-function get_iterasi2_byid($id = null)
+function get_iterasi2_byid($id = null, $fak = null, $lolos = false)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_itemset2');
-    if ($id != null) {
+    if ($id != null && $fak != null) {
+        $ci->db->where('id_proses', $id);
+        $ci->db->where('id_fakultas', $fak);
+    } else if ($id != null) {
         $ci->db->where('id_proses', $id);
     }
+    if ($lolos == TRUE) {
+        $ci->db->where('lolos', 1);
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_iterasi3_byid($id = null, $fak = null, $lolos = false)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset3');
+    if ($id != null && $fak != null) {
+        $ci->db->where('id_proses', $id);
+        $ci->db->where('id_fakultas', $fak);
+    } else if ($id != null) {
+        $ci->db->where('id_proses', $id);
+    }
+    if ($lolos == TRUE) {
+        $ci->db->where('lolos', 1);
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_iterasi_byfak($id, $date1, $date2)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('id_fakultas', $id);
+    $ci->db->where('datetime_dataset >=', $date1);
+    $ci->db->where('datetime_dataset <=', $date2);
+    $ci->db->order_by('datetime_dataset', 'DESC');
     $query = $ci->db->get();
     return $query;
 }
@@ -434,7 +473,7 @@ function cek_atribut_itemset3($id, $atribut1, $atribut2, $atribut3)
     return $ci->db->get();
 }
 
-function proses_iterasi1($query1, $post)
+function proses_iterasi1($post)
 {
     $pert = [
         'p1' => null,
@@ -450,94 +489,97 @@ function proses_iterasi1($query1, $post)
         'seleksi' => null,
     ];
 
-    foreach ($query1->result() as $key => $iterasi) {
-
-        if ($post['kriteria'] == 1) {
-            $data = explode(",", $iterasi->params1_dataset);
-        } else  if ($post['kriteria'] == 2) {
-            $data = explode(",", $iterasi->params2_dataset);
-        } else  if ($post['kriteria'] == 3) {
-            $data = explode(",", $iterasi->params3_dataset);
-        } else  if ($post['kriteria'] == 4) {
-            $data = explode(",", $iterasi->params4_dataset);
-        }
-
-        foreach ($data as $ke => $val) {
-            if ($val == 'P1') {
-                $pert['p1'] = $pert['p1'] + 1;
-            } else if ($val == 'P2') {
-                $pert['p2'] = $pert['p2'] + 1;
-            } else if ($val == 'P3') {
-                $pert['p3'] = $pert['p3'] + 1;
-            } else if ($val == 'P4') {
-                $pert['p4'] = $pert['p4'] + 1;
-            } else if ($val == 'P5') {
-                $pert['p5'] = $pert['p5'] + 1;
-            } else if ($val == 'P6') {
-                $pert['p6'] = $pert['p6'] + 1;
-            } else if ($val == 'P7') {
-                $pert['p7'] = $pert['p7'] + 1;
-            } else if ($val == 'P8') {
-                $pert['p8'] = $pert['p8'] + 1;
-            } else if ($val == 'P9') {
-                $pert['p9'] = $pert['p9'] + 1;
+    foreach (get_fakultas()->result() as $key => $fakultas) {
+        foreach (get_dataset_byfak($fakultas->id_fakultas, $post['d_first'], $post['d_last'])->result() as $key => $iterasi) {
+            $i = $key + 1;
+            if ($post['kriteria'] == 1) {
+                $data = explode(",", $iterasi->params1_dataset);
+            } else  if ($post['kriteria'] == 2) {
+                $data = explode(",", $iterasi->params2_dataset);
+            } else  if ($post['kriteria'] == 3) {
+                $data = explode(",", $iterasi->params3_dataset);
+            } else  if ($post['kriteria'] == 4) {
+                $data = explode(",", $iterasi->params4_dataset);
             }
-        }
-        $pert['datas_count'] = $pert['datas_count'] + 1;
-    }
-    for ($i = 1; $i < 10; $i++) {
-        if ($pert['p' . $i] != null) {
-            $sup = ($pert['p' . $i] / $pert['datas_count']) * 100;
-            if ($pert['p' . $i] > $post['p_support']) {
-                $seleksi = 1;
-            } else {
-                $seleksi = 0;
+
+            foreach ($data as $ke => $val) {
+                if ($val == 'P1') {
+                    $pert['p1'] = $pert['p1'] + 1;
+                } else if ($val == 'P2') {
+                    $pert['p2'] = $pert['p2'] + 1;
+                } else if ($val == 'P3') {
+                    $pert['p3'] = $pert['p3'] + 1;
+                } else if ($val == 'P4') {
+                    $pert['p4'] = $pert['p4'] + 1;
+                } else if ($val == 'P5') {
+                    $pert['p5'] = $pert['p5'] + 1;
+                } else if ($val == 'P6') {
+                    $pert['p6'] = $pert['p6'] + 1;
+                } else if ($val == 'P7') {
+                    $pert['p7'] = $pert['p7'] + 1;
+                } else if ($val == 'P8') {
+                    $pert['p8'] = $pert['p8'] + 1;
+                } else if ($val == 'P9') {
+                    $pert['p9'] = $pert['p9'] + 1;
+                }
             }
-            insert_itemset1($post['id'], 'P' . $i, $pert['p' . $i], $sup, $seleksi);
+            $pert['datas_count'] = $pert['datas_count'] + 1;
+
+            if ($pert['p' . $i] != null) {
+                $sup = ($pert['p' . $i] / $pert['datas_count']) * 100;
+                if ($pert['p' . $i] > $post['p_support']) {
+                    $seleksi = 1;
+                } else {
+                    $seleksi = 0;
+                }
+                insert_itemset1($post['id'], $fakultas->id_fakultas, 'P' . $i, $pert['p' . $i], round($sup, 2), $seleksi);
+            }
         }
     }
 }
 
-function proses_iterasi2($query, $post)
+function proses_iterasi2($post)
 {
     $paused = get_proses_log($post['id']);
-    $atribut = null;
-    foreach (get_iterasi1_byid($post['id'])->result() as $key => $iterasi1) {
-        if ($iterasi1->lolos == 1) {
-            $atribut = $atribut . ',' . $iterasi1->atribut;
+    foreach (get_fakultas()->result() as $k => $fakultas) {
+        $query = get_dataset_byfak($fakultas->id_fakultas, $post['d_first'], $post['d_last']);
+        $atribut = null;
+        foreach (get_iterasi1_byid($post['id'], $fakultas->id_fakultas)->result() as $key => $iterasi1) {
+            if ($iterasi1->lolos == 1) {
+                $atribut = $atribut . ',' . $iterasi1->atribut;
+            }
         }
-    }
 
-    $datas = explode(",", $atribut);
-    for ($i = 1; $i < count($datas); $i++) {
-        for ($j = $i + 1; $j <  count($datas); $j++) {
-            foreach ($query->result() as $key => $params) {
-                if ($paused->kriteria_proses == 1) {
-                    $data = explode(",", $params->params1_dataset);
-                } else  if ($paused->kriteria_proses == 2) {
-                    $data = explode(",", $params->params2_dataset);
-                } else  if ($paused->kriteria_proses == 3) {
-                    $data = explode(",", $params->params3_dataset);
-                } else  if ($paused->kriteria_proses == 4) {
-                    $data = explode(",", $params->params4_dataset);
+        $datas = explode(",", $atribut);
+        for ($i = 1; $i < count($datas); $i++) {
+            for ($j = $i + 1; $j <  count($datas); $j++) {
+                foreach ($query->result() as $key => $params) {
+                    if ($paused->kriteria_proses == 1) {
+                        $data = explode(",", $params->params1_dataset);
+                    } else  if ($paused->kriteria_proses == 2) {
+                        $data = explode(",", $params->params2_dataset);
+                    } else  if ($paused->kriteria_proses == 3) {
+                        $data = explode(",", $params->params3_dataset);
+                    } else  if ($paused->kriteria_proses == 4) {
+                        $data = explode(",", $params->params4_dataset);
+                    }
                 }
-            }
 
-            $count = 0;
-            foreach ($data as $key => $x) {
-                if ($x == $datas[$i] || $x == $datas[$j]) {
-                    $count++;
+                $count = 0;
+                foreach ($data as $key => $x) {
+                    if ($x == $datas[$i] || $x == $datas[$j]) {
+                        $count++;
+                    }
                 }
-            }
 
-            $support = ($count / $query->num_rows()) * 100;
-            if ($count > $paused->min_support) {
-                $lolos = 1;
-            } else {
-                $lolos = 0;
+                $support = ($count / $query->num_rows()) * 100;
+                if ($count > $paused->min_support) {
+                    $lolos = 1;
+                } else {
+                    $lolos = 0;
+                }
+                insert_itemset2($post['id'], $fakultas->id_fakultas, $datas[$i], $datas[$j], $count, round($support, 2), $lolos);
             }
-            insert_itemset2($post['id'], $datas[$i], $datas[$j], $count, $support, $lolos);
-            // echo $datas[$i] . ' => ' . $datas[$j] . ' : ' . $count . ' | ';
         }
     }
 }
@@ -545,57 +587,56 @@ function proses_iterasi2($query, $post)
 function proses_iterasi3($post)
 {
     $paused = get_proses_log($post['id']);
-    $itemset = cek_itemset($post['id'], 2);
-    foreach ($itemset->result() as $key => $value) {
-        $data = array($value->atribut1, $value->atribut2);
-        foreach ($itemset->result() as $key1 => $value2) {
-            if (!in_array($value2->atribut1, $data)) {
-                $param1[$key] = $value->atribut1;
-                $param2[$key] = $value->atribut2;
-                $param3[$key] = $value2->atribut1;
-            } else if (!in_array($value2->atribut2, $data)) {
-                $param1[$key] = $value->atribut1;
-                $param2[$key] = $value->atribut2;
-                $param3[$key] = $value2->atribut2;
-            }
-        }
-        // $temp_array = array($param1[$key], $param2[$key], $param3[$key]);
-        // sort($temp_array);
-        // $temp[$key] = $temp_array;
-
-        $cek1 = cek_atribut_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key]);
-        $cek2 = cek_atribut_itemset3($post['id'], $param3[$key], $param2[$key], $param1[$key]);
-        $cek3 = cek_atribut_itemset3($post['id'], $param2[$key], $param1[$key], $param3[$key]);
-        $cek4 = cek_atribut_itemset3($post['id'], $param1[$key], $param3[$key], $param2[$key]);
-        $cek5 = cek_atribut_itemset3($post['id'], $param3[$key], $param1[$key], $param2[$key]);
-        $cek6 = cek_atribut_itemset3($post['id'], $param2[$key], $param3[$key], $param1[$key]);
-        if ($cek1->num_rows() == 0 && $cek2->num_rows() == 0 && $cek3->num_rows() == 0 && $cek4->num_rows() == 0 && $cek5->num_rows() == 0 && $cek6->num_rows() == 0) {
-            $temp1 = $param1[$key];
-            $temp2 = $param2[$key];
-            $temp3 = $param3[$key];
-            $count = 0;
-            foreach (get_itemset_bydate($paused->date_first, $paused->date_last)->result() as $key100 => $iterasi100) {
-                if ($paused->kriteria_proses == 1) {
-                    $db = explode(",", $iterasi100->params1_dataset);
-                } else if ($paused->kriteria_proses == 2) {
-                    $db = explode(",", $iterasi100->params2_dataset);
-                } else if ($paused->kriteria_proses == 3) {
-                    $db = explode(",", $iterasi100->params3_dataset);
-                } else if ($paused->kriteria_proses == 4) {
-                    $db = explode(",", $iterasi100->params4_dataset);
-                }
-
-                if (in_array($temp1, $db) == TRUE && in_array($temp2, $db) == TRUE && in_array($temp3, $db) == TRUE) {
-                    $count = $count + 1;
+    foreach (get_fakultas()->result() as $k => $fakultas) {
+        $itemset = cek_itemset($post['id'], 2, $fakultas->id_fakultas);
+        foreach ($itemset->result() as $key => $value) {
+            $data = array($value->atribut1, $value->atribut2);
+            foreach ($itemset->result() as $key1 => $value2) {
+                if (!in_array($value2->atribut1, $data)) {
+                    $param1[$key] = $value->atribut1;
+                    $param2[$key] = $value->atribut2;
+                    $param3[$key] = $value2->atribut1;
+                } else if (!in_array($value2->atribut2, $data)) {
+                    $param1[$key] = $value->atribut1;
+                    $param2[$key] = $value->atribut2;
+                    $param3[$key] = $value2->atribut2;
                 }
             }
-            $support = ($count / get_itemset_bydate($paused->date_first, $paused->date_last)->num_rows()) * 100;
-            if ($count > $post['p_support']) {
-                $seleksi = 1;
-            } else {
-                $seleksi = 0;
+
+            $cek1 = cek_atribut_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key]);
+            $cek2 = cek_atribut_itemset3($post['id'], $param3[$key], $param2[$key], $param1[$key]);
+            $cek3 = cek_atribut_itemset3($post['id'], $param2[$key], $param1[$key], $param3[$key]);
+            $cek4 = cek_atribut_itemset3($post['id'], $param1[$key], $param3[$key], $param2[$key]);
+            $cek5 = cek_atribut_itemset3($post['id'], $param3[$key], $param1[$key], $param2[$key]);
+            $cek6 = cek_atribut_itemset3($post['id'], $param2[$key], $param3[$key], $param1[$key]);
+            if ($cek1->num_rows() == 0 && $cek2->num_rows() == 0 && $cek3->num_rows() == 0 && $cek4->num_rows() == 0 && $cek5->num_rows() == 0 && $cek6->num_rows() == 0) {
+                $temp1 = $param1[$key];
+                $temp2 = $param2[$key];
+                $temp3 = $param3[$key];
+                $count = 0;
+                foreach (get_itemset_bydate($paused->date_first, $paused->date_last)->result() as $key100 => $iterasi100) {
+                    if ($paused->kriteria_proses == 1) {
+                        $db = explode(",", $iterasi100->params1_dataset);
+                    } else if ($paused->kriteria_proses == 2) {
+                        $db = explode(",", $iterasi100->params2_dataset);
+                    } else if ($paused->kriteria_proses == 3) {
+                        $db = explode(",", $iterasi100->params3_dataset);
+                    } else if ($paused->kriteria_proses == 4) {
+                        $db = explode(",", $iterasi100->params4_dataset);
+                    }
+
+                    if (in_array($temp1, $db) == TRUE && in_array($temp2, $db) == TRUE && in_array($temp3, $db) == TRUE) {
+                        $count = $count + 1;
+                    }
+                }
+                $support = ($count / get_itemset_bydate($paused->date_first, $paused->date_last)->num_rows()) * 100;
+                if ($count > $post['p_support']) {
+                    $seleksi = 1;
+                } else {
+                    $seleksi = 0;
+                }
+                insert_itemset3($post['id'], $fakultas->id_fakultas, $param1[$key], $param2[$key], $param3[$key], $count, round($support, 2), $seleksi);
             }
-            insert_itemset3($post['id'], $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
         }
     }
 }
@@ -603,11 +644,12 @@ function proses_iterasi3($post)
 
 // Hasil Apriori
 
-function insert_proses_hasil($id_proses, $kombinasi1, $kombinasi2, $sup_xUy, $sup_x, $conf, $n_a, $n_b, $n_ab, $px, $py, $pxuy, $lift, $korelasi, $iterasi, $lolos)
+function insert_proses_hasil($id_proses, $id_fak, $kombinasi1, $kombinasi2, $sup_xUy, $sup_x, $conf, $n_a, $n_b, $n_ab, $px, $py, $pxuy, $lift, $korelasi, $iterasi, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id_proses,
+        'id_fakultas' => $id_fak,
         'kombinasi1' => $kombinasi1,
         'kombinasi2' => $kombinasi2,
         'support_xUy' => $sup_xUy,
@@ -627,11 +669,15 @@ function insert_proses_hasil($id_proses, $kombinasi1, $kombinasi2, $sup_xUy, $su
     $ci->db->insert('tbl_proses_hasil', $params);
 }
 
-function get_hasil_apriori($id_proses)
+function get_hasil_apriori($id_proses, $id_fak = null)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_proses_hasil');
     $ci->db->where('id_proses', $id_proses);
+    // $ci->db->where('lolos_proses_hasil', 1);
+    if ($id_fak != null) {
+        $ci->db->where('id_fakultas', $id_fak);
+    }
     $query = $ci->db->get();;
     return $query;
 }
@@ -648,11 +694,12 @@ function get_iterasi($id_proses, $iterasi, $lolos = false)
     return $query;
 }
 
-function get_support_atribut($id_proses, $iterasi, $atribut1, $atribut2 = null, $atribut3 = null, $lolos = false)
+function get_support_atribut($id_proses, $id_fak, $iterasi, $atribut1, $atribut2 = null, $atribut3 = null, $lolos = false)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_itemset' . $iterasi);
     $ci->db->where('id_proses', $id_proses);
+    $ci->db->where('id_fakultas', $id_fak);
     if ($iterasi == 1) {
         $ci->db->where('atribut', $atribut1);
     } else if ($iterasi == 2) {
@@ -680,117 +727,149 @@ function get_support_atribut($id_proses, $iterasi, $atribut1, $atribut2 = null, 
 
 function korelasi_uji_lift($nilai_ul)
 {
-    if ($nilai_ul < 1) {
-        return "Korelasi Negatif";
-    } else if ($nilai_ul > 1) {
+    if ($nilai_ul > 0) {
         return "Korelasi Positif";
-    } else if ($nilai_ul == 1) {
+    } else if ($nilai_ul < 0) {
+        return "Korelasi Negatif";
+    } else {
         return "Tidak Ada Korelasi";
     }
 }
 
-function aturan_asosiasi_hasil($id, $iterasi)
+function cek_lolos_iterasi3($id_proses, $id_fakultas)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset3');
+    $ci->db->where('id_proses', $id_proses);
+    $ci->db->where('id_fakultas', $id_fakultas);
+    // $ci->db->where('lolos', 1);
+    $query = $ci->db->get();;
+    return $query;
+}
+
+function cek_lolos_iterasi2($id_proses, $id_fakultas)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_itemset2');
+    $ci->db->where('id_proses', $id_proses);
+    $ci->db->where('id_fakultas', $id_fakultas);
+    $ci->db->where('lolos', 1);
+    $query = $ci->db->get();;
+    return $query;
+}
+
+function atuuran_asosiasi_hasilpt2($id, $id_fakultas)
 {
     $proses_data = get_proses_log($id);
-    if ($iterasi == 3) {
-        foreach (get_iterasi($id, '3', TRUE)->result() as $key => $value) {
-            $supxUy1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, 1, $value->atribut3)->row()->jumlah;
-            $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
-            $supxUy2 = get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
-            $supx2 = get_support_atribut($id, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
-            $supxUy3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
-            $supx3 =  get_support_atribut($id, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
+    foreach (cek_lolos_iterasi2($id, $id_fakultas)->result() as $key => $value) {
+        $supxUy1 = get_support_atribut($id, $id_fakultas, 2, $value->atribut1)->row()->jumlah + get_support_atribut($id, $id_fakultas, 1, $value->atribut2)->row()->jumlah;
+        $supx1 = get_support_atribut($id, $id_fakultas, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+        $supxUy2 = get_support_atribut($id, $id_fakultas, 2, $value->atribut2)->row()->jumlah +  get_support_atribut($id, $id_fakultas, 1, $value->atribut1)->row()->jumlah;
+        $supx2 = get_support_atribut($id, $id_fakultas, 1, $value->atribut2, $value->atribut1)->row()->jumlah;
 
-            $confident1 = ($supx1 / $supxUy1) * 100;
-            $confident2 = ($supx2 / $supxUy2) * 100;
-            $confident3 = ($supx3 / $supxUy3) * 100;
+        $confident1 = (($supx1 / $supxUy1) * 100) > 100 ? ((($supx1 / $supxUy1) * 100) / 2) : (($supx1 / $supxUy1) * 100);
+        $confident2 = (($supx2 / $supxUy2) * 100) > 100 ? ((($supx2 / $supxUy2) * 100) / 2) : (($supx2 / $supxUy2) * 100);
 
-            $jumlahAB1 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-            $jumlahA1 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
-            $jumlahB1 = get_support_atribut($id, 1, $value->atribut3)->num_rows();
+        $jumlahAB1 = get_support_atribut($id, $id_fakultas, 2, $value->atribut1, $value->atribut2)->num_rows();
+        $jumlahA1 = get_support_atribut($id, $id_fakultas, 1, $value->atribut1)->num_rows();
+        $jumlahB1 = get_support_atribut($id, $id_fakultas, 1, $value->atribut2)->num_rows();
 
-            $jumlahAB2 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-            $jumlahA2 =  get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->num_rows();
-            $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+        $jumlahAB2 = get_support_atribut($id, $id_fakultas, 2, $value->atribut2, $value->atribut1)->num_rows();
+        $jumlahA2 = get_support_atribut($id, $id_fakultas, 1, $value->atribut2)->num_rows();
+        $jumlahB2 = get_support_atribut($id, $id_fakultas, 1, $value->atribut1)->num_rows();
 
-            $jumlahAB3 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-            $jumlahA3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->num_rows();
-            $jumlahB3 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+        $dataset_count = get_itemset_by_idproses($id, $id_fakultas)->num_rows();
+        $pAB1 = $jumlahAB1 / $dataset_count;
+        $pA1 = $jumlahA1 / $dataset_count / $dataset_count;
+        $pB1 = $jumlahB1 / $dataset_count / $dataset_count;
 
-            $dataset_count = get_itemset_by_idproses($id)->num_rows();
-            $pAB1 = $jumlahAB1 / $dataset_count;
-            $pA1 = $jumlahA1 / $dataset_count;
-            $pB1 = $jumlahB1 / $dataset_count;
+        $pAB2 = $jumlahAB2 / $dataset_count;
+        $pA2 = $jumlahA2 / $dataset_count / $dataset_count;
+        $pB2 = $jumlahB2 / $dataset_count / $dataset_count;
 
-            $pAB2 = $jumlahAB2 / $dataset_count;
-            $pA2 = $jumlahA2 / $dataset_count;
-            $pB2 = $jumlahB2 / $dataset_count;
+        $PaUb1 = $pAB1 / ($pA1 * $pB1);
+        $PaUb2 = $pAB2 / ($pA2 * $pB2);
 
-            $pAB3 = $jumlahAB3 / $dataset_count;
-            $pA3 = $jumlahA3 / $dataset_count;
-            $pB3 = $jumlahB3 / $dataset_count;
+        $korelasi_1 = korelasi_uji_lift(ceil($PaUb1));
+        $korelasi_2 = korelasi_uji_lift(ceil($PaUb2));
 
-            $PaUb1 = $pAB1 / ($pA1 * $pB1);
-            $PaUb2 = $pAB2 / ($pA2 * $pB2);
-            $PaUb3 = $pAB3 / ($pA3 * $pB3);
+        $iterasi = 2;
+        $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
+        $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
 
-            $korelasi_1 = korelasi_uji_lift($PaUb1);
-            $korelasi_2 = korelasi_uji_lift($PaUb2);
-            $korelasi_3 = korelasi_uji_lift($PaUb3);
-
-            $iterasi = 3;
-            $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
-            $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
-            $lolos_3 = ($confident3 > $proses_data->min_confident ? 1 : 0);
-
-
-            insert_proses_hasil($proses_data->id_proses, ($value->atribut1 . ',' . $value->atribut2), $value->atribut3, $supxUy1, $supx1, $confident1, $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, $PaUb1, $korelasi_1, $iterasi, $lolos_1);
-            insert_proses_hasil($proses_data->id_proses, ($value->atribut3 . ',' . $value->atribut2), $value->atribut1, $supxUy2, $supx2, $confident2, $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, $PaUb2, $korelasi_2, $iterasi, $lolos_2);
-            insert_proses_hasil($proses_data->id_proses, ($value->atribut1 . ',' . $value->atribut3), $value->atribut2, $supxUy3, $supx3, $confident3, $jumlahA3, $jumlahA3, $jumlahAB3, $pA3, $pB3, $pAB3, $PaUb3, $korelasi_3, $iterasi, $lolos_3);
-            // // OutpuA1$pA1
-            // echo $value->atribut1 . ',' . $value->atribut2 . ' => ' . $value->atribut3 . ' (' .  $supx1 . ' / ' . $supxUy1 . ' | confident = ' . $confident1 . ' | Lift = ' . $PaUb1 . ' | ' . $korelasi_1 . ')<br>';
-            // echo $value->atribut3 . ',' . $value->atribut2 . ' => ' . $value->atribut1 . ' (' .  $supx2 . ' / ' . $supxUy2 . ' | confident = ' . $confident2 . ' | Lift = ' . $PaUb2 . ' | ' . $korelasi_2 . ')<br>';
-            // echo $value->atribut1 . ',' . $value->atribut3 . ' => ' . $value->atribut2 . ' (' .  $supx3 . ' / ' . $supxUy3 . ' | confident = ' . $confident3 . ' | Lift = ' . $PaUb3 . ' | ' . $korelasi_3 . ')<br>';
+        if ($confident1 > 24) {
+            insert_proses_hasil($id, $id_fakultas, ($value->atribut1), $value->atribut2, $supxUy1, $supx1, round($confident1, 2), $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, substr(ceil($PaUb1), 0, 1), $korelasi_1, $iterasi, $lolos_1);
         }
-    } else if ($iterasi == 2) {
-        foreach (get_iterasi($id, '2', TRUE)->result() as $key => $value) {
-            $supxUy1 = get_support_atribut($id, 2, $value->atribut1)->row()->jumlah + get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
-            $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
-            $supxUy2 = get_support_atribut($id, 2, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
-            $supx2 = get_support_atribut($id, 1, $value->atribut2, $value->atribut1)->row()->jumlah;
+        if ($confident2 > 24) {
+            insert_proses_hasil($id, $id_fakultas, ($value->atribut2), $value->atribut1, $supxUy2, $supx2, round($confident2, 2), $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, substr(ceil($PaUb2), 0, 1), $korelasi_2, $iterasi, $lolos_2);
+        }
+    }
+}
 
-            $confident1 = ($supx1 / $supxUy1) * 100;
-            $confident2 = ($supx2 / $supxUy2) * 100;
+function aturan_asosiasi_hasil($id)
+{
+    $proses_data = get_proses_log($id);
+    foreach (get_fakultas()->result() as $k => $fakultas) {
+        if (cek_lolos_iterasi3($id, $fakultas->id_fakultas)->num_rows() > 0) {
+            foreach (cek_lolos_iterasi3($id, $fakultas->id_fakultas)->result() as $key => $value) {
+                $supxUy1 = get_support_atribut($id, $fakultas->di_fakultas, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut3)->row()->jumlah;
+                $supx1 = get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+                $supxUy2 = get_support_atribut($id, $fakultas->di_fakultas, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut1)->row()->jumlah;
+                $supx2 = get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
+                $supxUy3 =  get_support_atribut($id, $fakultas->di_fakultas, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut2)->row()->jumlah;
+                $supx3 =  get_support_atribut($id, $fakultas->di_fakultas, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
 
-            $jumlahAB1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
-            $jumlahA1 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
-            $jumlahB1 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+                $confident1 = (($supx1 / $supxUy1) * 100) > 100 ? ((($supx1 / $supxUy1) * 100) / 2) : (($supx1 / $supxUy1) * 100);
+                $confident2 = (($supx2 / $supxUy2) * 100) > 100 ? ((($supx2 / $supxUy2) * 100) / 2) : (($supx2 / $supxUy2) * 100);
+                $confident3 = (($supx3 / $supxUy3) * 100) > 100 ? ((($supx3 / $supxUy3) * 100) / 2) : (($supx3 / $supxUy3) * 100);
 
-            $jumlahAB2 = get_support_atribut($id, 2, $value->atribut2, $value->atribut1)->num_rows();
-            $jumlahA2 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
-            $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+                $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
+                $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
+                $lolos_3 = ($confident3 > $proses_data->min_confident ? 1 : 0);
 
-            $dataset_count = get_itemset_by_idproses($id)->num_rows();
-            $pAB1 = $jumlahAB1 / $dataset_count;
-            $pA1 = $jumlahA1 / $dataset_count / $dataset_count;
-            $pB1 = $jumlahB1 / $dataset_count / $dataset_count;
+                $jumlahAB1 = get_support_atribut($id, $fakultas->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+                $jumlahA1 =  get_support_atribut($id, $fakultas->id_fakultas, 2, $value->atribut1, $value->atribut2)->num_rows();
+                $jumlahB1 = get_support_atribut($id, $fakultas->id_fakultas, 1, $value->atribut3)->num_rows();
 
-            $pAB2 = $jumlahAB2 / $dataset_count;
-            $pA2 = $jumlahA2 / $dataset_count / $dataset_count;
-            $pB2 = $jumlahB2 / $dataset_count / $dataset_count;
+                $jumlahAB2 = get_support_atribut($id, $fakultas->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+                $jumlahA2 =  get_support_atribut($id, $fakultas->id_fakultas, 2, $value->atribut3, $value->atribut2)->num_rows();
+                $jumlahB2 = get_support_atribut($id, $fakultas->id_fakultas, 1, $value->atribut1)->num_rows();
 
-            $PaUb1 = $pAB1 / ($pA1 * $pB1);
-            $PaUb2 = $pAB2 / ($pA2 * $pB2);
+                $jumlahAB3 = get_support_atribut($id, $fakultas->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+                $jumlahA3 =  get_support_atribut($id, $fakultas->id_fakultas, 2, $value->atribut1, $value->atribut3)->num_rows();
+                $jumlahB3 = get_support_atribut($id, $fakultas->id_fakultas, 1, $value->atribut2)->num_rows();
 
-            $korelasi_1 = korelasi_uji_lift($PaUb1);
-            $korelasi_2 = korelasi_uji_lift($PaUb2);
+                $dataset_count = get_itemset_by_idproses($id, $fakultas->id_fakultas)->num_rows();
+                $pAB1 = $jumlahAB1 / $dataset_count;
+                $pA1 = $jumlahA1 / $dataset_count;
+                $pB1 = $jumlahB1 / $dataset_count;
 
-            $iterasi = 3;
-            $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
-            $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
+                $pAB2 = $jumlahAB2 / $dataset_count;
+                $pA2 = $jumlahA2 / $dataset_count;
+                $pB2 = $jumlahB2 / $dataset_count;
 
-            insert_proses_hasil($proses_data->id_proses, ($value->atribut1), $value->atribut2, $supxUy1, $supx1, $confident1, $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, $PaUb1, $korelasi_1, $iterasi, $lolos_1);
-            insert_proses_hasil($proses_data->id_proses, ($value->atribut2), $value->atribut1, $supxUy2, $supx2, $confident2, $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, $PaUb2, $korelasi_2, $iterasi, $lolos_2);
+                $pAB3 = $jumlahAB3 / $dataset_count;
+                $pA3 = $jumlahA3 / $dataset_count;
+                $pB3 = $jumlahB3 / $dataset_count;
+
+
+                $PaUb1 = $pAB1 / ($pA1 * $pB1);
+                $PaUb2 = $pAB2 / ($pA2 * $pB2);
+                $PaUb3 = $pAB3 / ($pA3 * $pB3);
+
+                $korelasi_1 = korelasi_uji_lift(ceil($PaUb1));
+                $korelasi_2 = korelasi_uji_lift(ceil($PaUb2));
+                $korelasi_3 = korelasi_uji_lift(ceil($PaUb3));
+
+                $iterasi = 3;
+
+                insert_proses_hasil($proses_data->id_proses, $fakultas->id_fakultas, ($value->atribut1 . ',' . $value->atribut2), $value->atribut3, $supxUy1, $supx1, round($confident1, 2), $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, ceil($PaUb1), $korelasi_1, $iterasi, $lolos_1);
+                insert_proses_hasil($proses_data->id_proses, $fakultas->id_fakultas, ($value->atribut3 . ',' . $value->atribut2), $value->atribut1, $supxUy2, $supx2, round($confident2, 2), $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, ceil($PaUb2), $korelasi_2, $iterasi, $lolos_2);
+                insert_proses_hasil($proses_data->id_proses, $fakultas->id_fakultas, ($value->atribut1 . ',' . $value->atribut3), $value->atribut2, $supxUy3, $supx3, round($confident3, 2), $jumlahA3, $jumlahA3, $jumlahAB3, $pA3, $pB3, $pAB3, ceil($PaUb3), $korelasi_3, $iterasi, $lolos_3);
+            }
+            atuuran_asosiasi_hasilpt2($id, $fakultas->id_fakultas);
+        } else if (cek_lolos_iterasi2($id, $fakultas->id_fakultas)->num_rows() > 0) {
+            atuuran_asosiasi_hasilpt2($id, $fakultas->id_fakultas);
         }
     }
 }
@@ -873,5 +952,19 @@ function level_stres($value)
         return "Stres Ringan";
     } else if ($value < 25) {
         return "Normal";
+    }
+}
+
+function get_rerata_conf_fak($id_proses, $id_fakultas)
+{
+    $count = $average = 0;
+    if (get_hasil_apriori($id_proses, $id_fakultas)->num_rows() > 0) {
+        foreach (get_hasil_apriori($id_proses, $id_fakultas)->result() as $key => $data) {
+            $count = $count + $data->confidence;
+        }
+        $average = $count / get_hasil_apriori($id_proses, $id_fakultas)->num_rows();
+        return round($average);
+    } else {
+        return 0;
     }
 }

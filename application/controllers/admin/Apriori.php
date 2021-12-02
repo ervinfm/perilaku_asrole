@@ -8,6 +8,7 @@ class Apriori extends CI_Controller
         parent::__construct();
         login();
         $this->load->model('admin/apriori_m');
+        $this->load->library('asrole');
     }
 
     public function index()
@@ -48,28 +49,18 @@ class Apriori extends CI_Controller
             insert_user_log(uri_string());
             $post['id'] = random_string('numeric', 9);
             $this->apriori_m->insert_proses_log($post);
-            $query1 = $this->apriori_m->data_load_by_date($post['d_first'], $post['d_last']);
-            proses_iterasi1($query1, $post);
-            if (cek_itemset($post['id'], 1)->num_rows() > 0) {
-                proses_iterasi2($query1, $post);
-                if (cek_itemset($post['id'], 2)->num_rows() > 0) {
-                    proses_iterasi3($post);
-                    if (cek_itemset($post['id'], 3)->num_rows() > 0) {
-                        aturan_asosiasi_hasil($post['id'], 3);
-                        $this->session->set_flashdata('success', 'Proses Mining Berhasil!');
-                        redirect('admin/apriori/hasil/' . $post['id']);
-                    } else {
-                        aturan_asosiasi_hasil($post['id'], 2);
-                        $this->session->set_flashdata('warning', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 2');
-                        redirect('admin/apriori/hasil/' . $post['id']);
-                    }
-                } else {
-                    $this->session->set_flashdata('warning', 'Proses Mining Berhenti! <br> Berhenti di Iterasi 1');
-                    redirect('admin/apriori/hasil/' . $post['id']);
-                }
+
+            proses_iterasi1($post);
+            proses_iterasi2($post);
+            proses_iterasi3($post);
+            aturan_asosiasi_hasil($post['id']);
+
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Proses Mining Berhasil!');
+                redirect('admin/apriori/hasil/' . $post['id']);
             } else {
                 $this->session->set_flashdata('error', 'Gagal Menjalankan Algoritma Apriori! <br> Periksa Kembali Dataset!');
-                redirect('admin/apriori/hasil/' . $post['id']);
+                redirect('admin/apriori/');
             }
         } else {
             redirect('admin/apriori');

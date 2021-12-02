@@ -54,7 +54,7 @@
                         <li class="nav-item">
                             <a class="nav-link <?= $this->uri->segment(2) == 'apriori' ? 'active' : null ?>" href="<?= site_url('admin/apriori') ?>">
                                 <i class="ni ni-compass-04 text-yellow"></i>
-                                <span class="nav-link-text">Association Rule Mining</span>
+                                <span class="nav-link-text">Proses Apriori</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -266,12 +266,6 @@
             document.getElementById("detik").innerHTML = waktu.getSeconds();
         }
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#tabledata').DataTable();
-        });
-    </script>
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -301,6 +295,20 @@
 
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tabledata').DataTable();
+        });
+    </script>
+    <?php for ($i = 0; $i < 50; $i++) {  ?>
+        <script>
+            $(document).ready(function() {
+                $('#tabledata<?= $i ?>').DataTable();
+            });
+        </script>
+    <?php } ?>
+
 </body>
 
 </html>

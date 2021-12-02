@@ -262,6 +262,18 @@ function get_dataset()
     return $query;
 }
 
+function get_dataset_byfak($id, $date1, $date2)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('id_fakultas', $id);
+    $ci->db->where('datetime_dataset >=', $date1);
+    $ci->db->where('datetime_dataset <=', $date2);
+    $ci->db->order_by('datetime_dataset', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
 function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $param4, $fak, $prodi)
 {
     $ci = &get_instance();
@@ -423,6 +435,16 @@ function get_fakultas($id = null)
     } else {
         $ci->db->order_by('id_fakultas', 'ASC');
     }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_respon_fakultas($id_fakultas)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('id_fakultas', $id_fakultas);
+    $ci->db->order_by('created_dataset', 'DESC');
     $query = $ci->db->get();
     return $query;
 }

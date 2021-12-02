@@ -11,8 +11,13 @@ class Hasil extends CI_Controller
 
     public function index()
     {
-        $last = get_last_konsul();
-        $data['row'] = get_konsultasi_log($last->id_proses)->row();
-        $this->template->load('user/template', 'user/hasil/index', $data);
+        if (@get_last_konsul()) {
+            $last = get_last_konsul();
+            $data['row'] = get_konsultasi_log($last->id_proses)->row();
+            $this->template->load('user/template', 'user/hasil/index', $data);
+        } else {
+            $this->session->set_flashdata('warning', 'Hasil Konsultasi belum ada, Silahkan Konsultasi terlebih dahulu!');
+            redirect('konsultasi');
+        }
     }
 }
