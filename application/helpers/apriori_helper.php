@@ -968,3 +968,49 @@ function get_rerata_conf_fak($id_proses, $id_fakultas)
         return 0;
     }
 }
+
+function predikat_analitik($val)
+{
+    if ($val > 80) {
+        return "E";
+    } else if ($val <= 80 && $val > 60) {
+        return "D";
+    } else if ($val <= 60 && $val > 40) {
+        return "C";
+    } else if ($val <= 40 && $val > 20) {
+        return "B";
+    } else {
+        return "A";
+    }
+}
+
+function set_analitik($id_proses, $id_fakultas, $conf, $predikat)
+{
+    $ci = &get_instance();
+    $params = [
+        'id_proses' => $id_proses,
+        'id_fakultas' => $id_fakultas,
+        'conf_analitik' => $conf,
+        'predikat_analitik' => $predikat,
+    ];
+    $ci->db->insert('tbl_proses_analitik', $params);
+}
+
+function analitik_hasil($id_proses)
+{
+    foreach (get_fakultas()->result() as $key => $fakultas) {
+        $conf = get_rerata_conf_fak($id_proses, $fakultas->id_fakultas);
+        $predikat = predikat_analitik($conf);
+        set_analitik($id_proses, $fakultas->id_fakultas, $conf, $predikat);
+    }
+}
+
+function get_analitik($id_proses)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_proses_analitik');
+    $ci->db->where('id_proses', $id_proses);
+    $ci->db->order_by('conf_analitik', 'ASC');
+    $query = $ci->db->get();;
+    return $query;
+}

@@ -68,7 +68,9 @@ function inisial_string($string)
     $arr = explode(' ', $string);
     $singkatan = '';
     foreach ($arr as $kata) {
-        $singkatan .= substr($kata, 0, 1);
+        if ($kata != "dan") {
+            $singkatan .= substr($kata, 0, 1);
+        }
     }
     return strtoupper($singkatan);
 }
@@ -274,6 +276,17 @@ function get_dataset_byfak($id, $date1, $date2)
     return $query;
 }
 
+function get_dataset_bydate($date1, $date2)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_dataset');
+    $ci->db->where('datetime_dataset >=', $date1);
+    $ci->db->where('datetime_dataset <=', $date2);
+    $ci->db->order_by('datetime_dataset', 'DESC');
+    $query = $ci->db->get();
+    return $query;
+}
+
 function insert_dataset($itemset, $date, $subyek, $param1, $param2, $param3, $param4, $fak, $prodi)
 {
     $ci = &get_instance();
@@ -472,4 +485,26 @@ function get_prodi_row($id)
 
     $query = $ci->db->get();
     return $query;
+}
+
+function kriteria_data($kriteria)
+{
+    switch ($kriteria) {
+        case 1:
+            return "Religiusitas (Kepedulian)";
+            break;
+        case 2:
+            return "Sosial dan Keluarga (Kepedulian)";
+            break;
+        case 3:
+            return "Akademik (Permasalahan)";
+            break;
+        case 4:
+            return "Keluarga (Permasalahan)";
+            break;
+
+        default:
+            return "NULL";
+            break;
+    }
 }

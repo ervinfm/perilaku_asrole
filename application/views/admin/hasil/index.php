@@ -1,3 +1,18 @@
+<?php
+$lab_fakultas = "";
+$conf_fakultas = null;
+$average_conf_all = $count_conf = 0;
+foreach (get_fakultas()->result() as $key => $fakultas) {
+    $fak = inisial_string($fakultas->nama_fakultas);
+    $conf = get_rerata_conf_fak($row->id_proses, $fakultas->id_fakultas);
+
+    $lab_fakultas .= "'$fak'" . ",";
+    $conf_fakultas .= "$conf" . ",";
+    $count_conf =  $count_conf + $conf;
+}
+$average_conf_all = ($count_conf / get_fakultas()->num_rows());
+?>
+
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body"></div>
@@ -15,7 +30,6 @@
                         <div class="col-sm-6">
                             <?php if (get_last_apriori()->num_rows() == 0) { ?>
                                 <a href="<?= site_url('admin/hasil/cetak/' . $row->id_proses) ?>" class="btn btn-default float-right btn-sm" target="_blank"><i class="ni ni-paper-diploma"></i> Cetak Hasil</a>
-                                <a href="<?= site_url('admin/hasil/detail/' . $row->id_proses) ?>" class="btn btn-primary float-right btn-sm mr-2"><i class="ni ni-badge"></i> Lihat Detail</a>
                             <?php } ?>
                         </div>
                     </div>
@@ -186,11 +200,129 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 mt-5">
-                                        <a href="#" class="btn btn-sm btn-default mb-2">Analitik Perbandingan Tingkat Stress tiap Fakultas</a>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <canvas id="myChart"></canvas>
+                                    <div class="col-sm-12 mt-3">
+                                        <div class="row">
+                                            <div class="col-sm-7 mt-3">
+                                                <a href="#" class="btn btn-sm btn-default mb-2">Analitik Perbandingan Tingkat Stress tiap Fakultas (<?= kriteria_data($row->kriteria_proses) ?>)</a>
+                                                <canvas id="myChart" height="260px"></canvas>
+                                            </div>
+                                            <div class="col-sm-5 mt-3">
+                                                <a href="#" class="btn btn-sm btn-info mb-2">Analitik Perangkingan Tingkat Stres (<?= kriteria_data($row->kriteria_proses) ?>)</a>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-striped table-hover">
+                                                        <thead>
+                                                            <thead>
+                                                                <th width="5%">Urutan</th>
+                                                                <th>Fakultas</th>
+                                                                <th>Stres</th>
+                                                                <th>Predikat</th>
+                                                            </thead>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $no = 1;
+                                                            foreach (get_analitik($row->id_proses)->result() as $key => $analitik) { ?>
+                                                                <tr>
+                                                                    <td><?= $no++ ?></td>
+                                                                    <td><?= inisial_string(get_fakultas($analitik->id_fakultas)->row()->nama_fakultas) ?></td>
+                                                                    <td><?= $analitik->conf_analitik . ' %' ?></td>
+                                                                    <td><?= $analitik->predikat_analitik ?></td>
+                                                                </tr>
+                                                            <?php } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 mt-3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <a class="btn btn-sm btn-default text-white mb-3"><i class="ni ni-collection"></i> Kesimpulan Apriori (<?= kriteria_data($row->kriteria_proses) ?>)</a>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <table class="table table-bordered">
+                                                                    <tr>
+                                                                        <td width="30%"><b>Min. Confident</b></td>
+                                                                        <td width="5%" class="text-center">:</td>
+                                                                        <td><?= $row->min_confident . ' %' ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Rata-Rata Confident</b></td>
+                                                                        <td class="text-center">:</td>
+                                                                        <td><?= round($average_conf_all, 2) . ' %' ?></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <table class="table table-bordered">
+                                                                    <tr>
+                                                                        <td width="30%"><b>Kategori Stress </b></td>
+                                                                        <td width="5%" class="text-center">:</td>
+                                                                        <td><?= level_stres($average_conf_all) ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Total Subjek</b></td>
+                                                                        <td class="text-center">:</td>
+                                                                        <td><?= get_dataset_bydate($row->date_first, $row->date_last)->num_rows() . ' Responden (' . get_fakultas()->num_rows() . ' fakultas)' ?></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 mt-2">
+                                                        <?php
+                                                        if ($average_conf_all > 50) { ?>
+                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
+                                                                <div class="card-body">
+                                                                    <h3 class="m-0 p-0">
+                                                                        <b>Rekomendasi Hasil : </b>
+                                                                    </h3>
+                                                                    <h4 class="m-0 p-0 mb-2">
+                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori. jika nilai confidencenya melebihi nilai minimal yang ditentukkan yaitu 50% sehingga Fakultas perlu Meperhatikan :
+                                                                    </h4>
+                                                                    <ol>
+                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                        <?php } else if ($average_conf_all < 50 && $average_conf_all >= 25) { ?>
+                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
+                                                                <div class="card-body">
+                                                                    <h3 class="m-0 p-0">
+                                                                        <b>Rekomendasi Hasil : </b>
+                                                                    </h3>
+                                                                    <h4 class="m-0 p-0 mb-2">
+                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori dengan Kondisi Stres Ringan maka Fakultas diharapkan perlu memperhatikan :
+                                                                    </h4>
+                                                                    <ol>
+                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
+                                                                <div class="card-body">
+                                                                    <h3 class="m-0 p-0">
+                                                                        <b>Rekomendasi Hasil : </b>
+                                                                    </h3>
+                                                                    <h4 class="m-0 p-0 mb-2">
+                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori dengan Kondisi Normal maka diharapkan perlu Memperhatikan Hal Berikut :
+                                                                    </h4>
+                                                                    <ol>
+                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -299,20 +431,9 @@
     </div>
 </div>
 
-<?php
-$lab_fakultas = "";
-$conf_fakultas = null;
-foreach (get_fakultas()->result() as $key => $fakultas) {
-    $fak = inisial_string($fakultas->nama_fakultas);
-    $conf = get_rerata_conf_fak($row->id_proses, $fakultas->id_fakultas);
-
-    $lab_fakultas .= "'$fak'" . ",";
-    $conf_fakultas .= "$conf" . ",";
-}
-?>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.1/chart.min.js" integrity="sha512-O2fWHvFel3xjQSi9FyzKXWLTvnom+lOYR/AUEThL/fbP4hv1Lo5LCFCGuTXBRyKC4K4DJldg5kxptkgXAzUpvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<!-- Chart Keseluruhan -->
 <script>
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
@@ -327,7 +448,7 @@ foreach (get_fakultas()->result() as $key => $fakultas) {
                     'rgba(44, 62, 80,1.0)',
                     'rgba(22, 160, 133,1.0)',
                     'rgba(192, 57, 43,1.0)',
-                    'rgba(41, 128, 185,1.0)',
+                    'rgba(240, 147, 43,1.0)',
                     'rgba(34, 166, 179,1.0)'
                 ],
                 borderColor: [
@@ -335,10 +456,15 @@ foreach (get_fakultas()->result() as $key => $fakultas) {
                     'rgba(44, 62, 80,1.0)',
                     'rgba(22, 160, 133,1.0)',
                     'rgba(192, 57, 43,1.0)',
-                    'rgba(41, 128, 185,1.0)',
+                    'rgba(240, 147, 43,1.0)',
                     'rgba(34, 166, 179,1.0)'
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                fill: {
+                    target: 'origin',
+                    above: 'rgb(0, 206, 201)', // Area will be red above the origin
+                    below: 'rgb(0, 0, 255)' // And blue below the origin
+                }
             }]
         },
         options: {

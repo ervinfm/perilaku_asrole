@@ -54,6 +54,7 @@ class Apriori extends CI_Controller
             proses_iterasi2($post);
             proses_iterasi3($post);
             aturan_asosiasi_hasil($post['id']);
+            analitik_hasil($post['id']);
 
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('success', 'Proses Mining Berhasil!');

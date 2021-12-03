@@ -43,12 +43,13 @@ class Hasil extends CI_Controller
     {
         $this->load->library('pdf');
 
-        $this->pdf->setPaper('legal', 'landscape');
+        $this->pdf->setPaper('A4', 'landscape');
         $this->pdf->filename = "Laporan Apriori.pdf";
         $apriori = get_proses_log($id);
         $data = [
             'row' => $apriori,
         ];
         $this->pdf->load_view('admin/hasil/cetak', $data);
+        $this->load->view('admin/hasil/cetak', $data);
     }
 }
