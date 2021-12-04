@@ -61,11 +61,12 @@ function konsul_get_iterasi2($id)
     return $query;
 }
 
-function konsul_insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
+function konsul_insert_itemset1($id, $id_fak, $atribut, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut' => $atribut,
         'jumlah' => $jumlah,
         'support' => round($support, 2),
@@ -74,11 +75,12 @@ function konsul_insert_itemset1($id, $atribut, $jumlah, $support, $lolos)
     $ci->db->insert('tbl_itemset1', $params);
 }
 
-function konsul_insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $lolos)
+function konsul_insert_itemset2($id, $id_fak, $atribut1, $atribut2, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut1' => $atribut1,
         'atribut2' => $atribut2,
         'jumlah' => $jumlah,
@@ -88,11 +90,12 @@ function konsul_insert_itemset2($id, $atribut1, $atribut2, $jumlah, $support, $l
     $ci->db->insert('tbl_itemset2', $params);
 }
 
-function konsul_insert_itemset3($id, $atribut1, $atribut2, $atribut3, $jumlah, $support, $lolos)
+function konsul_insert_itemset3($id, $id_fak, $atribut1, $atribut2, $atribut3, $jumlah, $support, $lolos)
 {
     $ci = &get_instance();
     $params = [
         'id_proses' => $id,
+        'id_fakultas' => $id_fak,
         'atribut1' => $atribut1,
         'atribut2' => $atribut2,
         'atribut3' => $atribut3,
@@ -167,7 +170,7 @@ function konsul_iterasi1($id_proses)
             } else {
                 $seleksi = 0;
             }
-            konsul_insert_itemset1($id_proses, 'P' . $i, $pert['p' . $i], $sup, $seleksi);
+            konsul_insert_itemset1($id_proses, profil()->id_fakultas, 'P' . $i, $pert['p' . $i], $sup, $seleksi);
             // echo "P" . $i . ' => count=' . $pert['p' . $i] . ' | support=' . $sup . ' | seleksi=' . $seleksi . '<br>';
         }
     }
@@ -209,7 +212,7 @@ function konsul_iterasi2($id_proses)
             } else {
                 $lolos = 0;
             }
-            konsul_insert_itemset2($proses->id_proses, $datas[$i], $datas[$j], $count, $support, $lolos);
+            konsul_insert_itemset2($proses->id_proses, profil()->id_fakultas, $datas[$i], $datas[$j], $count, $support, $lolos);
             // echo $datas[$i] . ' => ' . $datas[$j] . ' | count : ' . $count . '| support : ' . $support . ' | lolos : ' . $lolos . '<br>';
         }
     }
@@ -269,7 +272,7 @@ function konsul_iterasi3($id_proses)
                 $seleksi = 0;
             }
             // echo $param1[$key] . ',' . $param2[$key] . '=>' . $param3[$key] . ' count : ' . $count . ' | sup: ' . $support . ' | seleksi : ' . $seleksi . '<br>';
-            insert_itemset3($proses->id_proses, $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
+            insert_itemset3($proses->id_proses, profil()->id_fakultas, $param1[$key], $param2[$key], $param3[$key], $count, $support, $seleksi);
         }
     }
 }
@@ -279,28 +282,28 @@ function konsul_asosiasi_hasil($id)
     $proses = get_konsultasi_log($id)->row();
     $dataset = get_dataset_konsul($proses->id_konsultasi);
     foreach (get_iterasi($id, '3', false)->result() as $key => $value) {
-        $supxUy1 = get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, 1, $value->atribut3)->row()->jumlah;
-        $supx1 = get_support_atribut($id, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
-        $supxUy2 = get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut1)->row()->jumlah;
-        $supx2 = get_support_atribut($id, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
-        $supxUy3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, 1, $value->atribut2)->row()->jumlah;
-        $supx3 =  get_support_atribut($id, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
+        $supxUy1 = get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut1, $value->atribut2)->row()->jumlah + get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut3)->row()->jumlah;
+        $supx1 = get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut1, $value->atribut2)->row()->jumlah;
+        $supxUy2 = get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut3, $value->atribut2)->row()->jumlah +  get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut1)->row()->jumlah;
+        $supx2 = get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut3, $value->atribut2)->row()->jumlah;
+        $supxUy3 =  get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut1, $value->atribut3)->row()->jumlah +  get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut2)->row()->jumlah;
+        $supx3 =  get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut1, $value->atribut3)->row()->jumlah;
 
         $confident1 = ($supx1 / $supxUy1) * 100;
         $confident2 = ($supx2 / $supxUy2) * 100;
         $confident3 = ($supx3 / $supxUy3) * 100;
 
-        $jumlahAB1 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-        $jumlahA1 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut2)->num_rows();
-        $jumlahB1 = get_support_atribut($id, 1, $value->atribut3)->num_rows();
+        $jumlahAB1 = get_support_atribut($id, profil()->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA1 =  get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut1, $value->atribut2)->num_rows();
+        $jumlahB1 = get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut3)->num_rows();
 
-        $jumlahAB2 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-        $jumlahA2 =  get_support_atribut($id, 2, $value->atribut3, $value->atribut2)->num_rows();
-        $jumlahB2 = get_support_atribut($id, 1, $value->atribut1)->num_rows();
+        $jumlahAB2 = get_support_atribut($id, profil()->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA2 =  get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut3, $value->atribut2)->num_rows();
+        $jumlahB2 = get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut1)->num_rows();
 
-        $jumlahAB3 = get_support_atribut($id, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
-        $jumlahA3 =  get_support_atribut($id, 2, $value->atribut1, $value->atribut3)->num_rows();
-        $jumlahB3 = get_support_atribut($id, 1, $value->atribut2)->num_rows();
+        $jumlahAB3 = get_support_atribut($id, profil()->id_fakultas, 3, $value->atribut1, $value->atribut2, $value->atribut3)->num_rows();
+        $jumlahA3 =  get_support_atribut($id, profil()->id_fakultas, 2, $value->atribut1, $value->atribut3)->num_rows();
+        $jumlahB3 = get_support_atribut($id, profil()->id_fakultas, 1, $value->atribut2)->num_rows();
 
         $dataset_count = count($dataset);
         $pAB1 = $jumlahAB1 / $dataset_count;
@@ -374,4 +377,14 @@ function get_konsultasi_history_user()
     $ci->db->where('author_proses', $ci->session->userdata('user_id'));
     $query = $ci->db->get();
     return $query;
+}
+
+function get_rekomendasi_user($confident)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_rekomendasi');
+    $ci->db->where('min_rekomendasi <', $confident);
+    $ci->db->where('max_rekomendasi >', $confident);
+    $query = $ci->db->get();
+    return $query->row()->isi_rekomendasi;
 }

@@ -90,7 +90,7 @@
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <a href="">
+                    <a href="<?= site_url('kondisi') ?>">
                         <div class="card card-stats">
                             <!-- Card body -->
                             <div class="card-body">
@@ -129,37 +129,57 @@
                             <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
                             <h5 class="h3 text-white mb-0">Konsultasi Perilaku</h5>
                         </div>
-                        <div class="col">
-                            <ul class="nav nav-pills justify-content-end">
-                                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales-dark" data-update="{&quot;data&quot;:{&quot;datasets&quot;:[{&quot;data&quot;:[0, 20, 10, 30, 15, 40, 20, 60, 60]}]}}" data-prefix="$" data-suffix="k">
-                                    <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                        <span class="d-none d-md-block"><i class="fa fa-arrow-up"></i></span>
-                                        <span class="d-md-none">M</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark" data-update="{&quot;data&quot;:{&quot;datasets&quot;:[{&quot;data&quot;:[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}" data-prefix="$" data-suffix="k">
-                                    <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                        <span class="d-none d-md-block"><i class="fa fa-arrow-down"></i></span>
-                                        <span class="d-md-none">W</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- Chart -->
-                    <div class="chart">
-                        <div class="chartjs-size-monitor">
-                            <div class="chartjs-size-monitor-expand">
-                                <div class=""></div>
-                            </div>
-                            <div class="chartjs-size-monitor-shrink">
-                                <div class=""></div>
-                            </div>
-                        </div>
-                        <!-- Chart wrapper -->
-                        <canvas id="chart-sales-dark" class="chart-canvas chartjs-render-monitor" width="412" height="314" style="display: block; height: 250px; width: 773px;"></canvas>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-dark table-flush">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" class="sort" data-sort="name">Kondisi</th>
+                                    <th scope="col" class="sort" data-sort="budget">Stres</th>
+                                    <th scope="col" class="sort" data-sort="status">Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <?php
+                                $no = 1;
+                                foreach (get_dashboard_konsultasi()->result() as $key => $log) {
+                                    $conf = 0;
+                                    foreach (get_dashboard_konsul_hasil($log->id_proses)->result() as $key => $logs) {
+                                        $conf += $logs->confidence;
+                                    }
+                                    $conf = round($conf / get_dashboard_konsul_hasil($log->id_proses)->num_rows(), 2);
+                                ?>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <a href="#" class="avatar rounded-circle mr-3" style="font-size:40px">
+                                                    <?php
+                                                    if ($conf >= 75) { ?>
+                                                        <i class="fa fa-angry" style="color:#192a56"></i>
+                                                    <?php } else if ($conf < 75 && $conf >= 50) { ?>
+                                                        <i class="fa fa-frown" style="color:#192a56"></i>
+                                                    <?php } else if ($conf < 50 && $conf >= 25) { ?>
+                                                        <i class="fa fa-meh" style="color:#192a56"></i>
+                                                    <?php } else if ($conf < 25) { ?>
+                                                        <i class="fa fa-grin" style="color:#192a56"></i>
+                                                    <?php } ?>
+                                                </a>
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm"><?= level_stres($conf) ?></span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            <?= $conf ?>
+                                        </td>
+                                        <td><?= tgl_indo(date('Y-m-d', strtotime($log->created_proses))) . ' ' . date('H:i', strtotime($log->created_proses)) ?></td>
+                                    </tr>
+                                <?php } ?>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -160,12 +160,20 @@
     </table>
 
     <p><strong>C. Rekomendasi Umum</strong></p>
+    <table class="table1">
+        <tr>
+            <td align="center"><strong> Rekomendasi untuk setiap fakultas </strong></td>
+        </tr>
+        <tr>
+            <td><?= get_rekomendasi_admin($row->kriteria_proses)->isi_rekomendasi ?></td>
+        </tr>
+    </table>
     <center>
         <div style="margin-top:50px;">
-            <span style="font-size:18px;"><b>Yogykarta, <?= tgl_indo(date('Y-m-d')) ?></b></span><br>
-            <span style="font-size:18px"><b>Administrator Sistem</b></span><br><br>
+            <span style="font-size:14px;"><b>Yogykarta, <?= tgl_indo(date('Y-m-d')) ?></b></span><br>
+            <span style="font-size:4"><b>Administrator Sistem</b></span><br><br>
             <span><i>dto</i></span><br><br>
-            <span style="font-size:18px"><strong><?= profil()->nama_user ?></strong></span>
+            <span style="font-size:14px"><strong><?= profil()->nama_user ?></strong></span>
         </div>
     </center>
 

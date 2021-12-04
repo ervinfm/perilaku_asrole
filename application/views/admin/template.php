@@ -85,6 +85,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link <?= $this->uri->segment(2) == 'rekomendasi' ? 'active' : null ?>" href="<?= site_url('admin/rekomendasi') ?>">
+                                <i class="ni ni-chat-round"></i>
+                                <span class="nav-link-text">Rekomendasi</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link <?= $this->uri->segment(2) == 'setting' ? 'active' : null ?>" href="<?= site_url('admin/setting') ?>">
                                 <i class="ni ni-controller"></i>
                                 <span class="nav-link-text">Setting</span>

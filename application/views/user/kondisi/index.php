@@ -32,57 +32,12 @@ $min_conf = min($min);
                 <div class="card-header bg-transparent">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h5 class="h2 text-white mb-0">Proses Konsultasi Perilaku Mahasiswa</h5>
-                        </div>
-                        <div class="col">
-                            <ul class="nav nav-pills justify-content-end">
-                                <li class="nav-item mr-2 mr-md-0">
-                                    <a href="<?= site_url('riwayat') ?>" class="btn btn-sm btn-neutral"><i class="fas fa-history"></i> Riwayat Konsultasi</a>
-                                </li>
-                            </ul>
+                            <h5 class="h2 text-white mb-0">Kondisi Tingkat Stres</h5>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <table class="table table-bordered text-white">
-                                <tr>
-                                    <td width="30%">ID Konsultasi</td>
-                                    <td width="5%">:</td>
-                                    <td><?= $row->id_konsultasi ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Tanggal Konsultasi</td>
-                                    <td>:</td>
-                                    <td><?= tanggal_indo(date('Y-m-d', strtotime($row->created_proses))) . ' ' . date('H:i:s', strtotime($row->created_proses)) ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="30%">ID Clien</td>
-                                    <td width="5%">:</td>
-                                    <td><?= profil()->nim_user ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-sm-6">
-                            <table class="table table-bordered text-white">
-                                <tr>
-                                    <td width="30%">Nama Clien</td>
-                                    <td width="5%">:</td>
-                                    <td><?= profil()->nama_user ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="30%">Program Studi Clien</td>
-                                    <td width="5%">:</td>
-                                    <td><?= get_prodi_row(profil()->id_prodi)->row()->nama_prodi ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="30%">Fakultas Clien</td>
-                                    <td width="5%">:</td>
-                                    <td><?= get_fakultas(profil()->id_fakultas)->row()->nama_fakultas ?></td>
-                                </tr>
-                            </table>
-                        </div>
                         <div class="col-sm-2 mt-4">
                             <div class="card ">
                                 <div class="card-body">

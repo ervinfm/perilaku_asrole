@@ -169,23 +169,7 @@ $min_conf = min($min);
                                                         <tr>
                                                             <td>Rekomendasi Tindakan</td>
                                                             <td>:</td>
-                                                            <td>
-                                                                <?php if ($min_conf > 75) { ?>
-                                                                    <li>Konsultasi dengan psikolog/psikiater</li>
-                                                                    <li>Mendekatkan diri pada Allah dengan melalui konsultasi dengan ahli agama</li>
-                                                                <?php } else if ($min_conf <= 75 && $min_conf > 50) { ?>
-                                                                    <li>Problem fokus Coping /memecahkan masalah dengan menganggap problem itu sesuatu yang ringan mudah/ bisa dipecahkan</li>
-                                                                    <li>Menguatkan psikis kita dengan membaca buku" agama/motivasi</li>
-                                                                <?php } else if ($min_conf <= 50 && $min_conf > 25) { ?>
-                                                                    <li>Relaksasi </li>
-                                                                    <li>Istirahat dan mengalihkan kegiatan ke hal" yang positif bagian sosial, spiritual dan sebagainya</li>
-                                                                    <li>Tolking cure /writing cure memecahkan problem dengan menulis problemnya dengan mengungkapkan kepada orang lain yg dipercaya</li>
-                                                                <?php } else { ?>
-                                                                    <li>Menjaga Kestabilan Emosi</li>
-                                                                    <li>Berolahraga teratur dan Makanan Bergizi</li>
-                                                                    <li>Terapkan pola hidup sehat</li>
-                                                                <?php } ?>
-                                                            </td>
+                                                            <td><?= get_rekomendasi_user($min_conf) ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>

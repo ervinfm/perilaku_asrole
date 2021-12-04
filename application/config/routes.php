@@ -61,3 +61,4 @@ $route['hasil'] = 'user/hasil';
 $route['riwayat'] = 'user/riwayat';
 $route['riwayat/detail/(:any)'] = 'user/riwayat/detail/$1';
 $route['riwayat/cetak/(:any)'] = 'user/riwayat/cetak/$1';
+$route['kondisi'] = 'user/kondisi';

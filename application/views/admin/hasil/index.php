@@ -275,50 +275,17 @@ $average_conf_all = ($count_conf / get_fakultas()->num_rows());
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 mt-2">
-                                                        <?php
-                                                        if ($average_conf_all > 50) { ?>
-                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
-                                                                <div class="card-body">
-                                                                    <h3 class="m-0 p-0">
-                                                                        <b>Rekomendasi Hasil : </b>
-                                                                    </h3>
-                                                                    <h4 class="m-0 p-0 mb-2">
-                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori. jika nilai confidencenya melebihi nilai minimal yang ditentukkan yaitu 50% sehingga Fakultas perlu Meperhatikan :
-                                                                    </h4>
-                                                                    <ol>
-                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
-                                                                    </ol>
-                                                                </div>
+                                                        <div class="card" style="border: 1px solid;text-align: justify; color:black">
+                                                            <div class="card-body">
+                                                                <h3 class="m-0 p-0">
+                                                                    <b>Rekomendasi Hasil : </b>
+                                                                </h3>
+                                                                <h4 class="m-0 p-0 mb-2">
+                                                                    Setelah Melalui Proses Apriori, Kategori Stres yang diperoleh adalah <?= level_stres($average_conf_all) ?>, Maka Fakultas di Rekomendasikan :
+                                                                </h4>
+                                                                <?= get_rekomendasi_admin($row->kriteria_proses)->isi_rekomendasi ?>
                                                             </div>
-                                                        <?php } else if ($average_conf_all < 50 && $average_conf_all >= 25) { ?>
-                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
-                                                                <div class="card-body">
-                                                                    <h3 class="m-0 p-0">
-                                                                        <b>Rekomendasi Hasil : </b>
-                                                                    </h3>
-                                                                    <h4 class="m-0 p-0 mb-2">
-                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori dengan Kondisi Stres Ringan maka Fakultas diharapkan perlu memperhatikan :
-                                                                    </h4>
-                                                                    <ol>
-                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
-                                                                    </ol>
-                                                                </div>
-                                                            </div>
-                                                        <?php } else { ?>
-                                                            <div class="card" style="border: 1px solid;text-align: justify; color:black">
-                                                                <div class="card-body">
-                                                                    <h3 class="m-0 p-0">
-                                                                        <b>Rekomendasi Hasil : </b>
-                                                                    </h3>
-                                                                    <h4 class="m-0 p-0 mb-2">
-                                                                        Diperoleh hasil dan saran dari hasil proses perhitungan apriori dengan Kondisi Normal maka diharapkan perlu Memperhatikan Hal Berikut :
-                                                                    </h4>
-                                                                    <ol>
-                                                                        <li>Isi Sendiri ya ges, bingung isinya</li>
-                                                                    </ol>
-                                                                </div>
-                                                            </div>
-                                                        <?php } ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

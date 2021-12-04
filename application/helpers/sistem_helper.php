@@ -508,3 +508,30 @@ function kriteria_data($kriteria)
             break;
     }
 }
+
+function get_rekomendasi_admin($kriteria)
+{
+    $ci = &get_instance();
+    $ci->db->from('tb_rekomendasi');
+    $ci->db->where('keriteria_rekomendasi', $kriteria);
+    $query = $ci->db->get();
+    return $query->row();
+}
+
+function get_dashboard_konsultasi()
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_log');
+    $ci->db->where('author_proses', $ci->session->userdata('user_id'));
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_dashboard_konsul_hasil($id_proses)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_hasil');
+    $ci->db->where('id_proses', $id_proses);
+    $query = $ci->db->get();
+    return $query;
+}

@@ -29,7 +29,7 @@
                         <div class="col">
                             <ul class="nav nav-pills justify-content-end">
                                 <li class="nav-item mr-2 mr-md-0">
-                                    <a href="" class="btn btn-sm btn-neutral"><i class="fas fa-history"></i> Riwayat Konsultasi</a>
+                                    <a href="<?= site_url('riwayat') ?>" class="btn btn-sm btn-neutral"><i class="fas fa-history"></i> Riwayat Konsultasi</a>
                                 </li>
                             </ul>
                         </div>
