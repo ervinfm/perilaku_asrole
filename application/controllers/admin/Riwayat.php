@@ -13,6 +13,7 @@ class Riwayat extends CI_Controller
     {
         $data = [
             'row' => $this->riwayat_m->get_data(),
+            'row2' => get_konsultasi_log_all(),
         ];
         $this->template->load('admin/template', 'admin/riwayat/index', $data);
     }
@@ -24,6 +25,15 @@ class Riwayat extends CI_Controller
             'row' => $apriori,
         ];
         $this->template->load('admin/template', 'admin/hasil/detail', $data);
+    }
+
+    public function detail_mhs($id)
+    {
+        $apriori = get_konsultasi_hasil($id);
+        $data = [
+            'row' => $apriori->row(),
+        ];
+        $this->template->load('admin/template', 'admin/riwayat/detail', $data);
     }
 
     function cetak($id)

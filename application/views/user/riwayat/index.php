@@ -53,7 +53,7 @@
                                                     foreach (get_konsultasi_hasil($data->id_proses)->result() as $key => $term) {
                                                         array_push($min, $term->confidence);
                                                     }
-                                                    $min_conf = min($min);
+                                                    $min_conf = round(min($min), 2);
                                                 ?>
                                                     <tr>
                                                         <td><?= $no++ ?></td>

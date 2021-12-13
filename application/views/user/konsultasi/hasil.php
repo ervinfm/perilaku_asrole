@@ -100,8 +100,8 @@ $min_conf = min($min);
                                             <tr>
                                                 <td><?= $no++ ?></td>
                                                 <td><?= $hasil->kombinasi1 . ' => ' . $hasil->kombinasi2 ?></td>
-                                                <td><?= $hasil->confidence . ' %' ?></td>
-                                                <td><?= $hasil->uji_lift ?></td>
+                                                <td><?= round($hasil->confidence, 2) . ' %' ?></td>
+                                                <td><?= round($hasil->uji_lift, 2) ?></td>
                                                 <td><?= $hasil->aturan_korelasi ?></td>
                                             </tr>
                                     <?php }

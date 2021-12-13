@@ -24,11 +24,28 @@ function get_konsultasi_log($id)
     return $query;
 }
 
-function get_konsultasi($id)
+function get_konsultasi_log_all($id = null)
+{
+    $ci = &get_instance();
+    $ci->db->from('tbl_konsultasi_log');
+    if ($id != null) {
+        $ci->db->where('id_proses', $id);
+    } else {
+        $ci->db->order_by('created_proses', 'DESC');
+    }
+    $query = $ci->db->get();
+    return $query;
+}
+
+function get_konsultasi($id = null)
 {
     $ci = &get_instance();
     $ci->db->from('tbl_konsultasi');
-    $ci->db->where('id_konsultasi', $id);
+    if ($id != null) {
+        $ci->db->where('id_konsultasi', $id);
+    } else {
+        $ci->db->order_by('created_proses', 'DESC');
+    }
     $query = $ci->db->get();
     return $query;
 }
@@ -383,8 +400,8 @@ function get_rekomendasi_user($confident)
 {
     $ci = &get_instance();
     $ci->db->from('tb_rekomendasi');
-    $ci->db->where('min_rekomendasi <', $confident);
-    $ci->db->where('max_rekomendasi >', $confident);
+    $ci->db->where('min_rekomendasi <', round($confident), 2);
+    $ci->db->where('max_rekomendasi >', round($confident), 2);
     $query = $ci->db->get();
     return $query->row()->isi_rekomendasi;
 }
