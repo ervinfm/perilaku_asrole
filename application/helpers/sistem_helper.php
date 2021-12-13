@@ -439,6 +439,16 @@ function range_jawaban($name)
     return $range;
 }
 
+function explit_kombinasi($value, $value2)
+{
+    $temp =  explode(",", $value);
+    if (count($temp) > 1) {
+        echo 'Jika ' . $temp[0] . ' Maka ' . $value2;
+    } else {
+        echo 'Jika ' . $temp[0] . ' dan ' . $temp[1] . ' Maka ' . $value2;
+    }
+}
+
 function get_fakultas($id = null)
 {
     $ci = &get_instance();

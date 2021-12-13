@@ -153,6 +153,9 @@ $average_conf_all = ($count_conf / get_fakultas()->num_rows());
                                         <li class="nav-item">
                                             <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false"><i class="ni ni-bullet-list-67 mr-2"></i>Konversi Asosiasi</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false"><i class="ni ni-chat-round mr-2"></i>Rincian Asosiasi</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -317,19 +320,18 @@ $average_conf_all = ($count_conf / get_fakultas()->num_rows());
                                                             <tbody>
                                                                 <?php
                                                                 $no = 1;
-                                                                foreach (get_hasil_apriori($row->id_proses, $fakultas->id_fakultas)->result() as $key2 => $hasil) {
-                                                                    if ($hasil->lolos_proses_hasil == 1) { ?>
-                                                                        <tr>
-                                                                            <td><?= $no++ ?></td>
-                                                                            <td><?= $hasil->kombinasi1 . ' => ' . $hasil->kombinasi2 ?></td>
-                                                                            <td><?= $hasil->support_xUy ?></td>
-                                                                            <td><?= $hasil->jumlah_ab ?></td>
-                                                                            <td><?= round($hasil->pxuy, 4) ?></td>
-                                                                            <td><?= $hasil->confidence . '%' ?></td>
-                                                                            <td><?= $hasil->uji_lift ?></td>
-                                                                            <td><?= $hasil->aturan_korelasi ?></td>
-                                                                        </tr>
-                                                                <?php }
+                                                                foreach (get_hasil_apriori($row->id_proses, $fakultas->id_fakultas)->result() as $key2 => $hasil) { ?>
+                                                                    <tr>
+                                                                        <td><?= $no++ ?></td>
+                                                                        <td><?= $hasil->kombinasi1 . ' => ' . $hasil->kombinasi2 ?></td>
+                                                                        <td><?= $hasil->support_xUy ?></td>
+                                                                        <td><?= $hasil->jumlah_ab ?></td>
+                                                                        <td><?= round($hasil->pxuy, 4) ?></td>
+                                                                        <td><?= $hasil->confidence . '%' ?></td>
+                                                                        <td><?= $hasil->uji_lift ?></td>
+                                                                        <td><?= $hasil->aturan_korelasi ?></td>
+                                                                    </tr>
+                                                                <?php
                                                                 } ?>
                                                             </tbody>
                                                         </table>
@@ -366,21 +368,64 @@ $average_conf_all = ($count_conf / get_fakultas()->num_rows());
                                                         $n_conf = 0;
                                                         $count = 0;
                                                         foreach (get_hasil_apriori($row->id_proses, $fakultas->id_fakultas)->result() as $key3 => $simpulan) {
-                                                            if ($simpulan->lolos_proses_hasil == 1) {
-                                                                $n_conf = $n_conf + $simpulan->confidence;
-                                                                $count = $count + 1 ?>
-                                                                <tr>
-                                                                    <td><?= $no++ ?></td>
-                                                                    <td>
-                                                                        <?php
-                                                                        $comb = explode(",", $simpulan->kombinasi1);
-                                                                        echo 'Jika ' . $comb[0] . ' dan ' . $comb[1] . ' Maka ' . $simpulan->kombinasi2;
-                                                                        ?>
-                                                                    </td>
-                                                                    <td><?= $simpulan->confidence ?></td>
-                                                                    <td><?= $simpulan->aturan_korelasi ?></td>
-                                                                </tr>
-                                                        <?php }
+                                                            $n_conf = $n_conf + $simpulan->confidence;
+                                                            $count = $count + 1 ?>
+                                                            <tr>
+                                                                <td><?= $no++ ?></td>
+                                                                <td> <?= explit_kombinasi($simpulan->kombinasi1, $simpulan->kombinasi2) ?> </td>
+                                                                <td><?= $simpulan->confidence ?></td>
+                                                                <td><?= $simpulan->aturan_korelasi ?></td>
+                                                            </tr>
+                                                        <?php
+                                                            $average_conf = $n_conf / $count;
+                                                        } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                                <div class="row">
+                                    <?php
+                                    $keys = 40;
+                                    foreach (get_fakultas()->result() as $key => $fakultas) { ?>
+                                        <div class="col-sm-12 mt-3">
+                                            <a href="#" class="btn btn-sm btn-default mb-2"><?= '(' . $fakultas->id_fakultas . ') ' . $fakultas->nama_fakultas ?></a>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="tabledata<?= 8 + ($keys + $key) ?>">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="5%">No</th>
+                                                            <th>X (Jika)</th>
+                                                            <th>Y (Maka)</th>
+                                                            <th>Confident</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $no = 1;
+                                                        $n_conf = 0;
+                                                        $count = 0;
+                                                        foreach (get_hasil_apriori($row->id_proses, $fakultas->id_fakultas)->result() as $key3 => $simpulan) {
+                                                            $n_conf = $n_conf + $simpulan->confidence;
+                                                            $count = $count + 1 ?>
+                                                            <tr>
+                                                                <td><?= $no++ ?></td>
+                                                                <td><?php
+                                                                    $temp =  explode(",", $simpulan->kombinasi1);
+                                                                    if (count($temp) > 1) {
+                                                                        echo get_perilaku_transpost($temp[0], $row->kriteria_proses) . ' dan ' . get_perilaku_transpost($temp[1], $row->kriteria_proses);
+                                                                    } else {
+                                                                        echo get_perilaku_transpost($simpulan->kombinasi1, $row->kriteria_proses);
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td><?= get_perilaku_transpost($simpulan->kombinasi2, $row->kriteria_proses) ?></td>
+                                                                <td><?= $simpulan->confidence . '%' ?></td>
+                                                            </tr>
+                                                        <?php
                                                             $average_conf = $n_conf / $count;
                                                         } ?>
                                                     </tbody>

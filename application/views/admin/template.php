@@ -307,7 +307,7 @@
             $('#tabledata').DataTable();
         });
     </script>
-    <?php for ($i = 0; $i < 50; $i++) {  ?>
+    <?php for ($i = 0; $i < 80; $i++) {  ?>
         <script>
             $(document).ready(function() {
                 $('#tabledata<?= $i ?>').DataTable();

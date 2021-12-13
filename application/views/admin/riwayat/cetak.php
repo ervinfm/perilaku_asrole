@@ -159,7 +159,50 @@
         </tbody>
     </table>
 
-    <p><strong>C. Rekomendasi Umum</strong></p>
+    <p><strong>C. Rincian Aturan Asosiasi</strong></p>
+    <table>
+        <thead>
+            <th width="5%">No</th>
+            <th width="40%">X (Jika)</th>
+            <th width="40%">Y (Maka)</th>
+            <th>Confident</th>
+        </thead>
+        <tbody>
+            <?php
+            $no = 1;
+            foreach (get_fakultas()->result() as $key => $fak) { ?>
+                <tr>
+                    <td colspan="4"><b><?= '(' . $fak->id_fakultas . ') ' . $fak->nama_fakultas ?></b></td>
+                </tr>
+                <?php
+                if (get_hasil_apriori($row->id_proses, $fak->id_fakultas)->num_rows() > 0) {
+                    foreach (get_hasil_apriori($row->id_proses, $fak->id_fakultas)->result() as $key2 => $hasil) { ?>
+                        <tr>
+                            <td><?= $no++ ?></td>
+                            <td>
+                                <?php
+                                $temp =  explode(",", $hasil->kombinasi1);
+                                if (count($temp) > 1) {
+                                    echo get_perilaku_transpost($temp[0], $row->kriteria_proses) . ' dan ' . get_perilaku_transpost($temp[1], $row->kriteria_proses);
+                                } else {
+                                    echo get_perilaku_transpost($hasil->kombinasi1, $row->kriteria_proses);
+                                }
+                                ?>
+                            </td>
+                            <td><?= get_perilaku_transpost($hasil->kombinasi2, $row->kriteria_proses) ?></td>
+                            <td><?= $hasil->confidence . '%' ?></td>
+                        </tr>
+                    <?php }
+                } else { ?>
+                    <tr>
+                        <td colspan="9"><i>Tidak ada Aturan Asosiasi yang tebentuk untuk fakultas ini!</i></td>
+                    </tr>
+            <?php }
+            } ?>
+        </tbody>
+    </table>
+
+    <p><strong>D. Rekomendasi Umum</strong></p>
     <table class="table1">
         <tr>
             <td align="center"><strong> Rekomendasi untuk setiap fakultas </strong></td>
