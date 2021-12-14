@@ -797,10 +797,10 @@ function atuuran_asosiasi_hasilpt2($id, $id_fakultas)
         $lolos_1 = ($confident1 > $proses_data->min_confident ? 1 : 0);
         $lolos_2 = ($confident2 > $proses_data->min_confident ? 1 : 0);
 
-        if ($confident1 > 24) {
+        if ($confident1 > 25) {
             insert_proses_hasil($id, $id_fakultas, ($value->atribut1), $value->atribut2, $supxUy1, $supx1, round($confident1, 2), $jumlahA1, $jumlahB1, $jumlahAB1, $pA1, $pB1, $pAB1, substr(ceil($PaUb1), 0, 1), $korelasi_1, $iterasi, $lolos_1);
         }
-        if ($confident2 > 24) {
+        if ($confident2 > 25) {
             insert_proses_hasil($id, $id_fakultas, ($value->atribut2), $value->atribut1, $supxUy2, $supx2, round($confident2, 2), $jumlahA2, $jumlahA2, $jumlahAB2, $pA2, $pB2, $pAB2, substr(ceil($PaUb2), 0, 1), $korelasi_2, $iterasi, $lolos_2);
         }
     }
