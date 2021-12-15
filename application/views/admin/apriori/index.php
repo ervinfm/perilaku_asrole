@@ -100,7 +100,7 @@
                                             <input type="hidden" name="d_last" value="<?= $this->session->flashdata('Date_last') ?>">
                                             <input type="hidden" name="kriteria" value="<?= $this->session->flashdata('P_kriteria') ?>">
                                             <input type="hidden" name="p_support" value="1">
-                                            <input type="hidden" name="p_confident" value="24">
+                                            <input type="hidden" name="p_confident" value="25">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <button type="submit" name="proses" class="btn btn-danger float-right mt-3"><i class="fa fa-sync"></i> Proses Dataset</button>
