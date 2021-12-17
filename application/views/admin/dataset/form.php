@@ -58,6 +58,22 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <tr>
+                                                        <td colspan="2">Kelompok Dataset : </td>
+                                                        <td colspan="2">
+                                                            <select name="d_fakultas" class="form-control form-control-sm" id="fakultas" required>
+                                                                <option value="">- pilih fakultas -</option>
+                                                                <?php foreach (get_fakultas()->result() as $key => $fakultas) { ?>
+                                                                    <option value="<?= $fakultas->id_fakultas ?>"><?= $fakultas->id_fakultas . ' - ' . $fakultas->nama_fakultas ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <select name="d_prodi" class="form-control form-control-sm" id="prodi" required>
+                                                                <option value="">- pilih program studi -</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
                                                     <?php for ($i = 1; $i <= @$_GET['n']; $i++) { ?>
                                                         <tr>
                                                             <td><?= $i ?></td>
@@ -98,3 +114,33 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('#fakultas').change(function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "<?= site_url('auth/get_prodi'); ?>",
+                method: "POST",
+                data: {
+                    id: id
+                },
+                async: true,
+                dataType: 'json',
+                success: function(data) {
+
+                    var html = '';
+                    var i;
+                    for (i = 0; i < data.length; i++) {
+                        html += '<option value=' + data[i].id_prodi + '>' + data[i].id_prodi + ' - ' + data[i].nama_prodi + '</option>';
+                    }
+                    $('#prodi').html(html);
+
+                }
+            });
+            return false;
+        });
+
+    });
+</script>

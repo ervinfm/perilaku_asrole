@@ -45,6 +45,8 @@ class Dataset extends CI_Controller
             $params2 = $_POST['d_param2'];
             $params3 = $_POST['d_param3'];
             $params4 = $_POST['d_param4'];
+            $fakultas = $_POST['d_fakultas'];
+            $prodi = $_POST['d_prodi'];
             $author = profil()->id_user;
 
             if ($params1[0] != null || $params2[0] != null || $params3[0] != null || $params4[0] != null) {
@@ -59,6 +61,8 @@ class Dataset extends CI_Controller
                         'params2_dataset' => $params2[$index],
                         'params3_dataset' => $params3[$index],
                         'params4_dataset' => $params4[$index],
+                        'id_fakultas' => $fakultas,
+                        'id_prodi' => $prodi,
                         'author_dataset' => $author,
                     ));
                     $index++;
